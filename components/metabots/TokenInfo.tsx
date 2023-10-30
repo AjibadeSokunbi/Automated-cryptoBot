@@ -5,6 +5,7 @@ import { AiOutlineBell } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
 import {
   fixNum,
+  fixNum2,
   isScientificNotation,
   shortenWord,
   siNumber,
@@ -49,11 +50,7 @@ const price = fixNum(data?.priceUsd, 6, true)
       ? [
           {
             title: "Price",
-            price: `$${
-              !isScientificNotation((data?.priceUsd).toString()) && price.length < 10
-                ? fixNum(data?.priceUsd, 6, true)
-                : (data?.priceUsd).toExponential(3)
-            }`,
+            price: data?.priceUsd,
             isDollar: true,
             isSiNumber: true,
             subPrice: {
@@ -108,12 +105,12 @@ const price = fixNum(data?.priceUsd, 6, true)
           <Stack flexDirection="col">
             <Stack>
               <Typography className="text-white text-xl font-bold font-['Instrument Sans']">
-                {data && data?.baseSymbol}
+                {data && data?.token0Name}
               </Typography>{" "}
-              <CopyAddress address= {data?.baseAddress}/>
+              <CopyAddress address= {data?.token0Address}/>
               /{" "}
               <Typography className="text-white text-xl font-bold font-['Instrument Sans']">
-                {data && data?.quoteSymbol}
+                {data && data?.token1Name}
               </Typography>{" "}
             </Stack>
 
@@ -158,7 +155,7 @@ const price = fixNum(data?.priceUsd, 6, true)
                   variant="bold"
                   className="text-white text-lg font-bold font-['Instrument Sans'] leading-normal"
                 >
-                  {val?.price}
+                  {val.title === "Price" ? fixNum2(val?.price, 6, true)  : val?.price}
                 </Typography>
                 <Typography
                   variant="bold"

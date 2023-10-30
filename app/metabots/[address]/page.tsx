@@ -1,16 +1,14 @@
 import React, { Suspense } from "react";
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
-import {
-  ServerDefaultSession,
-} from "@/utils/types";
 import Graph from "@/components/metabots/Graph";
 import Wallet from "@/components/metabots/Wallet";
-import { getCurrentUser } from "@/lib/session";
+
 import TokenInfoFetch from "../dataFetchers/TokenInfoFetch";
-import NewTokensfetchers from "../dataFetchers/NewTokensfetchers";
+import TNW from "../dataFetchers/TNW";
 import SMMFetch from "../dataFetchers/SMMFetch";
 import TNav from "@/components/metabots/Trading/TNav";
+import InnerTab2 from "@/components/metabots/InnerTab2";
 
 interface pageProps {
   params: {
@@ -19,9 +17,6 @@ interface pageProps {
 }
 
 export default async function page({ params }: pageProps) {
-  const user: ServerDefaultSession =
-    (await getCurrentUser()) as ServerDefaultSession;
-
   return (
     <>
       <Suspense fallback={<>Loading.....</>}>
@@ -40,7 +35,7 @@ export default async function page({ params }: pageProps) {
                 Multi-Chart
               </Typography>
               <Stack sx="w-full h-72 p-1 bg-[#0C141F]  rounded-2xl shadow border border-slate-800 ">
-                <Graph />
+                {/* <Graph /> */}
               </Stack>
             </Stack>
 
@@ -50,13 +45,17 @@ export default async function page({ params }: pageProps) {
               sx="w-full h-11/12 p-1 bg-[#0C141F] rounded-lg shadow border border-slate-800"
             >
               <Suspense fallback={<>Loading.....</>}>
-                <NewTokensfetchers />
+                <TNW />
               </Suspense>
             </Stack>
           </Stack>
           <Suspense
             fallback={
-              <Stack justifyContent="center" alignItems="center" sx="w-full h-72 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800">
+              <Stack
+                justifyContent="center"
+                alignItems="center"
+                sx="w-full h-72 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800"
+              >
                 Loading....
               </Stack>
             }
@@ -65,9 +64,10 @@ export default async function page({ params }: pageProps) {
           </Suspense>
         </Stack>
         <Stack flexDirection="col" gap={10} width="w-5/12">
-          <Wallet wallets={user?.wallets} />
-
-            <TNav/>
+          <Wallet />
+          <Suspense fallback={<>Loading.....</>}>
+            <TNav params={params} />
+          </Suspense>
         </Stack>
       </Stack>
     </>

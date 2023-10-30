@@ -1,3 +1,4 @@
+"use client"
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import {

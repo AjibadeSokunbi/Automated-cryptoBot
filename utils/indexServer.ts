@@ -1,6 +1,7 @@
 
 import ellipseNum from "./ellipseNum";
 import { EntityData } from "./entityData3";
+import { TokenBalance } from "./types";
 
 export function formatCurrency2(value: number): string {
     // Use toLocaleString to format the number as currency
@@ -112,8 +113,35 @@ export function formatCurrency2(value: number): string {
   }
   
 
+ export const findTokenBalance = (balances: TokenBalance[], tokenAddress: string) => {
+    const tokenBalance = balances.find(
+      (balance) => balance.token_address === tokenAddress
+    );
+    return tokenBalance ? tokenBalance.balance : 0;
+  };
+
+  export const findTokenBalanceS = (balances: TokenBalance[], symbol: string) => {
+    const tokenBalance = balances.find(
+      (balance) => balance.symbol === symbol
+    );
+    return tokenBalance ? tokenBalance.balance : "0";
+  };
+
+
+ export function checkScientificNotation(numAsString: string): string {
+    // Check if the number is in scientific notation
+
+    if (numAsString.includes('e') || numAsString.includes('E')) {
+        return Number(numAsString).toFixed(7).toString(); // If the number is in scientific notation, return '0.000'
+    } else {
+        return numAsString; // If not in scientific notation, return the number as it is
+    }
+}
+
+
+
   export function shortenWord(word: string, maxLength: number): string {
-    if (word.length > maxLength) {
+    if (word?.length > maxLength) {
       return word.substring(0, maxLength) + "..."; // Shorten and add "..."
     }
     return word; // Return the original word if it's within the maximum length
@@ -138,6 +166,29 @@ export function fixNum(num: number, fix: number, withCommas = false, ellipseDots
   }
 
   return num.toString();
+};
+
+
+export function fixNum2(num: number, fix: number, withCommas = false, ellipseDots = false): string | any {
+  if (!num) return 0;
+  num = Number(num);
+
+  if (
+    num.toString().includes('e') ||
+    (Number(num) < 0.0001 && isPositive(Number(num)))
+  ) {
+    return ellipseDots ? ellipseNumWithDots(num) : ellipseNum(num);
+  }
+
+  if (String(num).includes('.')) {
+    num = Number(Number(num).toFixed(fix));
+  }
+
+  if (num > 1 && withCommas) {
+    return num.toLocaleString();
+  }
+
+  return num;
 };
 
 export function formatPrice(num: number | undefined | null, decimalPlaces: number = 2): string {

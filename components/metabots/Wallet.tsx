@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,20 +9,27 @@ import { PiCopySimpleBold } from "react-icons/pi";
 import { TbWorld } from "react-icons/tb";
 import { MdArrowForwardIos } from "react-icons/md";
 import { makeWalletAddress } from "@/utils";
+import { ClientDefaultSession } from "@/utils/types";
 
 
 interface Props {
-  wallets: string[] | undefined;
+
 }
 
-const Wallet: FC<Props> = ({wallets}) => {
-  
-
+const Wallet: FC<Props> = ({}) => {
+  const { data } = useSession();
+  const user: ClientDefaultSession = data as ClientDefaultSession;
 
   const [hideWallets, setHideWallets] = useState<boolean>(false);
   const [walletIndex, setWalletIndex] = useState(1);
-  const Wallets: string[] = wallets as string[];
-  const [selectedWallet, setSelectedWallet] = useState<string>(Wallets[0]);
+  const Wallets: string[] = user?.wallets as string[];
+  const [selectedWallet, setSelectedWallet] = useState<string>(Wallets ? Wallets[0] : "");
+
+  useEffect(() => {
+    if(selectedWallet === "") {
+      setSelectedWallet(Wallets ? Wallets[0] : "")
+    }
+  }, [Wallets, selectedWallet])
 
   const selectWallet = (index: number): void => {
     setSelectedWallet(Wallets[index]);

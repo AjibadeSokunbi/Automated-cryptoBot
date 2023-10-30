@@ -5,17 +5,17 @@ export interface UserDecodedTransactionsQuery {
   };
 }
 export interface GetLatestAndEarliestDecodedTransfersByLabelQuery {
-getLatestAndEarliestDecodedTransfersByLabel: {
-  latestTransfers: Transfer[];
-};
+  getLatestAndEarliestDecodedTransfersByLabel: {
+    latestTransfers: Transfer[];
+  };
 }
 
 export interface RelatedEntity {
-addr: string;
-receivedCount: number;
-receivedValue: number;
-sentCount: number;
-sentValue: number;
+  addr: string;
+  receivedCount: number;
+  receivedValue: number;
+  sentCount: number;
+  sentValue: number;
 }
 
 export interface BillingData {
@@ -30,7 +30,6 @@ export interface BillingData {
   updatedAt: string; // Consider using Date type if you can parse it.
   __v: number;
 }
-
 
 export interface User {
   _id: string;
@@ -57,151 +56,147 @@ export interface User {
     updatedAt: string;
     __v: number;
   };
-  token: string;
+  token?: string;
 }
 
 export interface UserBotData {
-  data: User
+  data: User;
 }
-export  interface CustomDefaultSession {
+export interface CustomDefaultSession {
   user?: {
     name?: string | null;
     email?: string | null;
     image?: string | null;
     authToken: string | null;
-    wallets?: string[]
+    wallets?: string[];
   };
 }
 
-
-export  interface ServerDefaultSession {
-
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    authToken: string | null;
-    wallets?: string[]
-
+export interface ServerDefaultSession {
+  email?: string | null;
+  wallets?: string[];
+  botdata: UserBotData;
 }
 
+export interface ClientDefaultSession {
+  user?: { email?: string };
+  botUser: UserBotData;
+  expires?: string;
+  wallets?: string[];
+}
 
 export interface BalanceInfo {
-decimals: string;
-token_address: string;
-name: string;
+  decimals: string;
+  token_address: string;
+  name: string;
 }
 
 export interface UserBalanceInfoResponse {
-userBalanceInfo: {
-  balances: BalanceInfo[];
-  tokenTotal: number;
-};
+  userBalanceInfo: {
+    balances: BalanceInfo[];
+    tokenTotal: number;
+  };
 }
 
-
 export interface SecurityCheck {
-title?: string;
-checks?: string[];
-desc?: string[];
-results?: (string | number | React.ReactNode)[];
-status?: (boolean | null)[];
+  title?: string;
+  checks?: string[];
+  desc?: string[];
+  results?: (string | number | React.ReactNode)[];
+  status?: (boolean | null)[];
 }
 
 export type SecurityAnalysis = SecurityCheck[];
 
-
-
-
-
 export interface GetAddrTxnFlowInfoResponse {
-getAddrTxnFlowInfo: {
-  relatedEntities: RelatedEntity[];
-};
+  getAddrTxnFlowInfo: {
+    relatedEntities: RelatedEntity[];
+  };
 }
 
 export interface TopResults {
-[label: string]: RelatedEntityLabel[];
+  [label: string]: RelatedEntityLabel[];
 }
 
 export interface UserAlert {
-watchedAddrToken: string;
-watchedAddrLabel: string;
-watchedAddrAmount: number;
-watchedAddrAction: string;
-watchedAddr: string;
-executed: boolean;
-dateExecuted: string;
-dateCreated: string;
-_id: string;
-email: string;
-telegramId: string;
+  watchedAddrToken: string;
+  watchedAddrLabel: string;
+  watchedAddrAmount: number;
+  watchedAddrAction: string;
+  watchedAddr: string;
+  executed: boolean;
+  dateExecuted: string;
+  dateCreated: string;
+  _id: string;
+  email: string;
+  telegramId: string;
 }
 
 export interface TradeData {
-time: number;
-type: 'buy' | 'sell';
-priceUSD: number;
-price: number;
-tokenQuantity: number;
-total: number;
-pairId: string;
-address: string;
-txnHash: string;
-amount0: number;
-amount1: number;
-amountUSD: number;
-liquidity: null | any; // You can replace 'any' with a more specific type if needed
+  time: number;
+  type: "buy" | "sell";
+  priceUSD: number;
+  price: number;
+  tokenQuantity: number;
+  total: number;
+  pairId: string;
+  address: string;
+  txnHash: string;
+  amount0: number;
+  amount1: number;
+  amountUSD: number;
+  liquidity: null | any; // You can replace 'any' with a more specific type if needed
 }
 export interface WalletDatas {
   total_usd: number;
   address: string;
-  total_tx: string
+  total_tx: string;
 }
 
 export interface TokenPairDetails {
-baseAddress: string;
-baseSymbol: string;
-baseSymbolName: string;
-change: number;
-dexName: string;
-icon: string | null;
-isUp: boolean;
-name: string;
-oneEthValue: number;
-pairId: string;
-poolCreated: number;
-pooledToken0: number;
-pooledToken1: number;
-priceHigh: number;
-priceLow: number;
-priceUsd: number;
-quoteAddress: string;
-quotePrice: number;
-quoteSymbol: string;
-token0Address: string;
-token0Name: string;
-token1Address: string;
-token1Name: string;
-totalLiquidity: number;
-totalSupply: number;
-txCount: number;
-_24HourVolume: number;
-_24hPriceChange: number;
-_24h_buys: number;
-_24h_sells: number;
-_24h_txn_count: number;
-_24h_volume: number;
+  baseAddress: string;
+  baseSymbol: string;
+  baseSymbolName: string;
+  change: number;
+  dexName: string;
+  icon: string | null;
+  isUp: boolean;
+  name: string;
+  oneEthValue: number;
+  pairId: string;
+  poolCreated: number;
+  pooledToken0: number;
+  pooledToken1: number;
+  priceHigh: number;
+  priceLow: number;
+  priceUsd: number;
+  quoteAddress: string;
+  quotePrice: number;
+  quoteSymbol: string;
+  token0Address: string;
+  token0Name: string;
+  token1Address: string;
+  token1Name: string;
+  totalLiquidity: number;
+  totalSupply: number;
+  txCount: number;
+  _24HourVolume: number;
+  _24hPriceChange: number;
+  _24h_buys: number;
+  _24h_sells: number;
+  _24h_txn_count: number;
+  _24h_volume: number;
 }
 
 export interface NewTokenType {
   pair: string;
   timestamp: number;
-  price: number 
-  name: string
-  quote_symbol: string
-  base_symbol: string
-  base_id: string
-  score?: number
+  price: number;
+  name: string;
+  quote_symbol: string;
+  base_symbol: string;
+  base_id: string;
+  score?: number;
 }
 
 export interface PoolActivityData {
@@ -221,7 +216,6 @@ export interface PoolActivityDataList {
 export interface Dictionary<T> {
   [key: string]: T;
 }
-
 
 export interface TokenSecurity {
   cannot_sell_all: string;
@@ -252,63 +246,65 @@ export interface LPHolder {
   percent: number;
 }
 
-
 export interface TokenSecurityResult {}
 
 export interface TokenPairDetailsN {
-baseAddress: string;
-baseSymbol: string;
-baseSymbolName: string;
-change: number;
-dexName: string;
-icon: string | null;
-isUp: boolean;
-name: string;
-time: number;
-addressPair: string
-oneEthValue: number;
-pairId: string;
-poolCreated: number;
-pooledToken0: number;
-pooledToken1: number;
-priceHigh: number;
-priceLow: number;
-priceUsd: number;
-quoteAddress: string;
-quotePrice: number;
-quoteSymbol: string;
-token0Address: string;
-token0Name: string;
-token1Address: string;
-token1Name: string;
-totalLiquidity: number;
-totalSupply: number;
-txCount: number;
-_24HourVolume: number;
-_24hPriceChange: number;
-_24h_buys: number;
-_24h_sells: number;
-_24h_txn_count: number;
-_24h_volume: number;
+  baseAddress: string;
+  baseSymbol: string;
+  baseSymbolName: string;
+  change: number;
+  dexName: string;
+  icon: string | null;
+  isUp: boolean;
+  name: string;
+  time: number;
+  addressPair: string;
+  oneEthValue: number;
+  pairId: string;
+  poolCreated: number;
+  pooledToken0: number;
+  pooledToken1: number;
+  priceHigh: number;
+  priceLow: number;
+  priceUsd: number;
+  quoteAddress: string;
+  quotePrice: number;
+  quoteSymbol: string;
+  token0Address: string;
+  token0Name: string;
+  token1Address: string;
+  token1Name: string;
+  totalLiquidity: number;
+  totalSupply: number;
+  txCount: number;
+  _24HourVolume: number;
+  _24hPriceChange: number;
+  _24h_buys: number;
+  _24h_sells: number;
+  _24h_txn_count: number;
+  _24h_volume: number;
 }
 export type ProjectDetails = {
-id: string;
-count?: number;
-tokenPairDetails: TokenPairDetails
+  id: string;
+  count?: number;
+  tokenPairDetails: TokenPairDetails;
 };
 
 export type FavoritesProjectsProps = {
-projectsDetails: ProjectDetails[];
-}
+  projectsDetails: ProjectDetails[];
+};
 
 export type State = {
-favoritedProjects: FavoritesProjectsProps;
-}
+  favoritedProjects: FavoritesProjectsProps;
+};
 
 export type ActionsProps = {
-addToFavorite: (projectId: string,  tokenPairDetails: TokenPairDetails) => void;
-removeFromFavorite: (projectId: string) => void;
-}
+  addToFavorite: (
+    projectId: string,
+    tokenPairDetails: TokenPairDetails
+  ) => void;
+  removeFromFavorite: (projectId: string) => void;
+};
 
 export type UseStoreProps = State & ActionsProps;
 
@@ -320,70 +316,67 @@ export type UseStoreProps = State & ActionsProps;
 // }
 
 export type FavoriteStarProps = {
-id: string;
-tokenPairDetails: TokenPairDetails
-}
-
+  id: string;
+  tokenPairDetails: TokenPairDetails;
+};
 
 export type FavoriteStarProps2 = {
-id: string;
-tokenPairDetails?: TokenPairDetails
-}
+  id: string;
+  tokenPairDetails?: TokenPairDetails;
+};
 export interface TokenPairData {
-name: string;
-pair: string;
-address: string;
-token0: string;
-token1: string;
-pairAddress: string;
-volume: number;
-liquidity: number;
-trades: number;
-price: number;
-symbol: string;
-exchange: string;
-chain: string;
-baseName: string;
-quoteSymbol: string;
+  name: string;
+  pair: string;
+  address: string;
+  token0: string;
+  token1: string;
+  pairAddress: string;
+  volume: number;
+  liquidity: number;
+  trades: number;
+  price: number;
+  symbol: string;
+  exchange: string;
+  chain: string;
+  baseName: string;
+  quoteSymbol: string;
 }
 
 export type TokenPairDataArray = TokenPairData[];
 export interface UserData {
-mailCount: number;
-referred: boolean;
-dateCreated: string;
-referallPoints: number;
+  mailCount: number;
+  referred: boolean;
+  dateCreated: string;
+  referallPoints: number;
 }
 
 export interface GetUserResponse {
-getUser: UserData;
+  getUser: UserData;
 }
-
 
 export interface UserAlertsResponse {
-userAlerts: UserAlert[];
+  userAlerts: UserAlert[];
 }
 
-export  interface RelatedEntityLabel {
-addr: string;
-receivedCount: number;
-receivedValue: number;
-sentCount: number;
-sentValue: number;
+export interface RelatedEntityLabel {
+  addr: string;
+  receivedCount: number;
+  receivedValue: number;
+  sentCount: number;
+  sentValue: number;
 }
 
 export interface GetRelatedEntitiesInput {
-label: string;
-pageNumber: number;
-pageLimit: number;
+  label: string;
+  pageNumber: number;
+  pageLimit: number;
 }
 
 export interface GetRelatedEntitiesResponse {
-getRelatedEntities: {
-  relatedEntities: RelatedEntityLabel[];
-};
+  getRelatedEntities: {
+    relatedEntities: RelatedEntityLabel[];
+  };
 }
-
 
 export interface UserBalanceInfoQuery {
   userBalanceInfo: {
@@ -392,22 +385,22 @@ export interface UserBalanceInfoQuery {
 }
 
 export interface Transaction {
-to: string;
-from: string;
-action: string;
-asset: string;
-value: string;
-blockTimestamp: string; // You can specify the data type for blockTimestamp (e.g., string or Date)
-chain: string;
-hash: string;
+  to: string;
+  from: string;
+  action: string;
+  asset: string;
+  value: string;
+  blockTimestamp: string; // You can specify the data type for blockTimestamp (e.g., string or Date)
+  chain: string;
+  hash: string;
 }
 
 export interface UserAllTransactionsData {
-userAllTransactions: {
-  transfers: Transaction[];
-};
+  userAllTransactions: {
+    transfers: Transaction[];
+  };
 }
-export  interface TokenBalance {
+export interface TokenBalance {
   balance: string;
   decimals: string;
   logo: string;
@@ -435,10 +428,10 @@ export interface UserBotBalance {
 }
 
 export interface LabelResults {
-  [label: string]: Transfer[]; 
+  [label: string]: Transfer[];
 }
 
-export  interface Transfer {
+export interface Transfer {
   event: string;
   from: string;
   to: string;
@@ -449,9 +442,7 @@ export  interface Transfer {
   tokensOut: Token[];
 }
 
-
-
- interface Token {
+interface Token {
   asset: string;
   contractAddr: string;
   decimals: number;

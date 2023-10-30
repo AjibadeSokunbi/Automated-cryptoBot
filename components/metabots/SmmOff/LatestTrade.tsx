@@ -11,7 +11,7 @@ import {
 import { fixNum, siNumber, timeAgo, toFixedNum } from "@/utils";
 import { TradeData } from "@/utils/types";
 import { useNewStore } from "@/utils/zustanStore/newStore";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface Props {
   historyData: TradeData[];
@@ -19,7 +19,10 @@ interface Props {
 
 const LatestTrade: FC<Props> = ({ historyData }) => {
   const { pairDetail } = useNewStore();
-
+  // const [mounted, setMounted] = useState(false)
+  // useEffect(() => {
+  //   setMounted(true)
+  // }, [])
   return (
     <Stack flexDirection="col" sx="w-full" height="h-[210px]" padding="mt-2">
       <Table className="hide-scrollbar overflow-y-auto hidden md:table lg:table w-full">
@@ -45,7 +48,7 @@ const LatestTrade: FC<Props> = ({ historyData }) => {
           {historyData?.map((row, index) => (
             <TableRow className="border-none flex justify-between" key={index}>
               <TableCell2 className="w-full border-none text-neutral-200 text-sm font-semibold">
-                {timeAgo(row?.time)}
+                { timeAgo(row?.time)}
               </TableCell2>
               <TableCell2
                 className={`w-full flex justify-center  border-none text-neutral-200 text-sm font-semibold`}

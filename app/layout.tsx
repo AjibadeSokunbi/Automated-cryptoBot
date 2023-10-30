@@ -6,6 +6,7 @@ import Headers from "@/components/layouts/Headers";
 import { AuthProvider } from "./sessionProvider";
 import { siteConfig } from "@/lib/site";
 import SideBar from "@/components/layouts/SideBar";
+import { ApolloWrapper } from "@/lib/ApolloWrapper";
 
 const instrument_Sans = Instrument_Sans({ subsets: ["latin"] });
 
@@ -78,7 +79,10 @@ export default function RootLayout({
           <>
             <AuthProvider>
               <Headers />
-              <div className="overflow-y-auto hide-scrollbar">{children}</div>
+              <div className="overflow-y-auto hide-scrollbar">
+                {" "}
+                <ApolloWrapper>{children}</ApolloWrapper>
+              </div>
             </AuthProvider>
           </>
         </>

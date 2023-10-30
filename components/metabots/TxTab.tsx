@@ -1,57 +1,38 @@
-"use client";
-import React, { useState } from "react";
-import Stack from "@/components/custom/Stack";
-import Typography from "@/components/custom/Typography";
+import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tab3";
 import All from "./TX/All";
 import Limit from "./TX/Limit";
 import CopyTrades from "./TX/CopyTrades";
-
 interface Props {}
 
 const TxTab = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
-
   return (
-    <>
-      <Stack flexDirection="col" padding="pt-1">
-        <Stack gap={4} height="h-[20px]">
-          <Typography
-            color={activeTab === 0 ? "#FFC107" : "#6C757D"}
-            onClick={() => handleTabClick(0)}
-            className={`text-sm font-medium  cursor-pointer ${
-              activeTab === 0 ? " border-b-2 border-[#FFC107]" : ""
-            }`}
-          >
-            Buy & Sell
-          </Typography>
-          <Typography
-            color={activeTab === 1 ? "#FFC107" : "#6C757D"}
-            onClick={() => handleTabClick(1)}
-            className={`text-sm font-medium  cursor-pointer ${
-              activeTab === 1 ? " border-b-2 border-[#FFC107]" : ""
-            }`}
-          >
-            Limits
-          </Typography>
-          <Typography
-            color={activeTab === 2 ? "#FFC107" : "#6C757D"}
-            onClick={() => handleTabClick(2)}
-            className={`text-sm font-medium  cursor-pointer ${
-              activeTab === 2 ? " border-b-2 border-[#FFC107]" : ""
-            }`}
-          >
-            Copy Trades
-          </Typography>
-        </Stack>
-        {activeTab === 0 && <All/>}
-        {activeTab === 1 && <Limit/>}
-        {activeTab === 2 && <CopyTrades/>}
-      </Stack>
-    </>
+    <Tabs defaultValue="bs" className="flex flex-col pt-1">
+      <TabsList className="space-x-4  h-[29px]">
+        <TabsTrigger
+          value="bs"
+          className="text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer  text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
+        >
+          Buy & Sell
+        </TabsTrigger>
+        <TabsTrigger
+          value="limits"
+          className="text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
+        >
+          Limits
+        </TabsTrigger>
+        <TabsTrigger
+          value="copy"
+          className="text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
+        >
+          Copy Trades
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="bs" className="w-full "><All/></TabsContent>
+      <TabsContent value="limits" className="w-full "><Limit/></TabsContent>
+      <TabsContent value="copy" className="w-full "><CopyTrades/></TabsContent>
+    </Tabs>
   );
 };
 
