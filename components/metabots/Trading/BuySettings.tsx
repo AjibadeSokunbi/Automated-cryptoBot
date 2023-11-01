@@ -90,12 +90,12 @@ const BuySettings = () => {
       <DialogTrigger asChild>
         <Typography
           color="#FFC107"
-          className="cursor-pointer text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
+          className="cursor-pointer text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
         >
           Settings
         </Typography>
       </DialogTrigger>
-      <DialogContent2 className="w-2 bg-[#0C141F] border border-slate-800 p-2">
+      <DialogContent2 className="w-[80%] md:w-2 lg:w-2 bg-[#0C141F] border border-slate-800 p-2">
         <Stack flexDirection="col">
           <Stack
             justifyContent="between"

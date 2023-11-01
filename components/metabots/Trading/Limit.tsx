@@ -28,13 +28,13 @@ const Limit = () => {
         <TabsList className="w-full px-2 py-5 bg-slate-800 rounded-lg mb-2 text-white text-xs font-bold font-['Instrument Sans'] leading-none">
           <TabsTrigger
             value="buy"
-            className="py-2 ring-offset-[#084298] focus-visible:bg-[#084298] data-[state=active]:bg-[#084298] font-bold text-xs w-full"
+            className="py-2 ring-offset-[#084298] focus-visible:bg-[#084298] data-[state=active]:bg-[#084298] font-bold text-[10px] md:text-xs lg:text-xs w-full"
           >
             Buy Limit Order
           </TabsTrigger>
           <TabsTrigger
             value="sell"
-            className="py-2 ring-offset-[#084298] focus-visible:bg-[#084298] data-[state=active]:bg-[#084298] font-bold text-xs w-full"
+            className="py-2 ring-offset-[#084298] focus-visible:bg-[#084298] data-[state=active]:bg-[#084298] font-bold text-[10px] md:text-xs lg:text-xs w-full"
           >
             Sell Limit Order
           </TabsTrigger>
@@ -114,11 +114,11 @@ const Limit = () => {
             </Stack>
           </DialogContent2>
         </Dialog>
-          <Stack width="w-full" justifyContent="between" margin="mb-2">
-            <Typography className="w-full text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+          <Stack width="w-full" justifyContent="between" sx="mb-2 mt-3 md:mt-0 lg:mt-0">
+            <Typography className="w-full text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Buy
             </Typography>
-            <Typography className="w-full text-neutral-200 text-start text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <Typography className="w-full text-neutral-200 text-start text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Price
             </Typography>
           </Stack>
@@ -127,7 +127,7 @@ const Limit = () => {
             <Stack
               justifyContent="center"
               width="w-full"
-              sx="h-[40px] hidden md:flex lg:flex"
+              sx="h-[40px]"
             >
               <Input
                 type="text"
@@ -136,7 +136,7 @@ const Limit = () => {
               />
               <button
                 type="submit"
-                className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
+                className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
               >
                 ETH
               </button>
@@ -144,7 +144,7 @@ const Limit = () => {
             <Stack
               justifyContent="center"
               width="w-full"
-              sx="h-[40px] hidden md:flex lg:flex"
+              sx="h-[40px]"
             >
               <Input
                 type="text"
@@ -153,7 +153,7 @@ const Limit = () => {
               />
               <button
                 type="submit"
-                className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
+                className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
               >
                 ETH
               </button>
@@ -169,14 +169,14 @@ const Limit = () => {
             <HiArrowLongDown className="text-center w-7" size={30} />
           </Stack>
           <Stack width="w-full" justifyContent="between" margin="mb-2">
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Receive
             </Typography>
           </Stack>
           <Stack
             justifyContent="center"
             width="w-full"
-            sx="h-[40px] hidden md:flex lg:flex"
+            sx="h-[40px]"
           >
             <Input
               type="text"
@@ -185,20 +185,20 @@ const Limit = () => {
             />
             <button
               type="submit"
-              className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
+              className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
             >
               ETH
             </button>
           </Stack>
           <Stack width="w-full" justifyContent="between" margin="my-2">
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight mb-2">
-              <span className="text-white text-base font-normal font-['Instrument Sans'] leading-normal tracking-tight mr-1">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight mb-2">
+              <span className="text-white text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-normal tracking-tight mr-1">
                 Name:
               </span>{" "}
               Metacoin
             </Typography>
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
-              <span className="text-neutral-200 text-sm font-normal font-['Instrument Sans'] leading-tight">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
+              <span className="text-neutral-200 text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-tight">
                 Bal:{" "}
               </span>{" "}
               0.00
@@ -215,7 +215,7 @@ const Limit = () => {
           <DialogTrigger asChild>
             <Typography
               color="#FFC107"
-              className="cursor-pointer text-end text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
+              className="cursor-pointer text-end text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
             >
               Settings
             </Typography>
@@ -229,7 +229,7 @@ const Limit = () => {
                 alignItems="center"
               >
                 <Typography
-                  className="text-sm font-bold font-['Instrument Sans'] leading-tight"
+                  className="text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight"
                   color="#0A53BE"
                 >
                   Swap Settings
@@ -242,7 +242,7 @@ const Limit = () => {
                 alignItems="center"
                 margin="mt-2 px-1"
               >
-                <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                   Use Private Transactions
                 </Typography>
                 <Checkbox2 defaultChecked color="#FFC107" />
@@ -253,7 +253,7 @@ const Limit = () => {
                 alignItems="center"
                 margin="mt-2 px-1"
               >
-                <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                   Fail-Safe Protection
                 </Typography>
                 <Checkbox2
@@ -266,7 +266,7 @@ const Limit = () => {
                 alignItems="center"
                 margin="mt-2 px-1"
               >
-                <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                   Slippage: 25%
                 </Typography>
                 <Stack gap={2} alignItems="center">
@@ -285,11 +285,11 @@ const Limit = () => {
             </Stack>
           </DialogContent2>
         </Dialog>
-          <Stack width="w-full" justifyContent="between" margin="mb-2">
-            <Typography className="w-full text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+          <Stack width="w-full" justifyContent="between" sx="mb-2 mt-3 md:mt-0 lg:mt-0">
+            <Typography className="w-full text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Sell
             </Typography>
-            <Typography className="w-full text-neutral-200 text-start text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <Typography className="w-full text-neutral-200 text-start text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Price
             </Typography>
           </Stack>
@@ -297,7 +297,7 @@ const Limit = () => {
             <Stack
               justifyContent="center"
               width="w-full"
-              sx="h-[40px] hidden md:flex lg:flex"
+              sx="h-[40px]"
             >
               <Input
                 type="text"
@@ -306,7 +306,7 @@ const Limit = () => {
               />
               <button
                 type="submit"
-                className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
+                className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
               >
                 ETH
               </button>
@@ -314,7 +314,7 @@ const Limit = () => {
             <Stack
               justifyContent="center"
               width="w-full"
-              sx="h-[40px] hidden md:flex lg:flex"
+              sx="h-[40px]"
             >
               <Input
                 type="text"
@@ -323,7 +323,7 @@ const Limit = () => {
               />
               <button
                 type="submit"
-                className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
+                className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
               >
                 ETH
               </button>
@@ -335,17 +335,18 @@ const Limit = () => {
             width="w-full"
             margin="mt-4 mb-1"
           >
-            <HiArrowsUpDown className="text-center w-7" size={30} />
+            <HiArrowsUpDown className="text-center w-7 hidden md:block lg:block" size={30} />
+            <HiArrowLongDown className="text-center w-7 block md:hidden lg:hidden" size={30} />
           </Stack>
           <Stack width="w-full" justifyContent="between" margin="mb-2">
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Receive
             </Typography>
           </Stack>
           <Stack
             justifyContent="center"
             width="w-full"
-            sx="h-[40px] hidden md:flex lg:flex"
+            sx="h-[40px]"
           >
             <Input
               type="text"
@@ -354,20 +355,20 @@ const Limit = () => {
             />
             <button
               type="submit"
-              className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
+              className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300"
             >
               ETH
             </button>
           </Stack>
           <Stack width="w-full" justifyContent="between" margin="my-2">
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight mb-2">
-              <span className="text-white text-base font-normal font-['Instrument Sans'] leading-normal tracking-tight mr-1">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight mb-2">
+              <span className="text-white text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-normal tracking-tight mr-1">
                 Name:
               </span>{" "}
               Metacoin
             </Typography>
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
-              <span className="text-neutral-200 text-sm font-normal font-['Instrument Sans'] leading-tight">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
+              <span className="text-neutral-200 text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-tight">
                 Bal:{" "}
               </span>{" "}
               0.00

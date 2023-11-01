@@ -47,10 +47,10 @@ const Wallet: FC<Props> = ({}) => {
     <Stack
       flexDirection="col"
       gap={2}
-      sx="w-full px-1.5 py-2 bg-[#0C141F] rounded-lg shadow border border-slate-800 "
+      sx="w-full px-1.5 py-2 bg-[#0C141F] rounded-lg shadow border border-[#212E40]"
     >
       <Stack justifyContent="between" width="w-full" alignItems="center">
-        <Typography className="text-white text-base font-bold font-['Instrument Sans'] leading-tight">
+        <Typography className="text-white text-xs md:text-base lg:text-base font-bold font-['Instrument Sans'] leading-tight">
           Your Wallets
         </Typography>
         <MdArrowForwardIos

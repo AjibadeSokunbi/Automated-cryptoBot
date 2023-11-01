@@ -21,12 +21,12 @@ const PoolTab: FC<Props> = ({ ...props }) => {
 
   return (
     <>
-      <Stack flexDirection="col" padding="pt-1" margin="mt-4">
+      <Stack flexDirection="col" padding="pt-1" sx="mt-0 md:mt-4 lg:mt-4">
         <Stack gap={4} height="h-[20px]">
           <Typography
             color={activeTab === 0 ? "#FFC107" : "#ffff"}
             onClick={() => handleTabClick(0)}
-            className={`text-sm font-bold cursor-pointer ${
+            className={`text-xs md:text-sm lg:text-sm font-bold cursor-pointer ${
               activeTab === 0 ? " border-b-2 border-[#FFC107]" : ""
             }`}
           >
@@ -35,7 +35,7 @@ const PoolTab: FC<Props> = ({ ...props }) => {
           <Typography
             color={activeTab === 1 ? "#FFC107" : "#ffff"}
             onClick={() => handleTabClick(1)}
-            className={`text-sm font-bold cursor-pointer ${
+            className={`text-xs md:text-sm lg:text-sm font-bold cursor-pointer ${
               activeTab === 1 ? " border-b-2 border-[#FFC107]" : ""
             }`}
           >
@@ -44,7 +44,7 @@ const PoolTab: FC<Props> = ({ ...props }) => {
           <Typography
             color={activeTab === 2 ? "#FFC107" : "#ffff"}
             onClick={() => handleTabClick(2)}
-            className={`text-sm font-bold cursor-pointer ${
+            className={`text-xs md:text-sm lg:text-sm font-bold cursor-pointer ${
               activeTab === 2 ? " border-b-2 border-[#FFC107]" : ""
             }`}
           >

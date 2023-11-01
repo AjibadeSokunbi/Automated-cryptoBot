@@ -121,8 +121,7 @@ const ScamBot: FC<Props> = ({ address, score, aSecurity, aToken }) => {
     <>
       <Stack
         flexDirection="col"
-        width="max-w-[256px]"
-        sx="rounded-tl rounded-tr"
+        sx="rounded-tl rounded-tr max-w-[80%] md:max-w-[256px] lg:max-w-[256px]"
       >
         <Typography className="w-full text-sm font-semibold leading-normal">
           Meptadapp Scam Score

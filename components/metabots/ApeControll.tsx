@@ -22,7 +22,7 @@ const ApeControll = () => {
     <>
       {mounted && (
         <Stack alignItems="center" gap={2}>
-          <Typography className="text-white text-xs font-bold font-['Instrument Sans'] leading-3">
+          <Typography className="text-white text-[8px] md:text-xs text-xs font-bold font-['Instrument Sans'] leading-3">
             Ape Mode
           </Typography>
           <Switch2

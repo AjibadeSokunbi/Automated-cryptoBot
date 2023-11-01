@@ -27,12 +27,12 @@ const CopyTX = () => {
       <Stack
         justifyContent="center"
         width="w-full"
-        sx="h-[40px] hidden md:flex lg:flex"
+        sx="h-[40px]"
       >
         <Input
           type="text"
           placeholder="Address"
-          className=" bg-[#0C141F]   border-slate-800  focus-none"
+          className=" bg-[#0C141F] border-slate-800  focus-none"
         />
       </Stack>
       <Stack width="w-full" justifyContent="between" margin="my-2">
@@ -64,12 +64,12 @@ const CopyTX = () => {
           <Stack
             justifyContent="center"
             width="w-full"
-            sx="h-[40px] hidden md:flex lg:flex"
+            sx="h-[40px]"
           >
             <Input
               type="text"
               placeholder="Enter Amount"
-              className=" bg-[#0C141F]   border-slate-800  focus-none"
+              className=" bg-[#0C141F] border-slate-800  focus-none"
             />
           </Stack>
           <Stack width="w-full" flexDirection="col" margin="my-2" gap={4}>

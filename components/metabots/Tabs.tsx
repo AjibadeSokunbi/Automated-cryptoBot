@@ -25,7 +25,7 @@ const Tabs: FC<Props> = ({  }) => {
     <>
       <Stack
         alignItems="center"
-        sx="bg-[#0C141F] border-t border-[#212E40] gap-7 px-5 py-5 w-full h-auto hidden md:flex lg:flex"
+        sx="bg-[#0C141F] border-t border-[#212E40] gap-7 px-5 py-5 w-full h-auto justify-between md:justify-normal lg:justify-normal mb-5 md:mb-0 lg:mb-0"
       >
         <Typography
           className="text-sm font-semibold cursor-pointer"

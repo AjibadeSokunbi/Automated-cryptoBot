@@ -20,38 +20,39 @@ interface Props {
 const InnerTab2: FC<Props> = ({ ...props }) => {
   return (
     <Tabs defaultValue="Transactions" className="w-full flex flex-col p-2">
-      <Stack justifyContent="between" width="w-full">
-        <TabsList className="w-7/12 flex justify-between h-[29px]">
+      <Stack justifyContent="between" sx="w-full flex-col md:flex-row lg:flex-row">
+        <TabsList className="w-[85%] md:w-8/12 lg:w-8/12 flex justify-between h-[25px] md:h-[29px] lg:-[29px] gap-3 md:gap-2 lg:gap-2">
           <TabsTrigger
             value="Transactions"
-            className="text-base font-bold font-['Instrument Sans'] leading-tight cursor-pointer    data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
+            className="font-bold font-['Instrument Sans'] leading-tight cursor-pointer data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
           >
-            Transactions
+            <span className="hidden md:inline lg:inline text-[10px] md:text-base lg:text-base"> Transactions </span>
+            <span className="inline md:hidden lg:hidden text-[10px] md:text-base lg:text-base"> My Transactions </span>
           </TabsTrigger>
           <TabsTrigger
             value="New Tokens"
-            className="text-base relative font-bold font-['Instrument Sans'] leading-tight cursor-pointer    data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
+            className="relative font-bold font-['Instrument Sans'] leading-tight cursor-pointer data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
           >
-            <span className="absolute -top-2 -right-3 text-[6px] font-bold  text-white bg-red-500 rounded-r rounded-l py-0.5 px-2 mb-2">
+            <span className="absolute -top-1 md:-top-2 lg:-top-2 -right-3 text-[6px] font-bold  text-white bg-red-500 rounded-r rounded-l py-0.5 px-2 mb-2">
               Hot
             </span>
-            New Tokens
+            <span className="text-[10px] md:text-base lg:text-base"> New Tokens </span> 
           </TabsTrigger>
           <TabsTrigger
             value="watchlist"
-            className="text-base relative font-bold font-['Instrument Sans'] leading-tight cursor-pointer    data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
+            className="relative font-bold font-['Instrument Sans'] leading-tight cursor-pointer data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
           >
-            <span className="absolute -top-2 -right-3 text-[10px] font-bold  text-black bg-yellow-400 rounded-full text-center w-3 h-3">
+            <span className="absolute -top-1 md:-top-2 lg:-top-2 -right-3 text-[10px] font-bold  text-black bg-yellow-400 rounded-full text-center w-3 h-3">
               5
             </span>
-            Watchlist
+            <span className="text-[10px] md:text-base lg:text-base"> Watchlist </span> 
           </TabsTrigger>
         </TabsList>
 
-        <TabsList className=" flex justify-between mt-2">
+        <TabsList className="flex justify-between mt-2">
           <TabsTrigger
             value="New Tokens"
-            className=" hidden  cursor-pointer    data-[state=active]:flex "
+            className="hidden cursor-pointer data-[state=active]:flex "
           >
             <Stack alignItems="center" gap={2}>
               <ApeControll />
@@ -60,7 +61,7 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
                 <DialogTrigger asChild>
                   <FiSettings />
                 </DialogTrigger>
-                <DialogContent className="w-2 top-[47%] left-[57%] max-w-sm bg-[#0C141F] border border-slate-800 p-2">
+                <DialogContent className="w-[90%] md:w-2 lg:w-2 top-[50%] md:top-[47%] lg:top-[47%] left-[50%] md:left-[57%] lg:left-[57%] max-w-sm bg-[#0C141F] border border-slate-800 p-2">
                   <Stack flexDirection="col">
                     <Stack
                       justifyContent="between"
@@ -69,7 +70,7 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
                       alignItems="center"
                     >
                       <Typography
-                        className="text-sm font-bold font-['Instrument Sans'] leading-tight"
+                        className="text-[12.28px] md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight"
                         color="#0A53BE"
                       >
                         App Mode Parameters
@@ -81,18 +82,19 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
                       alignItems="center"
                       margin="mt-2 px-1"
                     >
-                      <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                      <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                         Liquidity:
                       </Typography>
                       <Stack alignItems="center" gap={1}>
                         <Typography
                           color="#6C757D"
-                          className="text-sm font-normal"
+                          className="text-xs md:text-sm lg:text-sm font-normal"
                         >
                           Less than
                         </Typography>
-                        <Stack sx="px-2.5 text-sm font-normal  rounded-lg shadow border border-slate-800 justify-center items-center">
-                          $100000
+                        <Stack sx="px-2.5 font-normal rounded-lg shadow border border-slate-800 justify-center items-center">
+                          <span className="text-[14.03px] md:text-sm lg:text-sm font-normal text-[#6C757D]"> $ </span>
+                          <span className="text-sm font-normal"> 100000 </span>
                         </Stack>
                       </Stack>
                     </Stack>{" "}
@@ -102,18 +104,19 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
                       alignItems="center"
                       margin="mt-2 px-1"
                     >
-                      <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                      <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                         Volume:
                       </Typography>
                       <Stack alignItems="center" gap={1}>
                         <Typography
                           color="#6C757D"
-                          className="text-sm font-normal"
+                          className="text-xs md:text-sm lg:text-sm font-normal"
                         >
                           Less than
                         </Typography>
-                        <Stack sx="px-2.5 text-sm font-normal  rounded-lg shadow border border-slate-800 justify-center items-center">
-                          $100000
+                        <Stack sx="px-2.5 font-normal rounded-lg shadow border border-slate-800 justify-center items-center">
+                          <span className="text-[14.03px] md:text-sm lg:text-sm font-normal text-[#6C757D]"> $ </span>
+                          <span className="text-sm font-normal"> 100000 </span>
                         </Stack>
                       </Stack>
                     </Stack>{" "}
@@ -123,29 +126,30 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
                       alignItems="center"
                       margin="mt-2 px-1"
                     >
-                      <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                      <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                         MarketCap
                       </Typography>
                       <Stack gap={2} alignItems="center">
                         <Stack alignItems="center" gap={1}>
                           <Typography
                             color="#6C757D"
-                            className="text-sm font-normal"
+                            className="text-xs md:text-sm lg:text-sm font-normal"
                           >
                             Less than
                           </Typography>
-                          <Stack sx="px-2.5 text-sm font-normal  rounded-lg shadow border border-slate-800 justify-center items-center">
-                            $100000
+                          <Stack sx="px-2.5 font-normal  rounded-lg shadow border border-slate-800 justify-center items-center">
+                            <span className="text-[14.03px] md:text-sm lg:text-sm font-normal text-[#6C757D]"> $ </span>
+                            <span className="text-sm font-normal"> 100000 </span>
                           </Stack>
                         </Stack>
                       </Stack>
                     </Stack>
-                    <div className="ml-1 mt-1 text-white text-sm font-normal font-['Instrument Sans'] leading-normal">
+                    <Typography className="ml-1 mt-1 text-white text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-normal">
                       Meta Scam Score:
-                      <span className="ml-1 text-amber-400 text-sm font-bold font-['Instrument Sans'] leading-normal">
+                      <span className="ml-1 text-amber-400 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-normal">
                         50% and above
                       </span>{" "}
-                    </div>
+                    </Typography>
                     <Slider2
                       defaultValue={[33]}
                       max={100}
@@ -159,17 +163,17 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
           </TabsTrigger>
         </TabsList>
       </Stack>
-      <TabsContent value="Transactions" className="w-full ">
+      <TabsContent value="Transactions" className="w-full">
         {" "}
         <TxTab />
       </TabsContent>
-      <TabsContent value="New Tokens" className="w-full ">
+      <TabsContent value="New Tokens" className="w-full">
         {" "}
         <Suspense fallback={<>Loading.....</>}>
           <NewTokens NewData={props.NewData} />
         </Suspense>
       </TabsContent>
-      <TabsContent value="watchlist" className="w-full ">
+      <TabsContent value="watchlist" className="w-full">
         {" "}
         <WatchList />
       </TabsContent>

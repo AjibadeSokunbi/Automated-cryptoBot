@@ -38,10 +38,10 @@ export const Watch = ({ id, tokenPairDetails }: FavoriteStarProps) => {
       >
         {isFavorite ? (
           <Fragment>
-            <AiFillStar className="w-6 h-6" color="#f7fb04" size={18} />
+            <AiFillStar className="md:w-6 lg:w-6 md:h-6 lg:h-6 text-lg" color="#f7fb04" size={18} />
           </Fragment>
         ) : (
-          <AiFillStar className="w-6 h-6" color="#DBDBDC" size={18} />
+          <AiFillStar className="md:w-6 lg:w-6 md:h-6 lg:h-6 text-lg" color="#DBDBDC" size={18} />
         )}
       </span>
     </Fragment>

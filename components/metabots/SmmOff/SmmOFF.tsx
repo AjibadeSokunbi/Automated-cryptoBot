@@ -22,7 +22,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
 
   return (
     <>
-      <Stack flexDirection="col" width="w-full" padding="p-2">
+      <Stack flexDirection="col" width="w-full" padding="p-2" sx="hidden md:flex lg:flex">
         <Stack width="w-full" justifyContent="between">
           <Stack gap={4} height="h-[29px]">
             <Typography
@@ -73,6 +73,23 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
             <PriceAlerts />
           </>
         )}
+      </Stack>
+
+      <Stack flexDirection="col" sx="w-full flex md:hidden lg:hidden" gap={5}>
+        <Stack alignItems="center" gap={3} justifyContent="start">
+          <Label
+            htmlFor="smm"
+            className="text-white text-[8px] font-bold font-['Instrument Sans'] leading-3"
+          >
+            Smart Money Mode
+          </Label>
+          <Switch2
+            onClick={() => props.setSmm(true)}
+            id="smm"
+            className="bg-zinc-600"
+          />
+        </Stack>
+        <LatestTrade historyData={props.historyData} /> 
       </Stack>
     </>
   );

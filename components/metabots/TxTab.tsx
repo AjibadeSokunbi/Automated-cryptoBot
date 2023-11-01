@@ -7,23 +7,24 @@ interface Props {}
 
 const TxTab = () => {
   return (
-    <Tabs defaultValue="bs" className="flex flex-col pt-1">
-      <TabsList className="space-x-4  h-[29px]">
+    <Tabs defaultValue="bs" className="flex flex-col pt-3 md:pt-1 lg:pt-1">
+      <TabsList className="space-x-4 h-[20px] md:h-[29px] lg:h-[29px]">
         <TabsTrigger
           value="bs"
-          className="text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer  text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
+          className="text-xs md:text-sm lg:text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer  text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
         >
-          Buy & Sell
+          <span className="hidden md:inline lg:inline"> Buy & Sell </span>
+          <span className="inline md:hidden lg:hidden"> All </span>
         </TabsTrigger>
         <TabsTrigger
           value="limits"
-          className="text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
+          className="text-xs md:text-sm lg:text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
         >
           Limits
         </TabsTrigger>
         <TabsTrigger
           value="copy"
-          className="text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
+          className="text-xs md:text-sm lg:text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
         >
           Copy Trades
         </TabsTrigger>

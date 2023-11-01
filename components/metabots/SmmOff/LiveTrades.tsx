@@ -80,14 +80,14 @@ const TxImgComponent = (props: any) => {
 
 const LiveTrades: FC<Props> = ({ historyData, walletData }) => {
   return (
-    <Stack flexDirection="col" sx="w-full" height="h-[350px]" padding="mt-2">
-      <Table className="hide-scrollbar overflow-y-auto hidden md:table lg:table w-full">
+    <Stack flexDirection="col" sx="w-full md:mt-2 lg:mt-2" height="h-[350px]">
+      <Table className="hide-scrollbar overflow-y-auto w-full">
         <TableHeader className="border-none w-full">
           <TableRow className="border-none text-[#6C757D]  flex justify-between py-1.5">
-            <TableHead2 className="">Time</TableHead2>
-            <TableHead2 className="">Label</TableHead2>
-            <TableHead2 className="">Price USD</TableHead2>
-            <TableHead2 className="text-left ">Total USD</TableHead2>
+            <TableHead2 className="w-[70px] md:w-auto lg:w-auto">Time</TableHead2>
+            <TableHead2 className="w-[100px] md:w-auto lg:w-auto">Label</TableHead2>
+            <TableHead2 className="w-[70px] md:w-auto lg:w-auto">Price USD</TableHead2>
+            <TableHead2 className="w-[70px] md:w-auto lg:w-auto md:text-left lg:text-left">Total USD</TableHead2>
           </TableRow>
         </TableHeader>
 
@@ -97,10 +97,10 @@ const LiveTrades: FC<Props> = ({ historyData, walletData }) => {
               className="w-full border-none flex justify-between gap-x-6"
               key={index}
             >
-              <TableCell2 className="w-full border-none text-neutral-200 text-xs font-normal">
+              <TableCell2 className="w-[70px] md:w-auto lg:w-auto border-none text-neutral-200 text-xs font-normal">
                 {timeAgo(val?.time)}
               </TableCell2>
-              <TableCell2 className="w-full border-none text-neutral-200 text-xs font-normal">
+              <TableCell2 className="w-[100px] md:w-auto lg:w-auto border-none text-neutral-200 text-xs font-normal">
                 {walletData && (
                   <TxImgComponent
                     total_tx={
@@ -116,7 +116,7 @@ const LiveTrades: FC<Props> = ({ historyData, walletData }) => {
                   />
                 )}
               </TableCell2>
-              <TableCell2 className="w-full border-none text-neutral-200 text-xs font-normal">
+              <TableCell2 className="w-[70px] md:w-auto lg:w-auto border-none text-neutral-200 text-xs font-normal">
                 <Typography
                   className="w-full border-none text-neutral-200 text-xs font-normal"
                   color={val?.type === "sell" ? "#ff0707" : "#06C270"}
@@ -125,7 +125,7 @@ const LiveTrades: FC<Props> = ({ historyData, walletData }) => {
                   {fixNum(val?.priceUSD, 6, true)}
                 </Typography>
               </TableCell2>
-              <TableCell2 className="w-full text-center border-none text-neutral-200 text-xs font-normal">
+              <TableCell2 className="w-[70px] md:w-auto lg:w-auto text-center border-none text-neutral-200 text-xs font-normal">
                 ${siNumber(toFixedNum(val?.amountUSD, 4))}
               </TableCell2>
             </TableRow>

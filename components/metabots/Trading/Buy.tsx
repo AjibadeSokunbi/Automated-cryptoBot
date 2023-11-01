@@ -166,10 +166,10 @@ const Buy: FC<Props> = ({ rate0to1, rate1to0, tokenData, balances }) => {
   return (
     <Stack flexDirection="col" padding="px-4 mt-4">
       <Stack width="w-full" justifyContent="between" margin="mb-2">
-        <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
-          Pays
-          <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
-            <span className="text-neutral-200 text-sm font-normal font-['Instrument Sans'] leading-tight">
+        <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
+          Pay
+          <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <span className="text-neutral-200 text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-tight">
               Available Bal:{" "}
             </span>{" "}
            <span className={inputB && token1balances < inputB ? "text-red-600" : token1balances === "0" ? "text-red-600" :  "text-green-500"}>{token1balances}
@@ -182,7 +182,7 @@ const Buy: FC<Props> = ({ rate0to1, rate1to0, tokenData, balances }) => {
         <Stack
           justifyContent="center"
           width="w-full"
-          sx="h-[40px] hidden md:flex lg:flex"
+          sx="h-[40px]"
         >
           <Input
             type="number"
@@ -193,7 +193,7 @@ const Buy: FC<Props> = ({ rate0to1, rate1to0, tokenData, balances }) => {
             required
             className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
           />
-          <div className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
+          <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
             {pairDetail?.token1Name}
           </div>
         </Stack>
@@ -206,14 +206,14 @@ const Buy: FC<Props> = ({ rate0to1, rate1to0, tokenData, balances }) => {
           <HiArrowLongDown className="text-center w-7" size={30} />
         </Stack>
         <Stack width="w-full" justifyContent="between" margin="mb-2">
-          <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+          <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
             Receive
           </Typography>
         </Stack>
         <Stack
           justifyContent="center"
           width="w-full"
-          sx="h-[40px] hidden md:flex lg:flex"
+          sx="h-[40px] mb-3 md:mb-0 lg:mb-0"
         >
           <Input
             type="number"
@@ -225,7 +225,7 @@ const Buy: FC<Props> = ({ rate0to1, rate1to0, tokenData, balances }) => {
             onChange={handleInputAChange}
             className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
           />
-          <div className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
+          <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
             {pairDetail?.token0Name
               ? shortenWord(pairDetail?.token0Name, 4)
               : ""}

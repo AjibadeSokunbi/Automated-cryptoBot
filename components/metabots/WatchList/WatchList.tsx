@@ -26,11 +26,12 @@ const WatchList: FC<Props> = ({}) => {
 
   return (
     <Stack flexDirection="col" sx="w-full" height="h-56" padding="mt-2">
-      <Table className="hide-scrollbar overflow-y-auto hidden md:table lg:table w-full">
+      <Table className="hide-scrollbar overflow-y-auto w-full">
         <TableHeader className="border-none w-full bg-slate-950">
           <TableRow className="border-none flex justify-between px-2  py-1.5">
             <TableHead2 className="text-xs font-bold leading-none">
-              Watched Token
+              <span className="hidden md:inline lg:inline"> Watched Token </span>
+              <span className="inline md:hidden lg:hidden"> Asset Balance </span>
             </TableHead2>
             <TableHead2 className="text-xs font-bold leading-none">
               Price/%

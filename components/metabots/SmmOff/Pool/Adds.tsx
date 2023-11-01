@@ -23,19 +23,19 @@ interface Props {
 const Adds: FC<Props> = ({ poolData, data }) => {
   return (
     <Stack flexDirection="col" sx="w-full" height="h-[290px]" padding="mt-2">
-      <Table className="hide-scrollbar overflow-y-auto hidden md:table lg:table w-full">
+      <Table className="hide-scrollbar overflow-y-auto w-full">
         <TableHeader className="border-none w-full">
           <TableRow className="border-none text-[#6C757D]  flex justify-between px-2  py-1.5">
-          <TableHead2 className="text-sm font-semibold">
+            <TableHead2 className="w-[20px] md:w-1/2 lg:w-1/2 text-xs md:text-sm lg:text-sm font-semibold">
               
             </TableHead2>
-            <TableHead2 className="text-sm font-semibold">
+            <TableHead2 className="w-[80px] md:w-full lg:w-full text-xs md:text-sm lg:text-sm font-semibold">
               Time
             </TableHead2>
-            <TableHead2 className="text-xs font-bold  leading-none">
+            <TableHead2 className="w-[100px] md:w-full lg:w-full text-xs md:text-sm lg:text-sm font-bold leading-none">
               Token Amount
             </TableHead2>
-            <TableHead2 className="text-sm font-semibold">
+            <TableHead2 className="w-[80px] md:w-full lg:w-full text-xs md:text-sm lg:text-sm font-semibold">
               Token Value
             </TableHead2>
           </TableRow>
@@ -44,18 +44,17 @@ const Adds: FC<Props> = ({ poolData, data }) => {
         <TableBody>
           {poolData.map((val, index) => (
             <TableRow className="border-none flex justify-between gap-x-4" key={index}>
-              <TableCell2 className="w-1/2 border-none text-neutral-200 text-xs font-semibold">
+              <TableCell2 className="w-[20px] md:w-1/2 lg:w-1/2 border-none text-neutral-200 text-xs font-semibold">
                 {val.type === "inc_liq" ? (
                   <MdOutlineAdd color="green" />
                 ) : (
                   <AiOutlineMinus color="red" />
                 )}
               </TableCell2>
-              <TableCell2 className="w-full border-none text-neutral-200 text-sm font-semibold">
-  
+              <TableCell2 className="w-[80px] md:w-full lg:w-full border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 {timeAgo(val.timestamp)}
               </TableCell2>
-              <TableCell2 className="w-full flex justify-center  border-none text-neutral-200 text-sm font-semibold">
+              <TableCell2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 <Stack
                   justifyContent="between"
                   gap={1}
@@ -81,7 +80,7 @@ const Adds: FC<Props> = ({ poolData, data }) => {
                   </Stack>
                 </Stack>
               </TableCell2>
-              <TableCell2 className="w-full flex justify-center border-none text-neutral-200 text-sm font-semibold">
+              <TableCell2 className="w-[80px] md:w-full lg:w-full flex md:justify-center lg:justify-center border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 {data.priceUsd && data.quotePrice && "$"}
                 {data.priceUsd && data.quotePrice
                   ? !!(

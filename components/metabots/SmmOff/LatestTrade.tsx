@@ -25,20 +25,20 @@ const LatestTrade: FC<Props> = ({ historyData }) => {
   // }, [])
   return (
     <Stack flexDirection="col" sx="w-full" height="h-[210px]" padding="mt-2">
-      <Table className="hide-scrollbar overflow-y-auto hidden md:table lg:table w-full">
+      <Table className="hide-scrollbar overflow-y-auto overflow-x-auto md:overflow-x-hidden lg:overflow-x-hidden">
         <TableHeader className="border-none w-full">
-          <TableRow className="w-full text-[#6C757D] border-none flex justify-between text-sm font-semibold font-['Instrument Sans']">
-            <TableHead2 className="w-full ">Time</TableHead2>
-            <TableHead2 className="w-full flex justify-center ">
+          <TableRow className="w-full text-[#6C757D] border-none flex justify-between text-xs md:text-sm lg:text-sm font-semibold font-['Instrument Sans']">
+            <TableHead2 className="w-[100px] md:w-full lg:w-full">Time</TableHead2>
+            <TableHead2 className="w-[80px] md:w-full lg:w-full flex md:justify-center lg:justify-center">
               Type
             </TableHead2>
-            <TableHead2 className="w-full flex justify-center ">
+            <TableHead2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center">
               Price USD
             </TableHead2>
-            <TableHead2 className="w-full flex justify-center ">
+            <TableHead2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center">
               Total {pairDetail?.token0Name}
             </TableHead2>
-            <TableHead2 className=" w-full flex justify-end ">
+            <TableHead2 className="w-[100px] md:w-full lg:w-full flex md:justify-end lg:justify-end">
               Total {pairDetail?.token1Name}
             </TableHead2>
           </TableRow>
@@ -47,22 +47,22 @@ const LatestTrade: FC<Props> = ({ historyData }) => {
         <TableBody>
           {historyData?.map((row, index) => (
             <TableRow className="border-none flex justify-between" key={index}>
-              <TableCell2 className="w-full border-none text-neutral-200 text-sm font-semibold">
+              <TableCell2 className="w-[100px] md:w-full lg:w-full border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 { timeAgo(row?.time)}
               </TableCell2>
               <TableCell2
-                className={`w-full flex justify-center  border-none text-neutral-200 text-sm font-semibold`}
+                className={`w-[80px] md:w-full lg:w-full flex md:justify-center lg:justify-center  border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold capitalize`}
                 style={{ color: row?.type === "sell" ? "#E25563" : "#20C997" }}
               >
                 {row?.type}
               </TableCell2>
-              <TableCell2 className="w-full flex justify-center  border-none text-neutral-200 text-sm font-semibold">
+              <TableCell2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center  border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 ${fixNum(row?.priceUSD, 6, true)}
               </TableCell2>
-              <TableCell2 className="w-full flex justify-center border-none text-neutral-200 text-sm font-semibold">
+              <TableCell2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 $ {toFixedNum(row?.amount0, 4)}
               </TableCell2>
-              <TableCell2 className="w-full pr-1 flex justify-end border-none text-neutral-200 text-sm font-semibold ">
+              <TableCell2 className="w-[100px] md:w-full lg:w-full md:pr-1 lg:pr-1 flex md:justify-end lg:justify-end border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold ">
                 ${toFixedNum(row?.amount1, 4)}
               </TableCell2>
             </TableRow>
