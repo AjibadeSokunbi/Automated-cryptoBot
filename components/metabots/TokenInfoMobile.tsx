@@ -262,9 +262,9 @@ const TokenInfoMobile: FC<Props> = ({
                                 </Stack>
                             ))}
                         </div>
-                        <div className="grid grid-cols-3 w-full justify-between items-center">
+                        <div className="grid grid-cols-3 w-full justify-between items-center gap-5">
                             {header?.filter(val => val.title !== "Price")?.map((val, index) => (
-                                <Stack key={index} sx={`w-full mb-3 ${val.title === "Market Cap" && "pl-0"} ${val.title === "Token Holders" && "pl-2"}`} flexDirection="col">
+                                <Stack key={index} sx={`w-full mb-3 ${val.title === "Market Cap" && "pl-0"} ${val.title === "Token Holders" && "pl-0"}`} flexDirection="col">
                                     <Typography
                                         variant="normal"
                                         color="#DBDBDC"

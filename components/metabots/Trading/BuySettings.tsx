@@ -95,7 +95,7 @@ const BuySettings = () => {
           Settings
         </Typography>
       </DialogTrigger>
-      <DialogContent2 className="w-[80%] md:w-2 lg:w-2 bg-[#0C141F] border border-slate-800 p-2">
+      <DialogContent2 className="w-[80%] md:w-2 lg:w-2 top-[50%] md:top-auto lg:top-auto left-[50%] md:left-auto lg:left-auto bg-[#0C141F] border border-slate-800 p-2">
         <Stack flexDirection="col">
           <Stack
             justifyContent="between"
@@ -104,7 +104,7 @@ const BuySettings = () => {
             alignItems="center"
           >
             <Typography
-              className="text-sm font-bold font-['Instrument Sans'] leading-tight"
+              className="text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight"
               color="#0A53BE"
             >
               Swap Settings
@@ -117,7 +117,7 @@ const BuySettings = () => {
             alignItems="center"
             margin="mt-2 px-1"
           >
-            <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+            <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
               Use Private Transactions
             </Typography>
             <Checkbox2
@@ -134,7 +134,7 @@ const BuySettings = () => {
             alignItems="center"
             margin="mt-2 px-1"
           >
-            <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+            <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
               Fail-Safe Protection
             </Typography>
             <Checkbox2
@@ -151,11 +151,11 @@ const BuySettings = () => {
             alignItems="center"
             margin="mt-2 px-1"
           >
-            <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+            <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
               Slippage: {slippage[0]}%
             </Typography>
             <Stack gap={2} alignItems="center">
-              <Typography>AutoGas</Typography>
+              <Typography className="text-xs md:text-base lg:text-base">AutoGas</Typography>
               <Checkbox2
                 defaultChecked={autoGas}
                 onCheckedChange={() =>

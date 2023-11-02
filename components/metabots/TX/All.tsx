@@ -28,10 +28,10 @@ interface Props {}
 const All = () => {
   return (
     <Stack flexDirection="col" sx="w-full" height="h-[210px]" padding="mt-2">
-      <Table className="hide-scrollbar overflow-y-auto w-full">
+      <Table className="hide-scrollbar overflow-y-auto overflow-x-auto md:overflow-x-hidden lg:overflow-x-hidden w-full">
         <TableHeader className="border-none w-full bg-slate-950">
           <TableRow className="border-none flex justify-between px-2 py-1.5 w-full">
-            <TableHead2 className="text-xs font-bold leading-none w-1/5 md:w-auto lg:w-auto">
+            <TableHead2 className="text-xs font-bold leading-none w-[20px] md:w-auto lg:w-auto">
               <Image
                 src="/copy.png"
                 alt="copy"
@@ -40,16 +40,16 @@ const All = () => {
                 className="w-5 h-3.5"
               />
             </TableHead2>
-            <TableHead2 className="text-xs font-bold leading-none w-2/5 md:w-auto lg:w-auto">
+            <TableHead2 className="text-xs font-bold leading-none w-[70px] md:w-auto lg:w-auto">
               Type
             </TableHead2>
-            <TableHead2 className="text-xs font-bold leading-none w-1/5 md:w-auto lg:w-auto">
+            <TableHead2 className="text-xs font-bold leading-none w-[40px] md:w-auto lg:w-auto">
               Token
             </TableHead2>
-            <TableHead2 className="text-xs font-bold leading-none w-1/5 md:w-auto lg:w-auto">
+            <TableHead2 className="text-xs font-bold leading-none w-[50px] md:w-auto lg:w-auto">
               Quantity
             </TableHead2>
-            <TableHead2 className="text-left text-xs font-bold leading-none w-1/5 md:w-auto lg:w-auto">
+            <TableHead2 className="text-left text-xs font-bold leading-none w-[70px] md:w-auto lg:w-auto">
               Status
             </TableHead2>
           </TableRow>
@@ -61,19 +61,19 @@ const All = () => {
               className="border-none flex justify-between gap-x-6 w-full"
               key={index}
             >
-              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-1/5 md:w-auto lg:w-auto">
+              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-[20px] md:w-auto lg:w-auto">
                 W1
               </TableCell2>
-              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-2/5 md:w-auto lg:w-auto">
+              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-[70px] md:w-auto lg:w-auto">
                 Limit buy
               </TableCell2>
-              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-1/5 md:w-auto lg:w-auto">
+              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-[40px] md:w-auto lg:w-auto">
                 Reflex
               </TableCell2>
-              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-1/5 md:w-auto lg:w-auto">
+              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-[50px] md:w-auto lg:w-auto">
                 878.5
               </TableCell2>
-              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-1/5 md:w-auto lg:w-auto">
+              <TableCell2 className="border-none text-neutral-200 text-xs font-normal w-[70px] md:w-auto lg:w-auto">
                 {" "}
                 <Stack alignItems="center" gap={1}>
                   <Typography

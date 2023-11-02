@@ -25,7 +25,7 @@ const Adds: FC<Props> = ({ poolData, data }) => {
     <Stack flexDirection="col" sx="w-full" height="h-[290px]" padding="mt-2">
       <Table className="hide-scrollbar overflow-y-auto w-full">
         <TableHeader className="border-none w-full">
-          <TableRow className="border-none text-[#6C757D]  flex justify-between px-2  py-1.5">
+          <TableRow className="border-none text-[#6C757D]  flex justify-between px-2 py-1.5">
             <TableHead2 className="w-[20px] md:w-1/2 lg:w-1/2 text-xs md:text-sm lg:text-sm font-semibold">
               
             </TableHead2>
@@ -54,7 +54,7 @@ const Adds: FC<Props> = ({ poolData, data }) => {
               <TableCell2 className="w-[80px] md:w-full lg:w-full border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
                 {timeAgo(val.timestamp)}
               </TableCell2>
-              <TableCell2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
+              <TableCell2 className="w-[100px] md:w-full lg:w-full flex md:justify-center lg:justify-center text-xs md:text-sm lg:text-sm border-none text-neutral-200 font-semibold">
                 <Stack
                   justifyContent="between"
                   gap={1}
@@ -62,10 +62,10 @@ const Adds: FC<Props> = ({ poolData, data }) => {
                   alignItems="center"
                 >
                   <Stack flexDirection="col" width="w-full" alignItems="center">
-                    <Typography className="text-sm font-semibold ">
+                    <Typography className="text-xs md:text-sm lg:text-sm font-semibold ">
                       {data.quoteSymbol}
                     </Typography>
-                    <Typography className="text-sm font-semibold ">
+                    <Typography className="text-xs md:text-sm lg:text-sm font-semibold ">
                       {data.baseSymbol}
                     </Typography>
                   </Stack>
@@ -80,7 +80,7 @@ const Adds: FC<Props> = ({ poolData, data }) => {
                   </Stack>
                 </Stack>
               </TableCell2>
-              <TableCell2 className="w-[80px] md:w-full lg:w-full flex md:justify-center lg:justify-center border-none text-neutral-200 text-xs md:text-sm lg:text-sm font-semibold">
+              <TableCell2 className="w-[80px] md:w-full lg:w-full flex md:justify-center lg:justify-center text-xs md:text-sm lg:text-sm border-none text-neutral-200 font-semibold">
                 {data.priceUsd && data.quotePrice && "$"}
                 {data.priceUsd && data.quotePrice
                   ? !!(

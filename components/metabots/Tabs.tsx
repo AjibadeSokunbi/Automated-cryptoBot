@@ -25,10 +25,10 @@ const Tabs: FC<Props> = ({  }) => {
     <>
       <Stack
         alignItems="center"
-        sx="bg-[#0C141F] border-t border-[#212E40] gap-7 px-5 py-5 w-full h-auto justify-between md:justify-normal lg:justify-normal mb-5 md:mb-0 lg:mb-0"
+        sx="bg-[#0C141F] border-t border-[#212E40] gap-3 md:gap-7 lg:gap-7 px-5 py-5 w-full h-auto justify-between md:justify-normal lg:justify-normal mb-5 md:mb-0 lg:mb-0"
       >
         <Typography
-          className="text-sm font-semibold cursor-pointer"
+          className="text-xs md:text-sm lg:text-xs font-semibold cursor-pointer"
         >
           {" "}
           <Link
@@ -43,7 +43,7 @@ const Tabs: FC<Props> = ({  }) => {
           </Link>{" "}
         </Typography>
         <Typography
-          className="text-sm font-semibold cursor-pointer"
+          className="text-xs md:text-sm lg:text-xs font-semibold cursor-pointer"
         >
           {" "}
           <Link
@@ -59,7 +59,7 @@ const Tabs: FC<Props> = ({  }) => {
           </Link>{" "}
         </Typography>
         <Typography
-          className="text-sm font-semibold cursor-pointer"
+          className="text-xs md:text-sm lg:text-xs font-semibold cursor-pointer"
         >
           {" "}
           <Link

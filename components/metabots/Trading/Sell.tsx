@@ -182,8 +182,10 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
         {/* <span className="text-white text-base font-normal font-['Instrument Sans'] leading-normal tracking-tight mr-1">Name:</span>  Metacoin */}
       </Typography>
       <Stack width="w-full" justifyContent="between" margin="mb-2">
-        <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
-          Sell Amount
+        <Stack flexDirection="col">
+          <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight mb-3 md:mb-0 lg:mb-0">
+            Sell Amount
+          </Typography>
           <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
             <span className="text-neutral-200 text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-tight">
               Available Bal:{" "}
@@ -201,12 +203,13 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
               {token0balance === "0" && ".00"}
             </span>
           </Typography>
-        </Typography>
+        </Stack>
         <BuySettings />
       </Stack>
       <form action="">
       <Stack
         justifyContent="center"
+        alignItems="center"
         width="w-full"
         sx="h-[40px]"
       >
@@ -220,7 +223,7 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
           onChange={handleInputAChange}
           className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
         />
-        <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
+        <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-3 md:py-2 lg:py-2 px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
           {pairDetail?.token0Name}
         </div>
       </Stack>
@@ -280,7 +283,7 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
           required
           className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
         />
-        <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
+        <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-3 md:py-2 lg:py-2 px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
           {pairDetail?.token1Name}
         </div>
       </Stack>

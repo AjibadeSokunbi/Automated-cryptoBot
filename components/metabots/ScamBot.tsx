@@ -121,14 +121,14 @@ const ScamBot: FC<Props> = ({ address, score, aSecurity, aToken }) => {
     <>
       <Stack
         flexDirection="col"
-        sx="rounded-tl rounded-tr max-w-[80%] md:max-w-[256px] lg:max-w-[256px]"
+        sx="rounded-tl rounded-tr max-w-[100%] md:max-w-[256px] lg:max-w-[256px] w-full"
       >
-        <Typography className="w-full text-sm font-semibold leading-normal">
+        <Typography className="w-full text-sm font-semibold leading-normal px-4 md:px-0 lg:px-0">
           Meptadapp Scam Score
         </Typography>
-        <div className=" mt-2 w-full h-[0px] border border-slate-800"></div>
-        <Stack flexDirection="col" margin="mt-2">
-          <span className="text-[5.17px] text-center text-[#F5CD19] font-normal font-['Instrument Sans'] leading-3 tracking-tight">
+        <div className="mt-2 w-full h-[0px] border border-slate-800"></div>
+        <Stack flexDirection="col" margin="mt-2" sx="px-4 md:px-0 lg:px-0">
+          <span className="text-[10px] md:text-[5.17px] lg:text-[5.17px] text-center text-[#F5CD19] font-normal font-['Instrument Sans'] leading-3 tracking-tight">
             Risky
           </span>
           <Stack justifyContent="center">
@@ -144,11 +144,11 @@ const ScamBot: FC<Props> = ({ address, score, aSecurity, aToken }) => {
               }
             /> */}
           </Stack>
-          <Stack justifyContent="between" margin="mt-0" padding="px-4">
-            <span className="text-[5.17px] text-[#EA4228] font-normal font-['Instrument Sans'] leading-3 tracking-tight">
+          <Stack justifyContent="between" margin="mt-0" sx="md:px-4 lg:px-4">
+            <span className="text-[10px] md:text-[5.17px] lg:text-[5.17px] text-[#EA4228] font-normal font-['Instrument Sans'] leading-3 tracking-tight">
               Likely a scam
             </span>
-            <span className="text-[5.17px] text-[#5BE12C] font-normal font-['Instrument Sans'] leading-3 tracking-tight">
+            <span className="text-[10px] md:text-[5.17px] lg:text-[5.17px] text-[#5BE12C] font-normal font-['Instrument Sans'] leading-3 tracking-tight">
               Looks Good
             </span>
           </Stack>

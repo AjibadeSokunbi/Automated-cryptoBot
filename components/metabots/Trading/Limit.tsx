@@ -36,7 +36,7 @@ const Limit = () => {
             value="sell"
             className="py-2 ring-offset-[#084298] focus-visible:bg-[#084298] data-[state=active]:bg-[#084298] font-bold text-[10px] md:text-xs lg:text-xs w-full"
           >
-            Sell Limit Order
+            Sell Limit Order 
           </TabsTrigger>
         </TabsList>
         <TabsContent value="buy" className="w-full ">
@@ -44,12 +44,12 @@ const Limit = () => {
           <DialogTrigger asChild>
             <Typography
               color="#FFC107"
-              className="cursor-pointer text-end text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
+              className="cursor-pointer text-end text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
             >
               Settings
             </Typography>
           </DialogTrigger>
-          <DialogContent2 className="w-2 bg-[#0C141F] border border-slate-800 p-2">
+          <DialogContent2 className="w-[80%] md:w-2 lg:w-2 top-[50%] md:top-auto lg:top-auto left-[50%] md:left-auto lg:left-auto bg-[#0C141F] border border-slate-800 p-2">
             <Stack flexDirection="col">
               <Stack
                 justifyContent="between"
@@ -58,7 +58,7 @@ const Limit = () => {
                 alignItems="center"
               >
                 <Typography
-                  className="text-sm font-bold font-['Instrument Sans'] leading-tight"
+                  className="text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight"
                   color="#0A53BE"
                 >
                   Swap Settings
@@ -71,7 +71,7 @@ const Limit = () => {
                 alignItems="center"
                 margin="mt-2 px-1"
               >
-                <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                   Use Private Transactions
                 </Typography>
                 <Checkbox2 defaultChecked color="#FFC107" />
@@ -82,7 +82,7 @@ const Limit = () => {
                 alignItems="center"
                 margin="mt-2 px-1"
               >
-                <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                   Fail-Safe Protection
                 </Typography>
                 <Checkbox2
@@ -95,11 +95,11 @@ const Limit = () => {
                 alignItems="center"
                 margin="mt-2 px-1"
               >
-                <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
                   Slippage: 25%
                 </Typography>
                 <Stack gap={2} alignItems="center">
-                  <Typography>Autospillage</Typography>
+                  <Typography className="text-xs md:text-base lg:text-base">Autospillage</Typography>
                   <Checkbox2
                     className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
                   />
@@ -220,7 +220,7 @@ const Limit = () => {
               Settings
             </Typography>
           </DialogTrigger>
-          <DialogContent2 className="w-2 bg-[#0C141F] border border-slate-800 p-2">
+          <DialogContent2 className="w-[80%] md:w-2 lg:w-2 top-[50%] md:top-auto lg:top-auto left-[50%] md:left-auto lg:left-auto bg-[#0C141F] border border-slate-800 p-2">
             <Stack flexDirection="col">
               <Stack
                 justifyContent="between"
@@ -270,7 +270,7 @@ const Limit = () => {
                   Slippage: 25%
                 </Typography>
                 <Stack gap={2} alignItems="center">
-                  <Typography>Autospillage</Typography>
+                  <Typography className="text-xs md:text-base lg:text-base">Autospillage</Typography>
                   <Checkbox2
                     className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
                   />

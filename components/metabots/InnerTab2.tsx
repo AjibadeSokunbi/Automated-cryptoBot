@@ -21,7 +21,7 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
   return (
     <Tabs defaultValue="Transactions" className="w-full flex flex-col p-2">
       <Stack justifyContent="between" sx="w-full flex-col md:flex-row lg:flex-row">
-        <TabsList className="w-[85%] md:w-8/12 lg:w-8/12 flex justify-between h-[25px] md:h-[29px] lg:-[29px] gap-3 md:gap-2 lg:gap-2">
+        <TabsList className="w-[85%] md:w-8/12 lg:w-8/12 flex justify-between h-[25px] md:h-[29px] lg:-[29px] gap-3 md:gap-2 lg:gap-2 mb-3 md:mb-0 lg:mb-0">
           <TabsTrigger
             value="Transactions"
             className="font-bold font-['Instrument Sans'] leading-tight cursor-pointer data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500  data-[state=active]:text-[#6C757D]"
@@ -49,10 +49,10 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
           </TabsTrigger>
         </TabsList>
 
-        <TabsList className="flex justify-between mt-2">
+        <TabsList className="flex justify-end md:justify-between lg:justify-between w-full md:w-auto lg:w-auto mt-2 mb-3 md:mb-0 lg:mb-0">
           <TabsTrigger
             value="New Tokens"
-            className="hidden cursor-pointer data-[state=active]:flex "
+            className="hidden cursor-pointer data-[state=active]:flex"
           >
             <Stack alignItems="center" gap={2}>
               <ApeControll />
@@ -165,7 +165,7 @@ const InnerTab2: FC<Props> = ({ ...props }) => {
       </Stack>
       <TabsContent value="Transactions" className="w-full">
         {" "}
-        <TxTab />
+        <TxTab /> 
       </TabsContent>
       <TabsContent value="New Tokens" className="w-full">
         {" "}

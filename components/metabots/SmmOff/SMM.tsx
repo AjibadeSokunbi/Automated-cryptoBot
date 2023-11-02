@@ -44,7 +44,7 @@ const SMM: FC<Props> = ({...props}) => {
             <div className="flex items-center md:justify-end lg:justify-end md:space-x-6 lg:space-x-6 md:mb-4 lg:mb-4 gap-3 md:gap-0 lg:gap-0">
               <Label
                 htmlFor="smm"
-                className="text-white text-base font-bold font-['Instrument Sans'] leading-3"
+                className="text-white text-xs md:text-base lg:text-base font-bold font-['Instrument Sans'] leading-3"
               >
                 Smart Money Mode
               </Label>
@@ -66,7 +66,7 @@ const SMM: FC<Props> = ({...props}) => {
                 <PoolTab poolData={props.poolData} data={props.data}/>
               </Stack>
               <Stack sx="w-full h-96 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
-            <LiveTrades historyData={props.historyData} walletData={props.walletData} />
+                <LiveTrades historyData={props.historyData} walletData={props.walletData} />
               </Stack>
             </Stack>
           </Stack>

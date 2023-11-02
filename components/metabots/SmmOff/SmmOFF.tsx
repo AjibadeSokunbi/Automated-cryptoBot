@@ -79,7 +79,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
         <Stack alignItems="center" gap={3} justifyContent="start">
           <Label
             htmlFor="smm"
-            className="text-white text-[8px] font-bold font-['Instrument Sans'] leading-3"
+            className="text-white text-[10px] md:text-[8px] lg:text-[8px] font-bold font-['Instrument Sans'] leading-3"
           >
             Smart Money Mode
           </Label>

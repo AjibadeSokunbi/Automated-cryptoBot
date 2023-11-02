@@ -20,7 +20,7 @@ const CopyTX = () => {
   return (
     <Stack flexDirection="col" padding="px-4 mt-4">
       <Stack width="w-full" justifyContent="between" margin="mb-2">
-        <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+        <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
           Input Address
         </Typography>
       </Stack>
@@ -38,7 +38,7 @@ const CopyTX = () => {
       <Stack width="w-full" justifyContent="between" margin="my-2">
         <Stack alignItems="center" gap={1}>
           <AiOutlineInfoCircle size={10} />
-          <div className="text-white text-sm font-normal font-['Instrument Sans'] leading-normal">
+          <div className="text-white text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-normal">
             Use same Trade Settings as copied wallet
           </div>
         </Stack>
@@ -48,7 +48,7 @@ const CopyTX = () => {
       <Typography
         color="#FFC107"
         onClick={show}
-        className="cursor-pointer text-sm font-normal text-end w-full my-4 font-['Instrument Sans'] underline leading-tight tracking-tight"
+        className="cursor-pointer text-xs md:text-sm lg:text-sm font-normal text-end w-full my-4 font-['Instrument Sans'] underline leading-tight tracking-tight"
       >
         Edit Trade Settings
       </Typography>
@@ -57,7 +57,7 @@ const CopyTX = () => {
         <>
           {" "}
           <Stack width="w-full" justifyContent="between" margin="mb-2">
-            <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
               Amount
             </Typography>
           </Stack>
@@ -74,9 +74,9 @@ const CopyTX = () => {
           </Stack>
           <Stack width="w-full" flexDirection="col" margin="my-2" gap={4}>
             <Stack alignItems="center" gap={1}>
-              <div className="text-white text-sm font-normal font-['Instrument Sans'] leading-normal">
+              <div className="text-white text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-normal">
                 Use Gas fee:{" "}
-                <span className="text-amber-400 text-sm font-bold font-['Instrument Sans'] leading-normal">
+                <span className="text-amber-400 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-normal">
                   50% more than
                 </span>{" "}
                 copied wallet
