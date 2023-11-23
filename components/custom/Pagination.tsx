@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from "@/components/custom/Typography";
-import PaginationMobile from './PaginationMobile';
+
 
 
 
@@ -99,16 +99,6 @@ const Pagination: React.FC<PaginationProps> = ({
         </ul>
       </nav>
 
-      <PaginationMobile 
-        activePage={activePage}
-        totalPages={totalPages}
-        goToPreviousPage={goToPreviousPage}
-        goToNextPage={goToNextPage}
-        setActivePage={setActivePage}
-        lastItemIndex={lastItemIndex}
-        firstItemIndex={firstItemIndex}
-        totalItems={totalItems}
-      />
     </>
   );
 };

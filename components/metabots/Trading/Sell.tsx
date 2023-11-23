@@ -5,27 +5,27 @@ import Typography from "@/components/custom/Typography";
 import { Input } from "@/components/ui/input";
 import { HiArrowLongDown } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent2, DialogTrigger } from "@/components/ui/dialog";
-import { Checkbox2 } from "@/components/ui/checkbox";
-import { Slider2 } from "@/components/ui/slider";
-import { IoIosArrowDown } from "react-icons/io";
 import Link from "next/link";
 import { toast } from "@/components/ui/use-toast";
-import { useNewStore } from "@/utils/zustanStore/newStore";
 import { FieldValues, useForm } from "react-hook-form";
-import { ClientDefaultSession, TokenBalance } from "@/utils/types";
+import { ClientDefaultSession, TokenPairDetails } from "@/utils/types";
 import { useSession } from "next-auth/react";
 import BuySettings from "./BuySettings";
-import {
-  checkScientificNotation,
-  findTokenBalance,
-  findTokenBalanceS,
-} from "@/utils/indexServer";
+import { key, metabotURL, shortenWord } from "@/utils/indexServer";
+import { useGaStore } from "@/utils/zustanStore/gasStore";
+import { useParams } from "next/navigation";
+import { fetchFee } from "@/utils/dataPool";
+import { useQuery } from "@tanstack/react-query";
+import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
+import { getTokenBalance } from "@/utils/scripts/getTokenBalance";
+import { FaGasPump } from "react-icons/fa";
+import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
 
 interface Props {
-  rate0to1: number;
-  rate1to0: number;
-  balances: TokenBalance[];
+  tokenData: TokenPairDetails;
+  priseUsdEth: number;
+  ethBalance: string;
+  userBalanc: string | undefined;
 }
 
 type Inputs = {
@@ -33,7 +33,12 @@ type Inputs = {
   amount2: string;
 };
 
-const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
+const Sell: FC<Props> = ({
+  tokenData,
+  priseUsdEth,
+  ethBalance,
+  userBalanc,
+}) => {
   const [activeTab, setActiveTab] = useState(25);
 
   const { data } = useSession();
@@ -43,18 +48,10 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<Inputs>();
 
-  const { pairDetail } = useNewStore();
-
-  const token0balance = findTokenBalanceS(balances, pairDetail.token0Name);
-  const token1balances = findTokenBalanceS(balances, pairDetail.token1Name);
-  const ethbalance = findTokenBalanceS(balances, "ETH");
-
-  const metabotURL = process.env.NEXT_PUBLIC_METABOT_URL as string;
-
-  const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
+  const pairDetail = tokenData;
 
   const metabotApiKey = `${key}:${user?.botUser?.data?.token}`;
 
@@ -65,50 +62,106 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
 
   const [inputA, setInputA] = useState<string>("");
   const [inputB, setInputB] = useState<string>("");
+  const [token0balance, setToken0balance] = useState<string>(
+    userBalanc as string
+  );
+  const { gasFee, setGasFee } = useGaStore();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [shouldFecth, setShouldFecth] = useState<boolean>(false);
+  const [tokenName, setTokenName] = useState<string>(pairDetail?.baseSymbol);
+  const [tokenAddress, setTokenAddress] = useState<string>(
+    pairDetail?.baseAddress
+  );
+  const ethbalance = ethBalance;
+  const buyPower = Number(ethbalance) + gasFee;
 
+  const params = useParams();
+  const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
+  const pair = params.address;
   const rateConversion0to1 = (number: number): number => {
-    if (rate0to1) {
-      const rate = number * rate0to1;
+    const rate = pairDetail.oneEthValue * number;
 
-      return rate;
-    } else {
-      const rate = pairDetail.oneEthValue * number;
-
-      return rate;
-    }
+    return rate;
   };
-
+  const oneTokenValue = 1 / pairDetail.oneEthValue;
   const rateConversion1t0 = (number: number): number => {
-    if (rate1to0) {
-      const rate = number * rate1to0;
+    const rate = number * oneTokenValue;
 
-      return rate;
-    } else {
-      const rate = number / pairDetail.oneEthValue;
-
-      return rate;
-    }
+    return rate;
   };
+  const { data: feeRecall, isRefetching } = useQuery<number | undefined>({
+    refetchIntervalInBackground: true,
+    refetchInterval: 30 * 1000,
+    queryKey: ["fee"],
+    queryFn: () =>
+      fetchFee(
+        Number(inputB).toFixed(6).toString(),
+        pair as string,
+        pairDetail
+      ),
+    initialData: 0,
+    staleTime: 30 * 1000,
+    enabled: inputB !== "0" && !isNaN(parseFloat(inputB)) && shouldFecth,
+  });
 
-  const handleInputAChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  let typingTimeout: NodeJS.Timeout | null = null;
+  let fetchingTimeout: NodeJS.Timeout | null = null;
+  const [laden, setLaden] = useState<boolean>(false);
+
+  const handleInputAChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
-    setInputA(value);
-    setInputB(rateConversion0to1(parseFloat(value)).toString());
+    setLaden(true);
+    setTokenAddress(value);
+    const symbol = await getTokenSymbol(value);
+    const tokenPrices = await getTokenPriceInUSD(value);
+    setTokenName(symbol);
+    setLaden(false);
+    setTokenPrice(tokenPrices);
+    const userBalanc = await getTokenBalance(
+      user?.botUser?.data?.wallet[0],
+      value
+    );
+    setToken0balance(userBalanc as string);
   };
 
-  const handleInputBChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputBChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const value = event.target.value;
     setInputB(value);
     setInputA(rateConversion1t0(parseFloat(value)).toString());
+
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+    typingTimeout = setTimeout(async () => {
+      typingTimeout = null;
+      setLoading(true);
+      setShouldFecth(false);
+      const fee = await fetchFee(
+        Number(value).toFixed(6).toString(),
+        pair as string,
+        pairDetail
+      );
+      setGasFee(fee ? (fee as number) : 0);
+      setLoading(false);
+    }, 1000);
+
+    fetchingTimeout = setTimeout(async () => {
+      fetchingTimeout = null;
+      setShouldFecth(true);
+    }, 30000);
   };
 
   async function onSubmit(data: FieldValues) {
     const requestBody = JSON.stringify({
-      token: pairDetail.token1Address,
-      amount: Number(inputA).toFixed(6).toString(),
+      token: tokenAddress,
+      amount: Number(inputB).toFixed(6).toString(),
       action: "sell",
       walletIndex: 0,
-      paymentToken: pairDetail?.token0Address,
+      // paymentToken: pairDetail?.token0Address,
     });
 
     const requestOptions: RequestInit = {
@@ -125,11 +178,7 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
           title: "Error",
           variant: "destructive",
           description: (
-            <p
-              className="underline text-red-600"
-            >
-              {result?.message}
-            </p>
+            <p className="underline text-red-600">{result?.message}</p>
           ),
         });
       }
@@ -160,146 +209,198 @@ const Sell: FC<Props> = ({ rate0to1, rate1to0, balances }) => {
     setActiveTab(index);
     switch (index) {
       case 25:
-        setInputA(twentyFivePercent.toString());
-        setInputB(rateConversion0to1(twentyFivePercent).toString());
+        setInputB(twentyFivePercent.toString());
+        setInputA(rateConversion0to1(twentyFivePercent).toString());
         break;
       case 50:
-        setInputA(fiftyPercent.toString());
-        setInputB(rateConversion0to1(fiftyPercent).toString());
+        setInputB(fiftyPercent.toString());
+        setInputA(rateConversion0to1(fiftyPercent).toString());
         break;
       case 75:
-        setInputA(seventyFivePercent.toString());
-        setInputB(rateConversion0to1(seventyFivePercent).toString());
+        setInputB(seventyFivePercent.toString());
+        setInputA(rateConversion0to1(seventyFivePercent).toString());
         break;
       default:
         break;
     }
   };
 
+  const gasPass = Number(inputB) !== 0  &&
+    !isNaN(parseFloat(inputB)) &&
+    token0balance > inputB &&
+    Number(ethbalance) < gasFee;
+
+
+  useEffect(() => {
+    if (feeRecall !== 0) {
+      setGasFee(feeRecall as number);
+    }
+  }, [feeRecall, setGasFee, shouldFecth]);
+
   return (
     <Stack flexDirection="col" padding="px-4 mt-4">
-      <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight mb-2">
-        {/* <span className="text-white text-base font-normal font-['Instrument Sans'] leading-normal tracking-tight mr-1">Name:</span>  Metacoin */}
-      </Typography>
       <Stack width="w-full" justifyContent="between" margin="mb-2">
-        <Stack flexDirection="col">
-          <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight mb-3 md:mb-0 lg:mb-0">
-            Sell Amount
-          </Typography>
-          <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
-            <span className="text-neutral-200 text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] leading-tight">
+        <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+          <Typography className="my-1 text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+            <span className="text-neutral-200 text-sm font-normal font-['Instrument Sans'] leading-tight">
               Available Bal:{" "}
             </span>{" "}
             <span
               className={
-                inputA && token0balance < inputB
+                token0balance < inputB
                   ? "text-red-600"
-                  : token0balance === "0"
+                  : token0balance === "0.0"
                   ? "text-red-600"
                   : "text-green-500"
               }
             >
-              {token0balance}
+              {token0balance && Number(token0balance).toFixed(2)}
               {token0balance === "0" && ".00"}
             </span>
           </Typography>
-        </Stack>
+          Sell
+        </Typography>
         <BuySettings />
       </Stack>
-      <form action="">
-      <Stack
-        justifyContent="center"
-        alignItems="center"
-        width="w-full"
-        sx="h-[40px]"
-      >
-        <Input
-          type="number"
-          placeholder="Amount"
-          inputMode="numeric"
-          aria-controls=""
-          required
-          value={checkScientificNotation(inputA)}
-          onChange={handleInputAChange}
-          className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
-        />
-        <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-3 md:py-2 lg:py-2 px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
-          {pairDetail?.token0Name}
-        </div>
-      </Stack>
-      <Stack justifyContent="between" gap={2}>
-        <Button
-          disabled={token0balance === "0"}
-          onClick={() => handleTabClick(25)}
-          className={`mt-4 w-full ${
-            activeTab === 25 ? "border border-blue-600 " : ""
-          } bg-[#161F2C] hover:bg-blue-900 hover:border-none`}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack
+          justifyContent="center"
+          width="w-full"
+          sx="h-[40px]  md:flex lg:flex"
         >
-          25%
-        </Button>
-        <Button
-          disabled={token0balance === "0"}
-          onClick={() => handleTabClick(50)}
-          className={`mt-4 w-full ${
-            activeTab === 50 ? "border border-blue-600 " : ""
-          } bg-[#161F2C] hover:bg-blue-900 hover:border-none`}
+          <Input
+            type="text"
+            placeholder="Token Address"
+            aria-controls=""
+            required
+            value={tokenAddress}
+            onChange={handleInputAChange}
+            className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
+          />
+          <div className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
+            {shortenWord(tokenName, 4)}
+            {laden && "...."}
+          </div>
+        </Stack>
+        <Stack justifyContent="between" gap={2}>
+          <Button
+            disabled={token0balance === "0.0" || token0balance === "0"}
+            type="button"
+            onClick={() => handleTabClick(25)}
+            className={`mt-4 w-full ${
+              activeTab === 25 ? "border border-blue-600 " : ""
+            } bg-[#161F2C] hover:bg-blue-900 hover:border-none`}
+          >
+            25%
+          </Button>
+          <Button
+            disabled={token0balance === "0.0" || token0balance === "0"}
+            type="button"
+            onClick={() => handleTabClick(50)}
+            className={`mt-4 w-full ${
+              activeTab === 50 ? "border border-blue-600 " : ""
+            } bg-[#161F2C] hover:bg-blue-900 hover:border-none`}
+          >
+            50%
+          </Button>
+          <Button
+            disabled={token0balance === "0.0" || token0balance === "0"}
+            type="button"
+            onClick={() => handleTabClick(75)}
+            className={`mt-4 w-full ${
+              activeTab === 75 ? "border border-blue-600 " : ""
+            } bg-[#161F2C] hover:bg-blue-900 hover:border-none`}
+          >
+            75%
+          </Button>
+        </Stack>
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          width="w-full"
+          margin="mt-4 mb-1"
         >
-          50%
-        </Button>
-        <Button
-          disabled={token0balance === "0"}
-          onClick={() => handleTabClick(75)}
-          className={`mt-4 w-full ${
-            activeTab === 75 ? "border border-blue-600 " : ""
-          } bg-[#161F2C] hover:bg-blue-900 hover:border-none`}
+          <HiArrowLongDown className="text-center w-7" size={30} />
+        </Stack>
+        <Stack width="w-full" justifyContent="between" margin="mb-2">
+          <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
+            Receive
+          </Typography>
+        </Stack>
+        <Stack
+          justifyContent="center"
+          width="w-full"
+          sx="h-[40px] md:flex lg:flex"
         >
-          75%
+          <Input
+            type="number"
+            inputMode="numeric"
+            placeholder="Amount"
+            value={inputB}
+            onChange={handleInputBChange}
+            required
+            className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
+          />
+          <div className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
+            AMOUNT
+          </div>
+        </Stack>
+        <Button
+          disabled={
+            isSubmitting ||
+            token0balance === "0.0" ||
+            ethBalance === "0" ||
+            token0balance < inputB ||
+            Number(inputB) === 0 ||
+            inputB === ""
+          }
+          className={` w-full mt-4 ${
+            !isNaN(parseFloat(inputB)) && token0balance < inputB
+              ? "bg-red-600"
+              : inputB !== "0" && token0balance !== "0" && gasPass
+              ? "bg-yellow-400"
+              : "bg-green-400"
+          } hover:bg-blue-900 hover:border-none`}
+        >
+          {!gasPass &&
+             
+            !isNaN(parseFloat(inputB)) &&
+            (userBalanc as string) < inputB &&
+            "Insufficient Funds"}
+          {gasPass !== true && (userBalanc as string) > inputB && "Auto Sell"}{isSubmitting && "...."}
+          { token0balance !== "0" && gasPass && "Sell Anyways"}
         </Button>
-      </Stack>
-      <Stack
-        alignItems="center"
-        justifyContent="center"
-        width="w-full"
-        margin="mt-4 mb-1"
-      >
-        <HiArrowLongDown className="text-center w-7" size={30} />
-      </Stack>
-      <Stack width="w-full" justifyContent="between" margin="mb-2">
-        <Typography className="text-neutral-200 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight">
-          Receive
+        <Typography color="#EF4444" className="text-xs text-center my-1">
+          {inputB !== "0" &&
+            gasPass &&
+            "Insufficient funds for Gas Fee, transaction might fail"}
         </Typography>
-      </Stack>
-      <Stack
-        justifyContent="center"
-        width="w-full"
-        sx="h-[40px]"
-      >
-        <Input
-          type="number"
-          inputMode="numeric"
-          placeholder="Amount"
-          value={checkScientificNotation(inputB)}
-          onChange={handleInputBChange}
-          required
-          className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
-        />
-        <div className="text-gray-300 text-xs md:text-base lg:text-base font-bold rounded-r-lg py-3 md:py-2 lg:py-2 px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
-          {pairDetail?.token1Name}
-        </div>
-      </Stack>
-      <Button
-        disabled={
-          isSubmitting ||
-          (token0balance === "0" && pairDetail.token0Name === "WETH") ||
-          token0balance < inputB ||
-          token0balance === "0"
-        }
-        className="mt-4 bg-[#FF3B3B] hover:bg-blue-900 hover:border-none w-full"
-      >
-        Auto Sell{isSubmitting && "ing...."}
-      </Button>
-      </form>
+        <Stack
+          justifyContent="between"
+          alignItems="center"
+          sx={isRefetching || loading ? "opacity-30 animate-pulse" : ""}
+        >
+          <Typography className="text-xs">
+            {tokenName}: ${(Number(inputB) * tokenPrice).toFixed(1)}
+          </Typography>
 
+          <Typography className="text-xs">
+            ETH: $
+            {isNaN(parseFloat(inputB))
+              ? "0.00"
+              : (Number(inputA) * priseUsdEth).toFixed(1)}
+          </Typography>
+          <Stack
+            margin=" mr-1"
+            alignItems="center"
+            gap={1}
+            justifyContent="end"
+          >
+            <FaGasPump className="text-xs text-center" /> :{" "}
+            <Typography className="text-xs">$ {gasFee?.toFixed(2)}</Typography>
+          </Stack>
+        </Stack>
+      </form>
     </Stack>
   );
 };

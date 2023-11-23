@@ -14,7 +14,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      "fixed top-0 left-1/3 right-1/4 z-[100] flex justify-center items-center p-4 md:max-w-[420px]",
+      "fixed top-0 left-1/3 right-1/4 z-[100] flex justify-center items-center p-4",
       className
     )}
     {...props}
@@ -29,9 +29,9 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-emerald-300 rounded-lg text-emerald-600 border-none text-base font-bold leading-tight justify-center items-center gap-2.5 inline-flex text-center",
+        default: " bg-emerald-300 rounded-lg text-emerald-600 border-none text-base font-bold leading-tight justify-center items-center gap-2.5 inline-flex text-center",
         destructive:
-          "bg-rose-400 rounded-lg text-red-600 border-none text-base font-bold leading-tight justify-center items-center gap-2.5 inline-flex text-center",
+          "w-fit bg-rose-400 rounded-lg text-red-600 border-none text-base font-bold leading-tight justify-center items-center gap-2.5 inline-flex text-center",
         copied: "w-[283px] h-[59px] px-6 py-4 bg-blue-200 rounded-lg justify-center items-center gap-2.5 inline-flex text-blue-900 text-base font-normal leading-7  text-center"  
       },
     },

@@ -83,7 +83,32 @@ export interface ClientDefaultSession {
   botUser: UserBotData;
   expires?: string;
   wallets?: string[];
+  balance: string
 }
+
+
+export interface ExchangeResult {
+  name: string;
+  pair: string;
+  address: string;
+  token0: string;
+  token1: string;
+  pairAddress: string;
+  volume: number;
+  liquidity: number;
+  trades: number;
+  price: number;
+  symbol: string;
+  exchange: string;
+  chain: string;
+  baseName: string;
+  quoteSymbol: string;
+}
+
+export interface ExchangeResponse {
+  results: ExchangeResult[];
+}
+
 
 export interface BalanceInfo {
   decimals: string;
@@ -151,6 +176,11 @@ export interface WalletDatas {
   total_usd: number;
   address: string;
   total_tx: string;
+}
+
+export interface WalletTXNS {
+  data : WalletDatas[];
+  
 }
 
 export interface TokenPairDetails {
@@ -231,6 +261,7 @@ export interface TokenSecurity {
   is_proxy: string;
   is_mintable: string;
   lp_holders?: LPHolder[];
+  holder_count?: string
 }
 
 export interface AddressSecurity {
@@ -452,4 +483,22 @@ interface Token {
   to: string;
   usdAmount: number;
   value: number; // Corrected to number type
+}
+
+
+export interface UserTrade {
+  _id: string;
+  user: string;
+  token: string;
+  action: 'buy' | 'sell';
+  amount: string;
+  usdPrice: number;
+  chain: string;
+  wallet: string;
+  status: 'CONFIRMED' | 'PENDING' | 'CONFRIMED'; 
+  txnHash: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  executed: boolean
 }

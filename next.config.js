@@ -1,8 +1,37 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['cryptologos.cc', 'https://static.alchemyapi.io', "alchemyapi.io", 'static.alchemyapi.io', 'encrypted-tbn0.gstatic.com', "assets-cdn.trustwallet.com", "assets.coingecko.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cryptologos.cc',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.alchemyapi.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'alchemyapi.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'static.alchemyapi.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets-cdn.trustwallet.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.coingecko.com',
+      },
+    ],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

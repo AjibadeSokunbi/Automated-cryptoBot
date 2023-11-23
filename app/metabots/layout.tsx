@@ -1,6 +1,4 @@
 import FullContainer from "@/components/custom/FullContainer";
-import Stack from "@/components/custom/Stack";
-import Typography from "@/components/custom/Typography";
 import Tabs from "@/components/metabots/Tabs";
 interface DashboardLayoutProps {
   children?: React.ReactNode;

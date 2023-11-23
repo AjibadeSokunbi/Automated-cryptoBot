@@ -1,70 +1,16 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tab3";
-import Buy from "@/components/metabots/Trading/Buy";
-import Sell from "@/components/metabots/Trading/Sell";
-import Limit from "@/components/metabots/Trading/Limit";
-import CopyTX from "@/components/metabots/Trading/CopyTX";
-import ExchangeRateCalculator from "@/utils/TokenAmount";
-import { FC } from "react";
-import { ServerDefaultSession, TokenPairDetails, UserBalanceInfoData } from "@/utils/types";
-import { getClient } from "@/lib/ApolloClient";
-import { USER_TOKEN_INFO as query, HISTORY_DATA } from "@/utils/Queries";
-import { getCurrentUser } from "@/lib/session";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tab3";
+import { FC, Suspense } from "react";
+import { ImSpinner2 } from "react-icons/im";
+import Stack from "@/components/custom/Stack";
+import BSC from "./BSC";
 
 interface Props {
   params: {
     address: string;
   };
 }
-
+export const dynamic = "force-dynamic";
 const TNav: FC<Props> = async ({ params }) => {
-  const user: ServerDefaultSession = await getCurrentUser() as ServerDefaultSession
-  let data = null;
-  try {
-    const res = await fetch(
-      `https://tradeviewer.metadapp.com/chart-api/pair_details?pairId=${params.address}`
-    );
-
-    const data3 = await res?.json();
-    const Tokendata: TokenPairDetails = data3.data;
-    data = Tokendata;
-  } catch (error) {
-    console.log("error:", error);
-  }
-
-  const token1Address1 = data?.token0Address as string;
-  const token2Address2 = data?.token1Address as string;
-
-  const calculatorv2 = new ExchangeRateCalculator();
-  await calculatorv2.getExchangeRate(
-    params.address,
-    token1Address1,
-    token2Address2
-  );
-
-  const rate1to2 = calculatorv2.getExchangeRate0to1();
-  const rate2to1 = calculatorv2.getExchangeRate1to0();
-
-  const {
-    data: balance,
-    loading: balanceLoading,
-    error: balanceError,
-  } = await getClient().query<UserBalanceInfoData>({
-    query,
-    context: {
-      fetchOptions: {
-        next: { revalidate: 50 },
-      },
-    },
-    variables: {
-      input: {
-        userAddr: user?.wallets ? user.wallets[0] : "0x464c62b952d283efe379F86da5c81ddb124B76cB",
-      },
-    },
-  });
-
-  const balances = balance?.userBalanceInfo?.balances;
-
-
   return (
     <Tabs
       defaultValue="buy"
@@ -91,23 +37,25 @@ const TNav: FC<Props> = async ({ params }) => {
         </TabsTrigger>
         <TabsTrigger
           value="copy"
-          className="cursor-pointer text-center h-full py-2 text-white w-full  border-slate-800 text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight   data-[state=active]:border-l data-[state=active]:bg-gray-900 data-[state=active]:text-[#0D6EFD]"
+          className="cursor-pointer text-center h-full py-2 text-white w-full  border-slate-800 text-xs md:text-sm lg:text-[12px] font-bold font-['Instrument Sans'] leading-tight   data-[state=active]:border-l data-[state=active]:bg-gray-900 data-[state=active]:text-[#0D6EFD]"
         >
           Copy Trade
         </TabsTrigger>
       </TabsList>
-      <TabsContent value="buy" className="w-full">
-        <Buy rate0to1={rate1to2} balances={balances} rate1to0={rate2to1} tokenData={data as TokenPairDetails} />
-      </TabsContent>
-      <TabsContent value="sell" className="w-full">
-        <Sell rate0to1={rate1to2} balances={balances}  rate1to0={rate2to1} />
-      </TabsContent>
-      <TabsContent value="limit" className="w-full">
-        <Limit />
-      </TabsContent>
-      <TabsContent value="copy" className="w-full">
-        <CopyTX />
-      </TabsContent>
+      <Suspense
+        fallback={
+          <Stack
+            alignItems="center"
+            alignContent="center"
+            justifyContent="center"
+            height="h-[300px]"
+          >
+            <ImSpinner2 className="text-[#18283f] h-20 w-20 animate-spin " />
+          </Stack>
+        }
+      >
+        <BSC params={params} />
+      </Suspense>
     </Tabs>
   );
 };

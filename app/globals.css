@@ -18,6 +18,13 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+@media (min-width: 1165px) {
+  .pl {
+      display: flex;
+      flex-direction: column;
+  }
+}
   
   @keyframes pulse {
     0%, 100% {

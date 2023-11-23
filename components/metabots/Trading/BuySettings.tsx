@@ -30,10 +30,10 @@ const BuySettings = () => {
   const [autoGas, setAutoGas] = useState<boolean>(
     user?.botUser?.data?.settings?.autogas
   );
-  const slipValue = [user?.botUser?.data?.settings?.slippage]
+  const slipValue = [user?.botUser?.data?.settings?.slippage];
   const [slippage, setSlippage] = useState<number[]>(slipValue);
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
 
   const metabotURL = process.env.NEXT_PUBLIC_METABOT_URL as string;
 
@@ -64,13 +64,12 @@ const BuySettings = () => {
     };
 
     try {
-
       const response = await fetch(
         `${metabotURL}user/editSettings`,
         requestOptions
       );
       await response.json();
-      console.log(response)
+      console.log(response);
       setLoading(false);
       toast({
         title: "Settings Saved",
@@ -80,106 +79,111 @@ const BuySettings = () => {
     } catch (error) {
       console.error("An error occurred:", error);
       setLoading(false);
-
     }
   };
 
-
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Typography
-          color="#FFC107"
-          className="cursor-pointer text-xs md:text-sm lg:text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
-        >
-          Settings
-        </Typography>
-      </DialogTrigger>
-      <DialogContent2 className="w-[80%] md:w-2 lg:w-2 top-[50%] md:top-auto lg:top-auto left-[50%] md:left-auto lg:left-auto bg-[#0C141F] border border-slate-800 p-2">
-        <Stack flexDirection="col">
-          <Stack
-            justifyContent="between"
-            height="h-6"
-            width="w-full"
-            alignItems="center"
+    <div className="hidden md:flex lg:flex ">
+      <Dialog>
+        <DialogTrigger asChild>
+          <Typography
+            color="#FFC107"
+            className="cursor-pointer text-sm font-normal font-['Instrument Sans'] underline leading-tight tracking-tight"
           >
-            <Typography
-              className="text-xs md:text-sm lg:text-sm font-bold font-['Instrument Sans'] leading-tight"
-              color="#0A53BE"
+            Settings
+          </Typography>
+        </DialogTrigger>
+        <DialogContent2 className="w-2 bg-[#0C141F] border border-slate-800 p-2">
+          <Stack flexDirection="col">
+            <Stack
+              justifyContent="between"
+              height="h-6"
+              width="w-full"
+              alignItems="center"
             >
-              Swap Settings
-            </Typography>
-            <IoIosArrowDown className="" />
-          </Stack>{" "}
-          <Stack
-            justifyContent="between"
-            width="w-full"
-            alignItems="center"
-            margin="mt-2 px-1"
-          >
-            <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
-              Use Private Transactions
-            </Typography>
-            <Checkbox2
-              defaultChecked={privates}
-              onCheckedChange={() =>
-                setPrivate(privates === true ? false : true)
-              }
-              className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
-            />
-          </Stack>{" "}
-          <Stack
-            justifyContent="between"
-            width="w-full"
-            alignItems="center"
-            margin="mt-2 px-1"
-          >
-            <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
-              Fail-Safe Protection
-            </Typography>
-            <Checkbox2
-              defaultChecked={simulate}
-              onCheckedChange={() =>
-                setSimulate(simulate === true ? false : true)
-              }
-              className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
-            />
-          </Stack>{" "}
-          <Stack
-            justifyContent="between"
-            width="w-full"
-            alignItems="center"
-            margin="mt-2 px-1"
-          >
-            <Typography className="text-xs md:text-base lg:text-base font-normal font-['Instrument Sans'] leading-7">
-              Slippage: {slippage[0]}%
-            </Typography>
-            <Stack gap={2} alignItems="center">
-              <Typography className="text-xs md:text-base lg:text-base">AutoGas</Typography>
+              <Typography
+                className="text-sm font-bold font-['Instrument Sans'] leading-tight"
+                color="#0A53BE"
+              >
+                Swap Settings
+              </Typography>
+              <IoIosArrowDown className="" />
+            </Stack>{" "}
+            <Stack
+              justifyContent="between"
+              width="w-full"
+              alignItems="center"
+              margin="mt-2 px-1"
+            >
+              <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                Use Private Transactions
+              </Typography>
               <Checkbox2
-                defaultChecked={autoGas}
+                defaultChecked={privates}
                 onCheckedChange={() =>
-                  setAutoGas(autoGas === true ? false : true)
+                  setPrivate(privates === true ? false : true)
                 }
                 className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
               />
+            </Stack>{" "}
+            <Stack
+              justifyContent="between"
+              width="w-full"
+              alignItems="center"
+              margin="mt-2 px-1"
+            >
+              <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                Fail-Safe Protection
+              </Typography>
+              <Checkbox2
+                defaultChecked={simulate}
+                onCheckedChange={() =>
+                  setSimulate(simulate === true ? false : true)
+                }
+                className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
+              />
+            </Stack>{" "}
+            <Stack
+              justifyContent="between"
+              width="w-full"
+              alignItems="center"
+              margin="mt-2 px-1"
+            >
+              <Typography className="text-base font-normal font-['Instrument Sans'] leading-7">
+                Slippage: {slippage[0]}%
+              </Typography>
+              <Stack gap={2} alignItems="center">
+                <Typography>AutoGas</Typography>
+                <Checkbox2
+                  defaultChecked={autoGas}
+                  onCheckedChange={() =>
+                    setAutoGas(autoGas === true ? false : true)
+                  }
+                  className={`data-[state=checked]:text-[#FFC107] data-[state=checked]:border-[#FFC107] border-[#595f64] ring-offset-[#FFC107]`}
+                />
+              </Stack>
             </Stack>
+            <Slider2
+              defaultValue={[user?.botUser?.data?.settings?.slippage]}
+              onValueChange={(value) => setSlippage(value)}
+              max={100}
+              step={1}
+              className="my-3"
+            />
           </Stack>
-          <Slider2
-            defaultValue={[user?.botUser?.data?.settings?.slippage]}
-            onValueChange={(value) => setSlippage(value)}
-            max={100}
-            step={1}
-            className="my-3"
-          />
-        </Stack>
-        <DialogFooter>
-          <Button onClick={handleSettings} disabled={loading}  className="w-full" size="sm">
-            Save{loading && "...."}
-          </Button>
-        </DialogFooter>
-      </DialogContent2>
-    </Dialog>
+          <DialogFooter>
+            <Button
+              onClick={handleSettings}
+              disabled={loading}
+              className="w-full"
+              size="sm"
+            >
+              Save{loading && "...."}
+            </Button>
+          </DialogFooter>
+        </DialogContent2>
+      </Dialog>
+    </div>
   );
 };
 

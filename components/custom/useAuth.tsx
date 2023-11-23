@@ -1,19 +1,14 @@
 "use client";
-
 import * as React from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-
-import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 import { type FieldValues, useForm } from "react-hook-form";
-
 import { cn } from "@/lib/utils";
-
 import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { BiLoaderAlt } from "react-icons/bi";
-import axios from "axios";
 import { UserBotData } from "@/utils/types";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -26,24 +21,36 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+
+    formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>();
-  const pathname = usePathname();
 
+  const { data: user } = useSession();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
+  const [error, setError] = React.useState<boolean>(true);
   const searchParams = useSearchParams();
 
-  const metabotURL = "http://127.0.0.1:8000/";
-  const metabotApiKey = "hey";
+  const metabotURL = process.env.NEXT_PUBLIC_METABOT_URL as string;
 
   const headers = new Headers({
-    Authorization: metabotApiKey,
-    "Content-Type": "application/json", // Set the content type for the request
+    "Content-Type": "application/json",
   });
+
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+
   async function onSubmit(data: FieldValues) {
-    setIsLoading(true);
+    setIsLoading(true); // Start loading
+
+    const requestOptions2: RequestInit = {
+      method: "GET",
+    };
+
+    const response2 = await fetch(
+      `${metabotURL}user/${data.email.toLowerCase()}`,
+      requestOptions2
+    );
+
+    const resD: UserBotData = await response2.json();
 
     const signInResult = await signIn("email", {
       email: data.email.toLowerCase(),
@@ -52,6 +59,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     });
 
     setIsLoading(false);
+    setError(false);
 
     if (!signInResult?.ok) {
       return toast({
@@ -76,29 +84,14 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       body: requestBody,
     };
 
-    const requestOptions2: RequestInit = {
-      method: "GET",
-      headers,
-    };
-
-    const response2 = await fetch(
-      `${metabotURL}user/${data.email.toLowerCase()}`,
-      requestOptions2
-    );
-
-    const resD: UserBotData = await response2.json();
-    // console.log("User:", resD);
-
     if (!resD?.data?._id && signInResult?.ok) {
       const reg = await fetch(`${metabotURL}user/`, requestOptions);
       const regC = await reg.json();
-      // console.log("reg successful:", regC);
     }
-    // console.log(signInResult?.url)
+
     if (signInResult?.ok) {
       const sign = await fetch(`${metabotURL}auth/login`, requestOptions);
       const signC = await sign.json();
-      // console.log("Login successful:", signC);
     }
 
     toast({
@@ -117,7 +110,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               Email
             </Label>
             <Input
-              className=" bg-background1 focus-none"
               id="email"
               placeholder="name@example.com"
               type="email"
@@ -125,7 +117,11 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
-              {...register("email")}
+              {...register("email", {
+                required: "Please enter an Email",
+                validate: (value) => emailRegex.test(value) || "Invalid Email",
+              })}
+              className=" bg-background1 focus-none"
             />
             {errors?.email && (
               <p className="px-1 text-xs text-red-600">

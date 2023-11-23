@@ -116,14 +116,14 @@ const Metabots = () => {
                 <Typography variant='bold' className='text-3xl mb-3'>
                     <span className='text-[#FFC107]'> Earn 20% in Cash bonus and Meta points for referring your friends </span>
                 </Typography>
-                <Typography variant='normal' className='text-lg mb-5'> For every successful Metabots trade you perform you'll earn Metapoints. </Typography>
+                <Typography variant='normal' className='text-lg mb-5'> For every successful Metabots trade you perform yoll earn Metapoints. </Typography>
                 <Stack flexDirection='row' alignItems='center' sx='mb-5'>
                     <div className='w-9 h-6 rounded-full bg-[#FFF9E6] flex justify-center items-center mr-3'> <BiCheck className="text-[#FFC107] text-lg font-bold" /> </div>
-                    <Typography variant='normal' className='text-lg'> The more Metapoints you earn, the more exclusive perks and airdrops you'll be eligible for. </Typography>
+                    <Typography variant='normal' className='text-lg'> The more Metapoints you earn, the more exclusive perks and airdrops yoll be eligible for. </Typography>
                 </Stack>
                 <Stack flexDirection='row' alignItems='center'>
                     <div className='w-14 h-6 rounded-full bg-[#FFF9E6] flex justify-center items-center mr-3'> <BiCheck className="text-[#FFC107] text-lg font-bold" /> </div>
-                    <Typography variant='normal' className='text-lg'> You'll also earn a 20% cash bonus from the fees  we make from your friends whenever they use Metabots to trade on our platform. </Typography>
+                    <Typography variant='normal' className='text-lg'> Yoll also earn a 20% cash bonus from the fees  we make from your friends whenever they use Metabots to trade on our platform. </Typography>
                 </Stack>
             </Stack>
         </Stack>

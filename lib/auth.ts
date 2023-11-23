@@ -6,6 +6,7 @@ import { siteConfig } from "./site";
 import axios from "axios";
 import { UserBotData } from "@/utils/types";
 import { PrismaClient } from "@prisma/client";
+import { getUserBalance } from "@/utils/scripts/getBalaceEth";
 
 const prisma = new PrismaClient();
 // const db = prisma
@@ -43,8 +44,7 @@ export const authOptions: NextAuthOptions = {
       },
       from: process.env.EMAIL_FROM,
       sendVerificationRequest: async ({ identifier, url, provider }) => {
-        //fetch user from API endpoint
-        const user = (await metabotAPI.get(`user/${identifier}`)).data.data;
+
 
         const templateId = process.env.POSTMARK_PRE_REG_TEMPLATE;
         if (!templateId) {
@@ -84,18 +84,14 @@ export const authOptions: NextAuthOptions = {
         `${metabotURL}user/${token.email}`,
         requestOptions
       );
-      const resD: UserBotData = await response2.json();
-
-      return { ...session, wallets: resD.data.wallet, botUser: resD  };
+      const resD: UserBotData = await response2?.json();
+      const userEth = await getUserBalance(resD?.data?.wallet[0]);
+      return { ...session, wallets: resD?.data?.wallet, botUser: resD, balance: userEth};
     },
     async jwt({ token }) {
-      const response2 = await fetch(
-        `${metabotURL}user/${token.email}`,
-        requestOptions
-      );
-      const resD: UserBotData = await response2.json();
 
-      return { ...token, wallets: resD.data.wallet, botUser: resD };
+
+      return { ...token};
     },
     async signIn({ email }) {
       if (email?.verificationRequest === true) {

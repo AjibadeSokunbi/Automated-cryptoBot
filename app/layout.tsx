@@ -7,6 +7,7 @@ import { AuthProvider } from "./sessionProvider";
 import { siteConfig } from "@/lib/site";
 import SideBar from "@/components/layouts/SideBar";
 import { ApolloWrapper } from "@/lib/ApolloWrapper";
+import QueryProviders from "@/lib/QueryProvider";
 
 const instrument_Sans = Instrument_Sans({ subsets: ["latin"] });
 
@@ -33,10 +34,10 @@ export const metadata: Metadata = {
     },
   ],
   creator: "Metadapp",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+  // themeColor: [
+  //   { media: "(prefers-color-scheme: light)", color: "white" },
+  //   { media: "(prefers-color-scheme: dark)", color: "black" },
+  // ],
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -81,7 +82,10 @@ export default function RootLayout({
               <Headers />
               <div className="overflow-y-auto hide-scrollbar">
                 {" "}
-                <ApolloWrapper>{children}</ApolloWrapper>
+                <QueryProviders>
+                  {" "}
+                  <ApolloWrapper>{children}</ApolloWrapper>
+                </QueryProviders>
               </div>
             </AuthProvider>
           </>

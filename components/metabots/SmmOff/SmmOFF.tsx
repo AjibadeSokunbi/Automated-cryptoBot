@@ -1,96 +1,54 @@
-"use client";
-import React, { FC, useState } from "react";
+import React, { FC, Suspense } from "react";
 import Stack from "@/components/custom/Stack";
-import Typography from "@/components/custom/Typography";
-import { TradeData } from "@/utils/types";
-import LatestTrade from "./LatestTrade";
-import PriceAlerts from "./PriceAlerts";
-import { Switch2 } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tab3";
+import LatestFetch from "./LatestFetch";
+import { ImSpinner2 } from "react-icons/im";
+import SmmControl from "./SmmControl";
 
 interface Props {
-  setSmm: React.Dispatch<React.SetStateAction<boolean>>;
-  historyData: TradeData[];
+
+  // sub: "FREE" | "PAID"
+  params: {
+    address: string;
+  };
 }
 
 const SmmOFF: FC<Props> = ({ ...props }) => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleTabClick = (index: number) => {
-    setActiveTab(index);
-  };
-
   return (
     <>
-      <Stack flexDirection="col" width="w-full" padding="p-2" sx="hidden md:flex lg:flex">
-        <Stack width="w-full" justifyContent="between">
-          <Stack gap={4} height="h-[29px]">
-            <Typography
-              color={activeTab === 0 ? "#ffff" : "#6C757D"}
-              onClick={() => handleTabClick(0)}
-              className={`text-base font-bold font-['Instrument Sans'] leading-tight cursor-pointer ${
-                activeTab === 0
-                  ? "text-blue-500 border-b-2 border-blue-500"
-                  : ""
-              }`}
+      <Tabs defaultValue="Transactions" className="w-full hidden md:flex lg:flex md:flex-col lg:md:flex-col p-2">
+        <Stack justifyContent="between" width="w-full">
+          <TabsList className="w-7/12 flex gap-4 h-[29px]">
+            <TabsTrigger
+              value="Transactions"
+              className="text-base font-bold font-['Instrument Sans'] leading-tight cursor-pointer    data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500 text-[#6C757D] data-[state=active]:text-[#ffff]"
             >
               Latest Trade
-            </Typography>
-            <Typography
-              color={activeTab === 1 ? "#ffff" : "#6C757D"}
-              onClick={() => handleTabClick(1)}
-              className={`text-base font-bold font-['Instrument Sans'] leading-tight cursor-pointer ${
-                activeTab === 1
-                  ? "text-blue-500 border-b-2 border-blue-500"
-                  : ""
-              }`}
+            </TabsTrigger>
+            <TabsTrigger
+              value="watchlist"
+              className="text-base relative font-bold font-['Instrument Sans'] leading-tight cursor-pointer    data-[state=active]:border-b-2 data-[state=active]:border-y-blue-500 text-[#6C757D] data-[state=active]:text-[#ffff]"
             >
               Price Alerts
-            </Typography>
-          </Stack>
-          <div className="flex items-center space-x-6">
-            <Label
-              htmlFor="smm"
-              className="text-white text-[10.621px] font-bold font-['Instrument Sans'] leading-3"
+            </TabsTrigger>
+          </TabsList>
+           <SmmControl/>
+        </Stack>
+        <Suspense
+          fallback={
+            <Stack
+              alignItems="center"
+              alignContent="center"
+              justifyContent="center"
+              height="h-[200px]"
             >
-              Smart Money Mode
-            </Label>
-            <Switch2
-              onClick={() => props.setSmm(true)}
-              id="smm"
-              className="bg-zinc-600"
-            />
-          </div>
-        </Stack>
-
-        {activeTab === 0 && (
-          <>
-            <LatestTrade   historyData={props.historyData} />
-          </>
-        )}
-        {activeTab === 1 && (
-          <>
-            <PriceAlerts />
-          </>
-        )}
-      </Stack>
-
-      <Stack flexDirection="col" sx="w-full flex md:hidden lg:hidden" gap={5}>
-        <Stack alignItems="center" gap={3} justifyContent="start">
-          <Label
-            htmlFor="smm"
-            className="text-white text-[10px] md:text-[8px] lg:text-[8px] font-bold font-['Instrument Sans'] leading-3"
-          >
-            Smart Money Mode
-          </Label>
-          <Switch2
-            onClick={() => props.setSmm(true)}
-            id="smm"
-            className="bg-zinc-600"
-          />
-        </Stack>
-        <LatestTrade historyData={props.historyData} /> 
-      </Stack>
+              <ImSpinner2 className="text-[#18283f] h-20 w-20 animate-spin " />
+            </Stack>
+          }
+        >
+          <LatestFetch params={props.params} />
+        </Suspense>
+      </Tabs>
     </>
   );
 };
