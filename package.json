@@ -8,8 +8,7 @@
     "build": "prisma generate && next build",
     "prebuild": "cp -r public/static/charting_library node_modules",
     "start": "next start",
-    "lint": "next lint",
-    "predev": "cp -r public/static/charting_library node_module"
+    "lint": "next lint"
   },
   "dependencies": {
     "@apollo/client": "^3.8.6",

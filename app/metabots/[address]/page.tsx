@@ -102,7 +102,7 @@ export default async function page({ params }: pageProps) {
             <Skeleton className="w-full flex flex-col h-[300px] bg-[#0C141F] rounded-lg shadow border border-slate-800 pb-2" />
           }
         >
-          {/* <TNav params={params} /> */}
+          <TNav params={params} />
         </Suspense>
         <Tabs
           defaultValue="transactions"

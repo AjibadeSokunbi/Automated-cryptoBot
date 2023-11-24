@@ -86,7 +86,11 @@ export interface ClientDefaultSession {
   balance: string
 }
 
+export interface feeFetch {
 
+  feeUsd: number
+ feeEth: string;
+}
 export interface ExchangeResult {
   name: string;
   pair: string;
