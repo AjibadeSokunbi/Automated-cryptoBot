@@ -13,7 +13,11 @@ import {
   metabotURL,
   shortenWord,
 } from "@/utils/indexServer";
-import { ClientDefaultSession, TokenPairDetails } from "@/utils/types";
+import {
+  ClientDefaultSession,
+  TokenPairDetails,
+  feeFetch,
+} from "@/utils/types";
 import BuySettings from "./BuySettings";
 import BuySettingsMobile from "./BuySettingsMobile";
 import Link from "next/link";
@@ -43,12 +47,11 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
   const { gasFee, setGasFee } = useGaStore();
   const [inputA, setInputA] = useState<string>("");
   const [inputB, setInputB] = useState<string>("");
-  const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd)
+  const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
   const [loading, setLoading] = useState<boolean>(false);
   const [shouldFecth, setShouldFecth] = useState<boolean>(false);
 
   const ethbalance = ethBalance;
-  const buyPower = Number(ethbalance) + gasFee;
 
   const params = useParams();
   const pair = params.address;
@@ -72,7 +75,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     pairDetail?.baseAddress
   );
 
-  const preOneValue = tokenPrice / priseUsdEth
+  const preOneValue = tokenPrice / priseUsdEth;
   const oneTokenValue = 1 / preOneValue;
   const rateConversion1t0 = (number: number): number => {
     const rate = number * oneTokenValue;
@@ -80,7 +83,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     return rate;
   };
 
-  const { data: feeRecall, isRefetching } = useQuery<number | undefined>({
+  const { data: feeRecall, isRefetching } = useQuery<feeFetch>({
     refetchIntervalInBackground: true,
     refetchInterval: 30 * 1000,
     queryKey: ["fee"],
@@ -90,7 +93,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         pair as string,
         pairDetail
       ),
-    initialData: 0,
+    initialData: { feeUsd: 0, feeEth: "0" },
     staleTime: 30 * 1000,
     enabled: inputB !== "0" && !isNaN(parseFloat(inputB)) && shouldFecth,
   });
@@ -109,7 +112,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     const tokenPrices = await getTokenPriceInUSD(value);
     setTokenName(symbol);
     setLaden(false);
-   
+
     setTokenPrice(tokenPrices);
     setInputA(rateConversion1t0(parseFloat(inputB)).toString());
   };
@@ -133,7 +136,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         pair as string,
         pairDetail
       );
-      setGasFee(fee ? (fee as number) : 0);
+      setGasFee(fee.feeUsd ? fee : { feeUsd: 0, feeEth: "0" });
       setLoading(false);
     }, 1000);
 
@@ -187,16 +190,17 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
       console.error("An error occurred:", error);
     }
   }
-  const buyPower2 = Number(inputB) + gasFee;
+  const buyPower2 = Number(inputB) + gasFee.feeEth;
 
-  const transactionPossibility = Number(inputB) !== 0 &&
-    !isNaN(parseFloat(inputB)) &&
-    ethbalance > inputB &&
-    buyPower2 > Number(ethbalance);
+  const transactionPossibility =
+    Number(inputB) !== 0 &&
+    inputB !== "" &&
+    inputB <= ethbalance &&
+    buyPower2 > ethbalance;
 
   useEffect(() => {
-    if (feeRecall !== 0) {
-      setGasFee(feeRecall as number);
+    if (feeRecall.feeUsd !== 0) {
+      setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
     }
   }, [feeRecall, setGasFee, shouldFecth]);
 
@@ -262,7 +266,10 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         </Stack>
         <Button
           disabled={
-            isSubmitting || buyPower.toString() === "0" || ethbalance < inputB || Number(inputB) === 0 
+            isSubmitting ||
+            buyPower2.toString() === "0" ||
+            ethbalance < inputB ||
+            Number(inputB) === 0
           }
           className={` w-full mt-4 ${
             !isNaN(parseFloat(inputB)) && ethbalance < inputB
@@ -288,8 +295,10 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
           sx={isRefetching || loading ? "opacity-30 animate-pulse" : ""}
         >
           <Typography className="text-xs">
-            {tokenName}: 
-           <span className="ml-1">{!isNaN(parseFloat(inputA)) ? (Number(inputA)).toFixed(1) : "0"}</span> 
+            {tokenName}:
+            <span className="ml-1">
+              {!isNaN(parseFloat(inputA)) ? Number(inputA).toFixed(1) : "0"}
+            </span>
           </Typography>
 
           <Typography className="text-xs">
@@ -305,7 +314,9 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
             justifyContent="end"
           >
             <FaGasPump className="text-xs text-center" /> :{" "}
-            <Typography className="text-xs">$ {gasFee?.toFixed(2)}</Typography>
+            <Typography className="text-xs">
+              $ {gasFee?.feeUsd.toFixed(2)}
+            </Typography>
           </Stack>
         </Stack>
       </form>

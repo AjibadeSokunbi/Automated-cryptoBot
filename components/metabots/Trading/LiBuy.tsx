@@ -14,7 +14,7 @@ import {
   metabotURL,
   shortenWord,
 } from "@/utils/indexServer";
-import { ClientDefaultSession, TokenPairDetails } from "@/utils/types";
+import { ClientDefaultSession, TokenPairDetails, feeFetch } from "@/utils/types";
 import BuySettings from "./BuySettings";
 import BuySettingsMobile from "./BuySettingsMobile";
 import Link from "next/link";
@@ -48,7 +48,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
   const [shouldFecth, setShouldFecth] = useState<boolean>(false);
 
   const ethbalance = ethBalance;
-  const buyPower = Number(ethbalance) + gasFee;
+
 
   const params = useParams();
   const pair = params.address;
@@ -81,7 +81,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     return rate;
   };
 
-  const { data: feeRecall, isRefetching } = useQuery<number | undefined>({
+  const { data: feeRecall, isRefetching } = useQuery<feeFetch>({
     refetchIntervalInBackground: true,
     refetchInterval: 30 * 1000,
     queryKey: ["fee"],
@@ -91,7 +91,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         pair as string,
         pairDetail
       ),
-    initialData: 0,
+    initialData: {feeUsd: 0, feeEth: "0"},
     staleTime: 30 * 1000,
     enabled: inputB !== "0" && !isNaN(parseFloat(inputB)) && shouldFecth,
   });
@@ -110,7 +110,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     const tokenPrices = await getTokenPriceInUSD(value);
     setTokenName(symbol);
     setLaden(false);
-
+   
     setTokenPrice(tokenPrices);
     setInputA(rateConversion1t0(parseFloat(inputB)).toString());
   };
@@ -134,7 +134,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         pair as string,
         pairDetail
       );
-      setGasFee(fee ? (fee as number) : 0);
+      setGasFee(fee.feeUsd ? fee : { feeUsd: 0, feeEth: "0" });
       setLoading(false);
     }, 1000);
 
@@ -184,20 +184,19 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
       console.error("An error occurred:", error);
     }
   }
-
-  const buyPower2 = Number(inputB) + gasFee;
+  const buyPower2 = Number(inputB) + gasFee.feeEth;
 
   const transactionPossibility =
     Number(inputB) !== 0 &&
-    !isNaN(parseFloat(inputB)) &&
-    ethbalance > inputB &&
-    buyPower2 > Number(ethbalance);
+    inputB !== "" &&
+    inputB <= ethbalance &&
+    buyPower2 > ethbalance;
 
   useEffect(() => {
-    if (feeRecall !== 0) {
-      setGasFee(feeRecall as number);
-    }
-  }, [feeRecall, setGasFee, shouldFecth]);
+  
+      setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
+
+  }, [feeRecall, setGasFee, shouldFecth]); 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack width="w-full" justifyContent="between" margin="mb-2">
@@ -311,30 +310,27 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         </div>
       </Stack>
       <Button
-        disabled={
-          isSubmitting ||
-          buyPower.toString() === "0" ||
-          ethbalance < inputB ||
-          Number(inputB) === 0
-        }
-        className={` w-full mt-4 ${
-          !isNaN(parseFloat(inputB)) && ethbalance < inputB
-            ? "bg-red-600"
-            : transactionPossibility
-            ? "bg-yellow-400"
-            : "bg-green-400"
-        } hover:bg-blue-900 hover:border-none`}
-      >
-        {!transactionPossibility &&
-          (!isNaN(parseFloat(inputB)) && ethbalance < inputB
-            ? "Insufficient Funds"
-            : "Auto Buy")}
-        {transactionPossibility && "Buy Anyways"}
-      </Button>
-      <Typography color="#EF4444" className="text-xs text-center my-1">
-        {transactionPossibility &&
-          "Insufficient funds for Gas Fee, transaction might fail"}
-      </Typography>
+          disabled={
+            isSubmitting || buyPower2.toString() === "0" || ethbalance < inputB || Number(inputB) === 0 
+          }
+          className={` w-full mt-4 ${
+            !isNaN(parseFloat(inputB)) && ethbalance < inputB
+              ? "bg-red-600"
+              : transactionPossibility
+              ? "bg-yellow-400"
+              : "bg-green-400"
+          } hover:bg-blue-900 hover:border-none`}
+        >
+          {!transactionPossibility &&
+            (!isNaN(parseFloat(inputB)) && ethbalance < inputB
+              ? "Insufficient Funds"
+              : "Auto Buy")}
+          {transactionPossibility && "Buy Anyways"}
+        </Button>
+        <Typography color="#EF4444" className="text-xs text-center my-1">
+          {transactionPossibility &&
+            "Insufficient funds for Gas Fee, transaction might fail"}
+        </Typography>
       <Stack
         justifyContent="between"
         alignItems="center"
@@ -355,7 +351,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         </Typography>
         <Stack margin=" mr-1" alignItems="center" gap={1} justifyContent="end">
           <FaGasPump className="text-xs text-center" /> :{" "}
-          <Typography className="text-xs">$ {gasFee?.toFixed(2)}</Typography>
+          <Typography className="text-xs">$ {gasFee?.feeUsd.toFixed(2)}</Typography>
         </Stack>
       </Stack>
     </form>

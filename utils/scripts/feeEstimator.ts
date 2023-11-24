@@ -215,7 +215,7 @@ class FeeEstimator {
     );
     const priceUsd = await this.getTokenPriceFromDefillama();
     const feeEth = ethers.formatEther(gasFee.gasPrice! * gasLimit!);
-    return Number(feeEth) * priceUsd;
+    return {feeUsd: Number(feeEth) * priceUsd , feeEth: feeEth};
   }
 }
 

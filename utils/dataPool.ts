@@ -1,5 +1,5 @@
 import FeeEstimator from "./scripts/feeEstimator";
-import { TokenPairDetails } from "./types";
+import { TokenPairDetails, feeFetch } from "./types";
 
 export const fetchWalletTxn = async (addresses: string[]) => {
   try {
@@ -25,7 +25,7 @@ export const fetchWalletTxn = async (addresses: string[]) => {
 };
 
 
-export const fetchFee = async (value: string, pair: string, pairDetail: TokenPairDetails) => {
+export const fetchFee = async (value: string, pair: string, pairDetail: TokenPairDetails): Promise<feeFetch> => {
   try {
     const estimator = new FeeEstimator();
     const fee = await estimator.getFeeUsd(
@@ -37,13 +37,14 @@ export const fetchFee = async (value: string, pair: string, pairDetail: TokenPai
       pair as string,
       pairDetail.dexName as "uniswapv2" | "uniswapv3",
     );
-    if(fee !== undefined || fee !== null) { 
+    if (fee !== undefined && fee !== null) { 
       return fee;
     } else {
-      return 0;
+      return { feeUsd: 0, feeEth: "0" };
     }
-    
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    throw new Error('Failed to fetch fee');
   }
 };
+

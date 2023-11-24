@@ -8,7 +8,11 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "@/components/ui/use-toast";
 import { FieldValues, useForm } from "react-hook-form";
-import { ClientDefaultSession, TokenPairDetails } from "@/utils/types";
+import {
+  ClientDefaultSession,
+  TokenPairDetails,
+  feeFetch,
+} from "@/utils/types";
 import { useSession } from "next-auth/react";
 import BuySettings from "./BuySettings";
 import { key, metabotURL, shortenWord } from "@/utils/indexServer";
@@ -73,7 +77,6 @@ const Sell: FC<Props> = ({
     pairDetail?.baseAddress
   );
   const ethbalance = ethBalance;
-  const buyPower = Number(ethbalance) + gasFee;
 
   const params = useParams();
   const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
@@ -89,7 +92,7 @@ const Sell: FC<Props> = ({
 
     return rate;
   };
-  const { data: feeRecall, isRefetching } = useQuery<number | undefined>({
+  const { data: feeRecall, isRefetching } = useQuery<feeFetch>({
     refetchIntervalInBackground: true,
     refetchInterval: 30 * 1000,
     queryKey: ["fee"],
@@ -99,7 +102,7 @@ const Sell: FC<Props> = ({
         pair as string,
         pairDetail
       ),
-    initialData: 0,
+    initialData: { feeUsd: 0, feeEth: "0" },
     staleTime: 30 * 1000,
     enabled: inputB !== "0" && !isNaN(parseFloat(inputB)) && shouldFecth,
   });
@@ -145,7 +148,7 @@ const Sell: FC<Props> = ({
         pair as string,
         pairDetail
       );
-      setGasFee(fee ? (fee as number) : 0);
+      setGasFee(fee.feeUsd ? fee : { feeUsd: 0, feeEth: "0" });
       setLoading(false);
     }, 1000);
 
@@ -225,17 +228,57 @@ const Sell: FC<Props> = ({
     }
   };
 
-  const gasPass = Number(inputB) !== 0  &&
+  const gasPass =
+    Number(inputB) !== 0 &&
     !isNaN(parseFloat(inputB)) &&
-    token0balance > inputB &&
-    Number(ethbalance) < gasFee;
-
+    Number(token0balance) >= Number(inputB) &&
+    Number(gasFee.feeEth) > Number(ethbalance);
 
   useEffect(() => {
-    if (feeRecall !== 0) {
-      setGasFee(feeRecall as number);
-    }
+    setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
   }, [feeRecall, setGasFee, shouldFecth]);
+
+  const isButtonDisabled =
+    isSubmitting ||
+    token0balance === "0.0" ||
+    ethBalance === "0" ||
+    Number(token0balance) < Number(inputB) ||
+    Number(inputB) === 0 ||
+    inputB === "";
+
+  const getButtonColorClass = () => {
+    if (!isNaN(parseFloat(inputB))) {
+      if (Number(token0balance) < Number(inputB)) {
+        return "bg-red-600";
+      } else if (inputB !== "0" && Number(token0balance) !== 0 && gasPass) {
+        return "bg-yellow-400";
+      } else {
+        return "bg-green-400";
+      }
+    } else {
+      return ""; // Adjust this based on your default style
+    }
+  };
+
+  const getButtonText = () => {
+    if (
+      !gasPass &&
+      !isNaN(parseFloat(inputB)) &&
+      Number(inputB) > Number(token0balance)
+    ) {
+      return "Insufficient Funds";
+    }
+
+    if (isSubmitting) {
+      return "....";
+    }
+
+    if (token0balance !== "0" && gasPass) {
+      return "Sell Anyways";
+    }
+
+    return "Auto Sell"; // Default text
+  };
 
   return (
     <Stack flexDirection="col" padding="px-4 mt-4">
@@ -247,7 +290,7 @@ const Sell: FC<Props> = ({
             </span>{" "}
             <span
               className={
-                token0balance < inputB
+                Number(token0balance) < Number(inputB)
                   ? "text-red-600"
                   : token0balance === "0.0"
                   ? "text-red-600"
@@ -284,7 +327,7 @@ const Sell: FC<Props> = ({
         </Stack>
         <Stack justifyContent="between" gap={2}>
           <Button
-            disabled={token0balance === "0.0" || token0balance === "0"}
+            disabled={Number(token0balance) === 0}
             type="button"
             onClick={() => handleTabClick(25)}
             className={`mt-4 w-full ${
@@ -294,7 +337,7 @@ const Sell: FC<Props> = ({
             25%
           </Button>
           <Button
-            disabled={token0balance === "0.0" || token0balance === "0"}
+            disabled={Number(token0balance) === 0}
             type="button"
             onClick={() => handleTabClick(50)}
             className={`mt-4 w-full ${
@@ -304,7 +347,7 @@ const Sell: FC<Props> = ({
             50%
           </Button>
           <Button
-            disabled={token0balance === "0.0" || token0balance === "0"}
+            disabled={Number(token0balance) === 0}
             type="button"
             onClick={() => handleTabClick(75)}
             className={`mt-4 w-full ${
@@ -346,29 +389,10 @@ const Sell: FC<Props> = ({
           </div>
         </Stack>
         <Button
-          disabled={
-            isSubmitting ||
-            token0balance === "0.0" ||
-            ethBalance === "0" ||
-            token0balance < inputB ||
-            Number(inputB) === 0 ||
-            inputB === ""
-          }
-          className={` w-full mt-4 ${
-            !isNaN(parseFloat(inputB)) && token0balance < inputB
-              ? "bg-red-600"
-              : inputB !== "0" && token0balance !== "0" && gasPass
-              ? "bg-yellow-400"
-              : "bg-green-400"
-          } hover:bg-blue-900 hover:border-none`}
+          disabled={isButtonDisabled}
+          className={`w-full mt-4 ${getButtonColorClass()}`}
         >
-          {!gasPass &&
-             
-            !isNaN(parseFloat(inputB)) &&
-            (userBalanc as string) < inputB &&
-            "Insufficient Funds"}
-          {gasPass !== true && (userBalanc as string) > inputB && "Auto Sell"}{isSubmitting && "...."}
-          { token0balance !== "0" && gasPass && "Sell Anyways"}
+          {getButtonText()}
         </Button>
         <Typography color="#EF4444" className="text-xs text-center my-1">
           {inputB !== "0" &&
@@ -397,7 +421,9 @@ const Sell: FC<Props> = ({
             justifyContent="end"
           >
             <FaGasPump className="text-xs text-center" /> :{" "}
-            <Typography className="text-xs">$ {gasFee?.toFixed(2)}</Typography>
+            <Typography className="text-xs">
+              $ {gasFee?.feeUsd.toFixed(2)}
+            </Typography>
           </Stack>
         </Stack>
       </form>

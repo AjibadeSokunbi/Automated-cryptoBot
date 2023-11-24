@@ -1,15 +1,16 @@
 import { create } from "zustand";
+import { feeFetch } from "../types";
 
 interface Props {
 
-  gasFee: number;
-  setGasFee: (entity: number) => void;
+  gasFee: feeFetch;
+  setGasFee: (gasFee: feeFetch) => void;
 }
 
 export const useGaStore = create<Props>((set) => ({
 
-  gasFee: 0,
-  setGasFee: (gasFee: number) => {
+  gasFee: { feeUsd: 0, feeEth: "0",},
+  setGasFee: (gasFee: feeFetch) => {
     set({ gasFee: gasFee });
   },
 
