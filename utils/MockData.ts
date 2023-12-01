@@ -1583,3 +1583,354 @@ export const proAnalytics = [
     text: "100 Email Alerts"
   },
 ];
+
+export const walletTokenTable = [
+  {
+    logo: '/bsc.png',
+    token: 'shank',
+    type: 'buy',
+    price: '200,582.69',
+    balance: '0.674',
+    total: '210,248.52',
+  },
+  {
+    logo: '/Eth.svg',
+    token: 'eth',
+    type: 'buy',
+    price: '200,582.69',
+    balance: '0.674',
+    total: '210,248.52',
+  },
+  {
+    logo: '/bsc.png',
+    token: 'shank',
+    type: 'buy',
+    price: '200,582.69',
+    balance: '0.674',
+    total: '210,248.52',
+  },
+  {
+    logo: '/Eth.svg',
+    token: 'eth',
+    type: 'buy',
+    price: '200,582.69',
+    balance: '0.674',
+    total: '210,248.52',
+  },
+  {
+    logo: '/bsc.png',
+    token: 'another token',
+    type: 'buy',
+    price: '200,582.69',
+    balance: '0.674',
+    total: '210,248.52',
+  },
+  {
+    logo: '/Eth.svg',
+    token: 'longer token name',
+    type: 'buy',
+    price: '200,582.69',
+    balance: '0.674',
+    total: '210,248.52',
+  },
+];
+
+export const allTable = [
+  {
+    wallet: 'w1',
+    type: 'limit buy',
+    token: 'Reflex',
+    quantity: '867.56',
+    status: 'pending',
+  },
+  {
+    wallet: 'w1',
+    type: 'sell',
+    token: 'Yolo',
+    quantity: '867.56',
+    status: 'completed',
+  },
+  {
+    wallet: 'w1',
+    type: 'buy',
+    token: 'BNB',
+    quantity: '867.56',
+    status: 'pending',
+  },
+  {
+    wallet: 'w1',
+    type: 'limit sell',
+    token: 'ETH',
+    quantity: '867.56',
+    status: 'completed',
+  },
+  {
+    wallet: 'w1',
+    type: 'copy',
+    token: 'Btc',
+    quantity: '867.56',
+    status: 'pending',
+  },
+];
+
+export const limitsTable = [
+  {
+    wallet: 'w1',
+    type: 'limit buy',
+    token: 'Reflex',
+    quantity: '867.56',
+    price: '867.56',
+    status: 'pending',
+  },
+  {
+    wallet: 'w1',
+    type: 'sell',
+    token: 'Yolo',
+    quantity: '867.56',
+    price: '867.56',
+    status: 'completed',
+  },
+  {
+    wallet: 'w1',
+    type: 'buy',
+    token: 'BNB',
+    quantity: '867.56',
+    price: '867.56',
+    status: 'pending',
+  },
+  {
+    wallet: 'w1',
+    type: 'limit sell',
+    token: 'ETH',
+    quantity: '867.56',
+    price: '867.56',
+    status: 'completed',
+  },
+  {
+    wallet: 'w1',
+    type: 'copy',
+    token: 'Btc',
+    quantity: '867.56',
+    price: '867.56',
+    status: 'pending',
+  },
+];
+
+export const copiedTradesTable = [
+  {
+    time: '3',
+    address: '0x9cA4hrh45ndj44g89D21',
+    status: 'pending',
+  },
+  {
+    time: '5',
+    address: '0x9cA4hrh45ndj44g89D21',
+    status: 'pending',
+  },
+  {
+    time: '10',
+    address: '0x9cA4hrh45ndj44g89D21',
+    status: 'completed',
+  },
+  {
+    time: '12',
+    address: '0x9cA4hrh45ndj44g89D21',
+    status: 'completed',
+  },
+  {
+    time: '15',
+    address: '0x9cA4hrh45ndj44g89D21',
+    status: 'completed',
+  },
+];
+
+export const transfersTable = [
+  {
+    time: '3',
+    action: 'sent',
+    tokenLogo: '/bsc.png',
+    tokenName: 'binance',
+    tokenAddress: '0x9cA4hrh45ndj44g89D21',
+    ethLogo: '/Eth.svg',
+    priceETH: '22',
+    priceDOL: '58,743.67',
+    gasFeeETH: '0.0033',
+    gasFeeDOL: '6.02'
+  },
+  {
+    time: '7',
+    action: 'recieved',
+    tokenLogo: '/bsc.png',
+    tokenName: 'binance',
+    tokenAddress: '0x9cA4hrh45ndj44g89D21',
+    ethLogo: '/Eth.svg',
+    priceETH: '22',
+    priceDOL: '58,743.67',
+    gasFeeETH: '0.0033',
+    gasFeeDOL: '6.02'
+  },
+  {
+    time: '10',
+    action: 'recieved',
+    tokenLogo: '/bsc.png',
+    tokenName: 'binance',
+    tokenAddress: '0x9cA4hrh45ndj44g89D21',
+    ethLogo: '/Eth.svg',
+    priceETH: '22',
+    priceDOL: '58,743.67',
+    gasFeeETH: '0.0033',
+    gasFeeDOL: '6.02'
+  },
+  {
+    time: '13',
+    action: 'sent',
+    tokenLogo: '/bsc.png',
+    tokenName: 'binance',
+    tokenAddress: '0x9cA4hrh45ndj44g89D21',
+    ethLogo: '/Eth.svg',
+    priceETH: '22',
+    priceDOL: '58,743.67',
+    gasFeeETH: '0.0033',
+    gasFeeDOL: '6.02'
+  },
+  {
+    time: '17',
+    action: 'recieved',
+    tokenLogo: '/bsc.png',
+    tokenName: 'binance',
+    tokenAddress: '0x9cA4hrh45ndj44g89D21',
+    ethLogo: '/Eth.svg',
+    priceETH: '22',
+    priceDOL: '58,743.67',
+    gasFeeETH: '0.0033',
+    gasFeeDOL: '6.02'
+  },
+  {
+    time: '20',
+    action: 'sent',
+    tokenLogo: '/bsc.png',
+    tokenName: 'binance',
+    tokenAddress: '0x9cA4hrh45ndj44g89D21',
+    ethLogo: '/Eth.svg',
+    priceETH: '22',
+    priceDOL: '58,743.67',
+    gasFeeETH: '0.0033',
+    gasFeeDOL: '6.02'
+  },
+];
+
+export const TradeProfit = [
+  {
+    platform: 'kukoin',
+    profit: '456,789.07',
+  },
+  {
+    platform: 'kukoin',
+    profit: '456,789.07',
+  },
+  {
+    platform: 'kukoin',
+    profit: '456,789.07',
+  },
+];
+
+export const TradeLoss = [
+  {
+    platform: 'kukoin',
+    profit: '456,789.07',
+  },
+  {
+    platform: 'kukoin',
+    profit: '456,789.07',
+  },
+  {
+    platform: 'kukoin',
+    profit: '456,789.07',
+  },
+];
+
+export const TradeContent = [
+  {
+    date: '03/10/23',
+    time: '18:05:45',
+    profitType: 'buy',
+    lossType: 'sell',
+    amount: '980.89',
+    price: '0.00967812',
+  },
+  {
+    date: '03/10/23',
+    time: '18:05:45',
+    profitType: 'buy',
+    lossType: 'sell',
+    amount: '980.89',
+    price: '0.00967812',
+  },
+  {
+    date: '03/10/23',
+    time: '18:05:45',
+    profitType: 'buy',
+    lossType: 'sell',
+    amount: '980.89',
+    price: '0.00967812',
+  },
+  {
+    date: '03/10/23',
+    time: '18:05:45',
+    profitType: 'buy',
+    lossType: 'sell',
+    amount: '980.89',
+    price: '0.00967812',
+  },
+  {
+    date: '03/10/23',
+    time: '18:05:45',
+    profitType: 'buy',
+    lossType: 'sell',
+    amount: '980.89',
+    price: '0.00967812',
+  },
+];
+
+export const securityData = [
+  {
+    title: 'wallet address 1',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 2',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 3',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 4',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 5',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 6',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 7',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+  {
+    title: 'wallet address 8',
+    address: '0x9c8bb8355629a72eb506d14b29bc3a9856107d21',
+    key: 'E9873D79C6D87DC0FB6A5778633389F4453213303DA61F20BD67FC233AA33262',
+  },
+];

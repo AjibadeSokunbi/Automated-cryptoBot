@@ -45,4 +45,24 @@ const Slider2 = React.forwardRef<
 ))
 Slider2.displayName = "Slider2";
 
-export { Slider , Slider2}
+const Slider3 = React.forwardRef<
+  React.ElementRef<typeof SliderPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <SliderPrimitive.Root
+    ref={ref}
+    className={cn(
+      "relative flex w-full touch-none select-none items-center",
+      className
+    )}
+    {...props}
+  >
+    <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
+      <SliderPrimitive.Range className="absolute h-full bg-blue-600 dark:bg-neutral-50" />
+    </SliderPrimitive.Track>
+    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border-2 border-blue-600 bg-white ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-50 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300" />
+  </SliderPrimitive.Root>
+))
+Slider2.displayName = "Slider3";
+
+export { Slider , Slider2, Slider3}
