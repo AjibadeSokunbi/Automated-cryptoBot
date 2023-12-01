@@ -3,11 +3,9 @@ import React, { FC, useState } from "react";
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import { IoIosArrowDown } from "react-icons/io";
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent2,
-  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Checkbox2 } from "@/components/ui/checkbox";

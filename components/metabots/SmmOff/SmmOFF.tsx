@@ -32,7 +32,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
               Price Alerts
             </TabsTrigger>
           </TabsList>
-           <SmmControl/>
+           <SmmControl params={props.params}/>
         </Stack>
         <Suspense
           fallback={
@@ -47,6 +47,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
           }
         >
           <LatestFetch params={props.params} />
+          
         </Suspense>
       </Tabs>
     </>

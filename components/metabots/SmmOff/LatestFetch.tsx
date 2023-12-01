@@ -1,8 +1,13 @@
 import React, { FC } from "react";
-import { TokenPairDetails } from "@/utils/types";
+import { ServerDefaultSession, TokenPairDetails } from "@/utils/types";
 import LatestTrade from "./LatestTrade";
 import PriceAlerts from "./PriceAlerts";
 import { TabsContent } from "@/components/ui/tab3";
+import Stack from "@/components/custom/Stack";
+import Typography from "@/components/custom/Typography";
+import PoolTab from "./Pool/PoolTab";
+import LiveTrades from "./LiveTrades";
+import { getCurrentUser } from "@/lib/session";
 
 interface Props {
 
@@ -44,11 +49,32 @@ const LatestFetch: FC<Props> = async ({ params }) => {
   const [data3] = await Promise.all([res.json()]);
 
   const pairDetails: TokenPairDetails = data3.data;
+  const user: ServerDefaultSession =
+  (await getCurrentUser()) as ServerDefaultSession;
+
+  const smm = user.botdata.data.settings.autogas
   return (
     <>
       <TabsContent value="Transactions" className="w-full ">
         {" "}
-        <LatestTrade historyData={historyData} pairDetails={pairDetails} params={params}/>
+      {!smm &&  <LatestTrade historyData={historyData} pairDetails={pairDetails} params={params}/>}
+
+        {smm &&   <Stack margin="my-3" flexDirection="col" sx="hidden md:flex lg:flex">
+          <Stack justifyContent="between" gap={7}>
+            <Stack
+              flexDirection="col"
+              sx="w-full  h-96 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 "
+            >
+              <Typography className="text-white text-base font-bold font-['Instrument Sans'] leading-tight">
+                Pool Activity
+              </Typography>
+              <PoolTab params={params} />
+            </Stack>
+            <Stack sx="w-full  h-96 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
+              <LiveTrades params={params} />
+            </Stack>
+          </Stack>
+        </Stack>}
       </TabsContent>
 
       <TabsContent value="watchlist" className="w-full ">

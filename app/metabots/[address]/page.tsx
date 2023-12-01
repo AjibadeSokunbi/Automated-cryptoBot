@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import InnerTab2 from "@/components/metabots/TX/InnerTab2";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PriceAlerts from "@/components/metabots/SmmOff/PriceAlerts";
-import FeeEstimator from "@/utils/scripts/feeEstimator";
+
 interface pageProps {
   params: {
     address: string;

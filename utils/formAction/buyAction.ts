@@ -68,7 +68,7 @@ export async function onSellAction(FormData: FormData, pair: string) {
     "Content-Type": "application/json",
   });
   const amount = FormData.get("amount");
-
+console.log(FormData)
   const requestBody = JSON.stringify({
     token: FormData.get("tokenAddress"),
     amount: Number(amount).toFixed(0).toString(),
@@ -84,7 +84,7 @@ export async function onSellAction(FormData: FormData, pair: string) {
 
   try {
     const response = await fetch(`${metabotURL}trade/`, requestOptions);
-    console.log(response);
+
     const result = await response.json();
     console.log(result);
     if (response.status === 200) {
@@ -129,7 +129,7 @@ export async function onBuyLimitAction(FormData: FormData, pair: string, isGreat
     protocolIdentifier: "uniswap:eth",
     tradePrice: FormData.get("price"),
   });
-
+  console.log(requestBody)
   const requestOptions: RequestInit = {
     method: "POST",
     headers,
@@ -149,11 +149,10 @@ export async function onBuyLimitAction(FormData: FormData, pair: string, isGreat
         message: "success",
       };
     } else {
-      console.log("Transaction failed:", result.data.reason);
+      console.log("Transaction failed:", result.message);
       return {
-        
         message: "error",
-        reason: result.data.reason
+        error: "Something Went Wrong please try again"
       };
     }
   } catch (error) {

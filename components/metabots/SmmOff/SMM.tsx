@@ -1,14 +1,10 @@
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
-
-import { ServerDefaultSession, TokenPairDetails } from "@/utils/types";
 import React, { FC, Suspense } from "react";
 import LiveTrades from "./LiveTrades";
 import PoolTab from "./Pool/PoolTab";
 import SmmOFF from "./SmmOFF";
-import PairSet from "./PairSet";
 import { ImSpinner2 } from "react-icons/im";
-import { getCurrentUser } from "@/lib/session";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SmmControl from "./SmmControl";
 import LatestFetchMobile from "./LatestFetchMobile";
@@ -20,33 +16,11 @@ interface Props {
 }
 
 const SMM: FC<Props> = async ({ ...props }) => {
-  // const user: ServerDefaultSession =
-  //   (await getCurrentUser()) as ServerDefaultSession;
 
-  // const sub = user?.botdata?.data?.tier;
 
   return (
     <>
-      {
-        <Stack margin="my-3" flexDirection="col" sx="hidden md:flex lg:flex">
-          {/* <PairSet data={data} /> */}
-          <Stack justifyContent="between" gap={7}>
-            <Stack
-              flexDirection="col"
-              sx="w-full  h-96 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 "
-            >
-              <Typography className="text-white text-base font-bold font-['Instrument Sans'] leading-tight">
-                Pool Activity
-              </Typography>
-              <PoolTab params={props.params} />
-            </Stack>
-            <Stack sx="w-full  h-96 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
-              <LiveTrades params={props.params} />
-            </Stack>
-          </Stack>
-        </Stack>
-      }
-
+ 
       {/* mobile___________-------------------------------  */}
       {
         <Stack
@@ -97,10 +71,12 @@ const SMM: FC<Props> = async ({ ...props }) => {
           </Tabs>
         </Stack>
       }
-      <Stack sx="w-full h-72 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
+      <Stack flexDirection="col" gap={2} sx="w-full px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
         <div className="hidden md:flex lg:flex w-full">
           <SmmOFF params={props.params} />
         </div>
+
+        
         <div className="w-full flex flex-col md:hidden lg:hidden">
           <Suspense
             fallback={
@@ -114,7 +90,7 @@ const SMM: FC<Props> = async ({ ...props }) => {
               </Stack>
             }
           >
-            {<SmmControl />}
+            {/* {<SmmControl />} */}
             <LatestFetchMobile params={props.params} />
           </Suspense>
         </div>

@@ -13,7 +13,7 @@ import {
 import Stack from "@/components/custom/Stack";
 import { useParams } from "next/navigation";
 import { fetchFeeData } from "./LatestTrade";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {  useQuery } from "@tanstack/react-query";
 import { fetchWalletTxn } from "@/utils/dataPool";
 
 interface Props {

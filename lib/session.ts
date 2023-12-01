@@ -8,7 +8,7 @@ const metabotURL = process.env.METABOT_URL as string;
 const requestOptions: RequestInit = {
   method: "GET",
   credentials: "include",
-  next: { revalidate: 50 },
+  next: { revalidate: 50, tags: ["user"] },
 };
 
 export async function getCurrentUser() {
