@@ -58,7 +58,19 @@ export interface User {
   };
   token?: string;
 }
-
+export interface UserSetting {
+  _id: string;
+  user: string;
+  autogas: boolean;
+  scamScore: number;
+  slippage: number;
+  protocolIdentifier: string;
+  isPrivate: boolean;
+  shouldSimulate: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
 export interface UserBotData {
   data: User;
 }
@@ -83,13 +95,12 @@ export interface ClientDefaultSession {
   botUser: UserBotData;
   expires?: string;
   wallets?: string[];
-  balance: string
+  balance: string;
 }
 
 export interface feeFetch {
-
-  feeUsd: number
- feeEth: string;
+  feeUsd: number;
+  feeEth: string;
 }
 export interface ExchangeResult {
   name: string;
@@ -112,7 +123,6 @@ export interface ExchangeResult {
 export interface ExchangeResponse {
   results: ExchangeResult[];
 }
-
 
 export interface BalanceInfo {
   decimals: string;
@@ -183,8 +193,7 @@ export interface WalletDatas {
 }
 
 export interface WalletTXNS {
-  data : WalletDatas[];
-  
+  data: WalletDatas[];
 }
 
 export interface TokenPairDetails {
@@ -265,7 +274,7 @@ export interface TokenSecurity {
   is_proxy: string;
   is_mintable: string;
   lp_holders?: LPHolder[];
-  holder_count?: string
+  holder_count?: string;
 }
 
 export interface AddressSecurity {
@@ -489,20 +498,19 @@ interface Token {
   value: number; // Corrected to number type
 }
 
-
 export interface UserTrade {
   _id: string;
   user: string;
   token: string;
-  action: 'buy' | 'sell';
+  action: "buy" | "sell";
   amount: string;
   usdPrice: number;
   chain: string;
   wallet: string;
-  status: 'CONFIRMED' | 'PENDING' | 'CONFRIMED'; 
+  status: "CONFIRMED" | "PENDING" | "CONFRIMED";
   txnHash: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
-  executed: boolean
+  executed: boolean;
 }

@@ -5,7 +5,7 @@ import { useNewStore } from "@/utils/zustanStore/newStore";
 interface Props {}
 
 const NewTokenHead = () => {
-  const { isConnected } = useNewStore();
+  const  isConnected  = true;
   return (
     <Stack sx="border-none bg-slate-950 w-full mt-1">
       <Stack

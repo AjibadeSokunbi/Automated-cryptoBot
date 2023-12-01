@@ -6,7 +6,7 @@ export async function getTokenBalance(
   ): Promise<string | undefined> {
     const alchemyApiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY;
     const provider = new ethers.AlchemyProvider(
-      "homestead", // or the network you're using (e.g., "rinkeby")
+      "homestead",
       alchemyApiKey
     );
   

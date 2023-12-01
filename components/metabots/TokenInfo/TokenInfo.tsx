@@ -109,11 +109,12 @@ const TokenInfo: FC<Props> = ({
                 <Typography className="text-white text-xl font-bold font-['Instrument Sans']">
                   {data && data?.baseSymbol}
                 </Typography>{" "}
-                <CopyAddress address= {data?.token0Address}/>
+                <CopyAddress address= {data?.baseAddress}/>
                 /{" "}
                 <Typography className="text-white text-xl font-bold font-['Instrument Sans']">
                   {data && data?.quoteSymbol}
-                </Typography>{" "}
+                </Typography>
+                <CopyAddress address= {data?.quoteAddress} />{" "}
               </Stack>
 
               <Stack gap={1} alignItems="center">

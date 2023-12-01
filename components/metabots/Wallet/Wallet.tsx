@@ -25,6 +25,7 @@ const Wallet: FC<Props> = ({}) => {
   const [selectedWallet, setSelectedWallet] = useState<string>(
     Wallets ? Wallets[0] : ""
   );
+  console.log(selectedWallet)
   const balance = user?.balance;
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Wallet: FC<Props> = ({}) => {
       setHideWallets(!hideWallets ? true : false);
     }
   };
-
+  
   return (
     <Stack
       flexDirection="col"
@@ -93,7 +94,7 @@ const Wallet: FC<Props> = ({}) => {
               <Stack flexDirection="col" gap={2} alignItems="end">
                 <Stack>
                   <CopyAddress address={selectedWallet} />
-                  <Link href={`https://etherscan.io/address/${selectWallet}`} target="_blank">
+                  <Link href={`https://etherscan.io/address/${selectedWallet}`} target="_blank">
                     <TbWorld />
                   </Link>
                 </Stack>

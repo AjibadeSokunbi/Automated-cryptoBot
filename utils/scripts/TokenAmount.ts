@@ -69,7 +69,6 @@ class ExchangeRateCalculator {
           quotedAmountOut,
           token1Decimals
         ) as any;
-        console.log("exchangeRate1to2", this.exchangeRate1to2);
         this.exchangeRate2to1 = 1 / this.exchangeRate1to2;
       } else if (factory === "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f") {
         const [reserveToken0, reserveToken2] = await pairContract.getReserves();

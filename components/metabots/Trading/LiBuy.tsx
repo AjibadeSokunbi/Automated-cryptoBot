@@ -14,10 +14,12 @@ import {
   metabotURL,
   shortenWord,
 } from "@/utils/indexServer";
-import { ClientDefaultSession, TokenPairDetails, feeFetch } from "@/utils/types";
-import BuySettings from "./BuySettings";
-import BuySettingsMobile from "./BuySettingsMobile";
-import Link from "next/link";
+import {
+  ClientDefaultSession,
+  TokenPairDetails,
+  UserSetting,
+  feeFetch,
+} from "@/utils/types";
 import { useParams } from "next/navigation";
 import { fetchFee } from "@/utils/dataPool";
 import { useQuery } from "@tanstack/react-query";
@@ -26,6 +28,10 @@ import { useSession } from "next-auth/react";
 import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
 import { FaGasPump } from "react-icons/fa";
 import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
+import { LucideShieldCheck } from "lucide-react";
+import Link from "next/link";
+import { onBuyLimitAction } from "@/utils/formAction/buyAction";
+import BuyButton from "./BuyButton";
 
 type Inputs = {
   tradePrice: string;
@@ -36,8 +42,9 @@ interface Props {
   priseUsdEth: number;
   ethBalance: string;
   userBalanc: string | undefined;
+  settings: UserSetting;
 }
-const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
+const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
   const [isGreaterThan, setIsGreaterThan] = useState<boolean>(false);
   const pairDetail = tokenData;
   const { gasFee, setGasFee } = useGaStore();
@@ -48,7 +55,6 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
   const [shouldFecth, setShouldFecth] = useState<boolean>(false);
 
   const ethbalance = ethBalance;
-
 
   const params = useParams();
   const pair = params.address;
@@ -91,7 +97,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         pair as string,
         pairDetail
       ),
-    initialData: {feeUsd: 0, feeEth: "0"},
+    initialData: { feeUsd: 0, feeEth: "0" },
     staleTime: 30 * 1000,
     enabled: inputB !== "0" && !isNaN(parseFloat(inputB)) && shouldFecth,
   });
@@ -110,7 +116,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     const tokenPrices = await getTokenPriceInUSD(value);
     setTokenName(symbol);
     setLaden(false);
-   
+
     setTokenPrice(tokenPrices);
     setInputA(rateConversion1t0(parseFloat(inputB)).toString());
   };
@@ -184,6 +190,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
       console.error("An error occurred:", error);
     }
   }
+
   const buyPower2 = Number(inputB) + gasFee.feeEth;
 
   const transactionPossibility =
@@ -193,12 +200,67 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     buyPower2 > ethbalance;
 
   useEffect(() => {
-  
-      setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
+    setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
+  }, [feeRecall, setGasFee, shouldFecth]);
 
-  }, [feeRecall, setGasFee, shouldFecth]); 
+
+  const isButtonDisabled =
+    buyPower2.toString() === "0" || ethbalance < inputB || Number(inputB) === 0;
+
+  const getButtonColorClass = () => {
+    if (!isNaN(parseFloat(inputB)) && ethbalance < inputB) {
+      return "bg-red-600";
+    } else if (transactionPossibility) {
+      return "bg-yellow-400";
+    } else {
+      return "bg-green-400";
+    }
+  };
+
+  const getButtonText = () => {
+    if (!transactionPossibility) {
+      if (!isNaN(parseFloat(inputB)) && ethbalance < inputB) {
+        return "Insufficient Funds";
+      } else {
+        return "Auto Buy";
+      }
+    } else {
+      return "Buy Anyways";
+    }
+  };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      action={async (formData) => {
+        const result = await onBuyLimitAction(
+          formData,
+          pair as string,
+          isGreaterThan
+        );
+        if (result?.message === "success") {
+          toast({
+            title: "Purchase Successful!",
+            variant: "default",
+            description: (
+              <Link
+                className="underline text-yellow-600"
+                target="_blank"
+                href={`https://etherscan.io/tx/${result.txHash}`}
+              >
+                Click to view your Transaction Status
+              </Link>
+            ),
+          });
+        } else if (result?.message === "error") {
+          toast({
+            title: "Error",
+            variant: "destructive",
+            description: (
+              <p className="underline text-red-600">{result?.message}</p>
+            ),
+          });
+        }
+      }}
+    >
       <Stack width="w-full" justifyContent="between" margin="mb-2">
         <Typography className="w-full text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
           Buy
@@ -221,6 +283,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         >
           <Input
             type="number"
+            name="amount"
             inputMode="numeric"
             placeholder="Amount"
             value={checkScientificNotation(inputB)}
@@ -239,13 +302,11 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         >
           <Input
             type="text"
+            name="price"
             placeholder="Price USD"
             required
             defaultValue={pairDetail?.priceUsd?.toFixed(1)}
             className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
-            {...register("tradePrice", {
-              required: "Please enter a Price",
-            })}
           />
           {errors.tradePrice && (
             <p className="text-red-500">{errors.tradePrice.message}</p>
@@ -259,6 +320,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         <Button
           variant="outline"
           type="button"
+          name="bg"
           onClick={() => setIsGreaterThan(true)}
           className={`w-full  ${
             isGreaterThan ? "bg-[#063172]" : "bg-[#212E40]"
@@ -267,6 +329,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
           Above Price
         </Button>
         <Button
+          name="bl"
           variant="outline"
           type="button"
           onClick={() => setIsGreaterThan(false)}
@@ -285,11 +348,6 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
       >
         <HiArrowLongDown className="text-center w-7" size={30} />
       </Stack>
-      <Stack width="w-full" justifyContent="between" margin="mb-2">
-        {/* <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
-          Receive
-        </Typography> */}
-      </Stack>
       <Stack
         justifyContent="center"
         width="w-full"
@@ -297,6 +355,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
       >
         <Input
           type="text"
+          name="tokenAddress"
           placeholder="Token Address"
           aria-controls=""
           required
@@ -309,49 +368,72 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
           {laden && "...."}
         </div>
       </Stack>
-      <Button
-          disabled={
-            isSubmitting || buyPower2.toString() === "0" || ethbalance < inputB || Number(inputB) === 0 
-          }
-          className={` w-full mt-4 ${
-            !isNaN(parseFloat(inputB)) && ethbalance < inputB
-              ? "bg-red-600"
-              : transactionPossibility
-              ? "bg-yellow-400"
-              : "bg-green-400"
-          } hover:bg-blue-900 hover:border-none`}
-        >
-          {!transactionPossibility &&
-            (!isNaN(parseFloat(inputB)) && ethbalance < inputB
-              ? "Insufficient Funds"
-              : "Auto Buy")}
-          {transactionPossibility && "Buy Anyways"}
-        </Button>
-        <Typography color="#EF4444" className="text-xs text-center my-1">
-          {transactionPossibility &&
-            "Insufficient funds for Gas Fee, transaction might fail"}
-        </Typography>
+      <BuyButton
+          getButtonColorClass={getButtonColorClass}
+          getButtonText={getButtonText}
+          isButtonDisabled={isButtonDisabled}
+        />
+      <Typography color="#EF4444" className="text-xs text-center my-1">
+        {transactionPossibility &&
+          "Insufficient funds for Gas Fee, transaction might fail"}
+      </Typography>
+      <Stack alignItems="center" gap={2} margin="mt-2">
+        <LucideShieldCheck color="#FFC107" className="text-[14px]" size={15} />
+        <div className=" text-[#FFC107] text-base font-normal font-['Instrument Sans'] underline leading-tight">
+          Failsafe Protection
+        </div>
+        <div className="px-2.5 py-0.5 bg-[#06C270] rounded-full text-emerald-700 text-xs font-bold border border-emerald-700 justify-center items-center ">
+          On
+        </div>
+      </Stack>
+
       <Stack
-        justifyContent="between"
-        alignItems="center"
+        width={
+          inputB !== "" || !isNaN(parseFloat(inputB)) ? "w-full flex" : "hidden"
+        }
+        flexDirection="col"
+        gap={2}
+        margin="mt-2"
         sx={isRefetching || loading ? "opacity-30 animate-pulse" : ""}
       >
-        <Typography className="text-xs">
-          {tokenName}:
-          <span className="ml-1">
-            {!isNaN(parseFloat(inputA)) ? Number(inputA).toFixed(1) : "0"}
-          </span>
-        </Typography>
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+            ETH:
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+            $
+            {isNaN(parseFloat(inputB))
+              ? "0.00"
+              : (Number(inputB) * priseUsdEth).toFixed(1)}
+          </Typography>
+        </Stack>
 
-        <Typography className="text-xs">
-          ETH: $
-          {isNaN(parseFloat(inputB))
-            ? "0.00"
-            : (Number(inputB) * priseUsdEth).toFixed(1)}
-        </Typography>
-        <Stack margin=" mr-1" alignItems="center" gap={1} justifyContent="end">
-          <FaGasPump className="text-xs text-center" /> :{" "}
-          <Typography className="text-xs">$ {gasFee?.feeUsd.toFixed(2)}</Typography>
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+            {tokenName}:
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+            {!isNaN(parseFloat(inputA)) ? inputA : "0"} {tokenName}
+          </Typography>
+        </Stack>
+
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+            {" "}
+            Slippage:
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+            {settings.slippage}%
+          </Typography>
+        </Stack>
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+            {" "}
+            Gass Fee <FaGasPump className="text-xs text-center" /> :
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+            $ {gasFee?.feeUsd.toFixed(2)}
+          </Typography>
         </Stack>
       </Stack>
     </form>

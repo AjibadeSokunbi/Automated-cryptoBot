@@ -11,10 +11,10 @@ import { FieldValues, useForm } from "react-hook-form";
 import {
   ClientDefaultSession,
   TokenPairDetails,
+  UserSetting,
   feeFetch,
 } from "@/utils/types";
 import { useSession } from "next-auth/react";
-import BuySettings from "./BuySettings";
 import { key, metabotURL, shortenWord } from "@/utils/indexServer";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
 import { useParams } from "next/navigation";
@@ -24,6 +24,9 @@ import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
 import { getTokenBalance } from "@/utils/scripts/getTokenBalance";
 import { FaGasPump } from "react-icons/fa";
 import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
+import { LucideShieldCheck } from "lucide-react";
+import { onSellLimitAction } from "@/utils/formAction/buyAction";
+import SellButton from "./SellButton";
 
 type Inputs = {
   tradePrice: string;
@@ -34,6 +37,7 @@ interface Props {
   priseUsdEth: number;
   ethBalance: string;
   userBalanc: string | undefined;
+  settings: UserSetting;
 }
 
 const LiSell: FC<Props> = ({
@@ -41,6 +45,7 @@ const LiSell: FC<Props> = ({
   priseUsdEth,
   ethBalance,
   userBalanc,
+  settings,
 }) => {
   const [isGreaterThan, setIsGreaterThan] = useState<boolean>(false);
 
@@ -153,47 +158,6 @@ const LiSell: FC<Props> = ({
     }, 30000);
   };
 
-  async function onSubmit(data: FieldValues) {
-    const requestBody = JSON.stringify({
-      token: tokenAddress,
-      amount: Number(inputB).toFixed(6).toString(),
-      action: "sell",
-      walletIndex: 0,
-      // paymentToken: pairDetail?.token0Address,
-      tradePrice: data.tradePrice.toString(),
-      isgreaterThan: isGreaterThan,
-      protocolIdentifier: "uniswap:eth",
-    });
-
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers,
-      body: requestBody,
-    };
-
-    try {
-      const response = await fetch(`${metabotURL}limitTrade/`, requestOptions);
-
-      const result = await response?.json();
-      if (response.status !== 200) {
-        return toast({
-          title: "Error",
-          variant: "destructive",
-          description: (
-            <p className="underline text-red-600">{result?.message}</p>
-          ),
-        });
-      }
-      toast({
-        title: "AutoSell Successful!",
-        variant: "default",
-        description: <p>Track the status of your trade on your dashboard</p>,
-      });
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  }
-
   const gasPass =
     Number(inputB) !== 0 &&
     !isNaN(parseFloat(inputB)) &&
@@ -222,7 +186,7 @@ const LiSell: FC<Props> = ({
         return "bg-green-400";
       }
     } else {
-      return ""; // Adjust this based on your default style
+      return ""; 
     }
   };
 
@@ -243,11 +207,42 @@ const LiSell: FC<Props> = ({
       return "Sell Anyways";
     }
 
-    return "Auto Sell"; // Default text
+    return "Auto Sell"; 
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      action={async (formData) => {
+        const result = await onSellLimitAction(
+          formData,
+          pair as string,
+          isGreaterThan
+        );
+        if (result?.message === "success") {
+          toast({
+            title: "Purchase Successful!",
+            variant: "default",
+            description: (
+              <Link
+                className="underline text-yellow-600"
+                target="_blank"
+                href={`https://etherscan.io/tx/${result.txHash}`}
+              >
+                Click to view your Transaction Status
+              </Link>
+            ),
+          });
+        } else if (result?.message === "error") {
+          toast({
+            title: "Error",
+            variant: "destructive",
+            description: (
+              <p className="underline text-red-600">{result?.message}</p>
+            ),
+          });
+        }
+      }}
+    >
       <Stack width="w-full" justifyContent="between" margin="mb-2">
         <Typography className="w-full text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
           <Typography className="my-1 text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
@@ -375,36 +370,72 @@ const LiSell: FC<Props> = ({
           AMOUNT
         </div>
       </Stack>
-      <Button
-        disabled={isButtonDisabled}
-        className={`w-full mt-4 ${getButtonColorClass()}`}
-      >
-        {getButtonText()}
-      </Button>
+      <SellButton
+          getButtonColorClass={getButtonColorClass}
+          getButtonText={getButtonText}
+          isButtonDisabled={isButtonDisabled}
+        />
 
       <Typography color="#EF4444" className="text-xs text-center my-1">
         {inputB !== "0" &&
           gasPass &&
           "Insufficient funds for Gas Fee, transaction might fail"}
       </Typography>
+      <Stack alignItems="center" gap={2} margin="mt-2">
+        <LucideShieldCheck color="#FFC107" className="text-[14px]" size={15} />
+        <div className=" text-[#FFC107] text-base font-normal font-['Instrument Sans'] underline leading-tight">
+          Failsafe Protection
+        </div>
+        <div className="px-2.5 py-0.5 bg-[#06C270] rounded-full text-emerald-700 text-xs font-bold border border-emerald-700 justify-center items-center ">
+          On
+        </div>
+      </Stack>
+
       <Stack
-        justifyContent="between"
-        alignItems="center"
+        width={
+          inputB !== "" || !isNaN(parseFloat(inputB)) ? "w-full flex" : "hidden"
+        }
+        flexDirection="col"
+        gap={2}
+        margin="mt-2"
         sx={isRefetching || loading ? "opacity-30 animate-pulse" : ""}
       >
-        <Typography className="text-xs">
-          {tokenName}: ${(Number(inputB) * tokenPrice).toFixed(1)}
-        </Typography>
+        {/* <Stack width="full" justifyContent="between">
+            <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+              ETH:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              $
+              {isNaN(parseFloat(inputB))
+                ? "0.00"
+                : (Number(inputB) * priseUsdEth).toFixed(1)}
+            </Typography>
+          </Stack> */}
 
-        <Typography className="text-xs">
-          ETH: $
-          {isNaN(parseFloat(inputB))
-            ? "0.00"
-            : (Number(inputA) * priseUsdEth).toFixed(1)}
-        </Typography>
-        <Stack margin=" mr-1" alignItems="center" gap={1} justifyContent="end">
-          <FaGasPump className="text-xs text-center" /> :{" "}
-          <Typography className="text-xs">
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+            {tokenName}:
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+            ${(Number(inputB) * tokenPrice).toFixed(1)}
+          </Typography>
+        </Stack>
+
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+            {" "}
+            Slippage:
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+            {settings.slippage}%
+          </Typography>
+        </Stack>
+        <Stack width="full" justifyContent="between">
+          <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+            {" "}
+            Gass Fee <FaGasPump className="text-xs text-center" /> :
+          </Typography>
+          <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
             $ {gasFee?.feeUsd.toFixed(2)}
           </Typography>
         </Stack>

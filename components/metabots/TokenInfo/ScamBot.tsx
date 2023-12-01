@@ -5,6 +5,7 @@ import React, { FC } from "react";
 import GaugeChart from "react-gauge-chart";
 import { AiFillCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { AddressSecurity, TokenSecurity } from "@/utils/types";
+
 interface Props {
   address: string;
   score: number;
@@ -198,8 +199,8 @@ const ScamBot: FC<Props> = ({ address, score, aSecurity, aToken }) => {
             To see more comprehensive analysis
           </Typography>
           <button className="w-1/3 px-2 py-1 bg-blue-600 rounded text-xs font-normal p-0 m-1 border-none hover:border-none">
-            Click Here
-          </button>
+                Click Here
+              </button>
         </Stack>
       </Stack>
     </>

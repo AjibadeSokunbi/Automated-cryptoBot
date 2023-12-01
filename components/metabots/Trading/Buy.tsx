@@ -5,17 +5,11 @@ import Typography from "@/components/custom/Typography";
 import { Input } from "@/components/ui/input";
 import { HiArrowLongDown } from "react-icons/hi2";
 import { toast } from "@/components/ui/use-toast";
-import { Button } from "@/components/ui/button";
-import { type FieldValues, useForm } from "react-hook-form";
+import { checkScientificNotation, shortenWord } from "@/utils/indexServer";
 import {
-  checkScientificNotation,
-  key,
-  metabotURL,
-  shortenWord,
-} from "@/utils/indexServer";
-import {
-  ClientDefaultSession,
+  ServerDefaultSession,
   TokenPairDetails,
+  UserSetting,
   feeFetch,
 } from "@/utils/types";
 import BuySettings from "./BuySettings";
@@ -25,24 +19,22 @@ import { useParams } from "next/navigation";
 import { fetchFee } from "@/utils/dataPool";
 import { useQuery } from "@tanstack/react-query";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
-import { useSession } from "next-auth/react";
 import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
 import { FaGasPump } from "react-icons/fa";
 import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
-
-type Inputs = {
-  amount1: string;
-  amount2: string;
-};
+import { onBuyAction } from "@/utils/formAction/buyAction";
+import BuyButton from "./BuyButton";
+import { LucideShieldCheck } from "lucide-react";
 
 interface Props {
   tokenData: TokenPairDetails;
   priseUsdEth: number;
   ethBalance: string;
   userBalanc: string | undefined;
+  settings: UserSetting;
 }
 
-const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
+const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
   const pairDetail = tokenData;
   const { gasFee, setGasFee } = useGaStore();
   const [inputA, setInputA] = useState<string>("");
@@ -56,20 +48,6 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
   const params = useParams();
   const pair = params.address;
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<Inputs>();
-  const { data } = useSession();
-
-  const user: ClientDefaultSession = data as ClientDefaultSession;
-
-  const metabotApiKey = `${key}:${user?.botUser?.data?.token}`;
-
-  const headers = new Headers({
-    Authorization: metabotApiKey,
-    "Content-Type": "application/json",
-  });
   const [tokenName, setTokenName] = useState<string>(pairDetail?.baseSymbol);
   const [tokenAddress, setTokenAddress] = useState<string>(
     pairDetail?.baseAddress
@@ -79,7 +57,6 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
   const oneTokenValue = 1 / preOneValue;
   const rateConversion1t0 = (number: number): number => {
     const rate = number * oneTokenValue;
-
     return rate;
   };
 
@@ -114,7 +91,9 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     setLaden(false);
 
     setTokenPrice(tokenPrices);
-    setInputA(rateConversion1t0(parseFloat(inputB)).toString());
+    if (inputA !== "") {
+      setInputA(rateConversion1t0(Number(value)).toFixed(4).toString());
+    }
   };
 
   const handleInputBChange = async (
@@ -122,7 +101,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
   ) => {
     const value = event.target.value;
     setInputB(value);
-    setInputA(rateConversion1t0(parseFloat(value)).toString());
+    setInputA(rateConversion1t0(Number(value)).toFixed(3).toString());
 
     if (typingTimeout) {
       clearTimeout(typingTimeout);
@@ -146,50 +125,6 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     }, 30000);
   };
 
-  async function onSubmit(data: FieldValues) {
-    const requestBody = JSON.stringify({
-      token: tokenAddress,
-      amount: Number(inputB).toFixed(6).toString(),
-      action: "buy",
-      walletIndex: 0,
-      // paymentToken: pairDetail.token1Address,
-    });
-
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers,
-      body: requestBody,
-    };
-
-    try {
-      const response = await fetch(`${metabotURL}trade/`, requestOptions);
-      const result = await response.json();
-      if (response.status !== 200) {
-        return toast({
-          title: "Error",
-          variant: "destructive",
-          description: (
-            <p className="underline text-red-600">{result?.message}</p>
-          ),
-        });
-      }
-      toast({
-        title: "Purchase Successful!",
-        variant: "default",
-        description: (
-          <Link
-            className="underline text-yellow-600"
-            target="_blank"
-            href={`https://goerli.etherscan.io/tx/${result.data.txnHash}`}
-          >
-            Click to view your Transaction Status
-          </Link>
-        ),
-      });
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  }
   const buyPower2 = Number(inputB) + gasFee.feeEth;
 
   const transactionPossibility =
@@ -204,16 +139,68 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
     }
   }, [feeRecall, setGasFee, shouldFecth]);
 
+  const isButtonDisabled =
+    buyPower2.toString() === "0" || ethbalance < inputB || Number(inputB) === 0;
+
+  const getButtonColorClass = () => {
+    if (!isNaN(parseFloat(inputB)) && ethbalance < inputB) {
+      return "bg-red-600";
+    } else if (transactionPossibility) {
+      return "bg-yellow-400";
+    } else {
+      return "bg-green-400";
+    }
+  };
+
+  const getButtonText = () => {
+    if (!transactionPossibility) {
+      if (!isNaN(parseFloat(inputB)) && ethbalance < inputB) {
+        return "Insufficient Funds";
+      } else {
+        return "Auto Buy";
+      }
+    } else {
+      return "Buy Anyways";
+    }
+  };
+
   return (
     <Stack flexDirection="col" padding="px-4 mt-4">
       <Stack width="w-full" justifyContent="between" margin="mb-2">
         <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
           Pays
         </Typography>
-        <BuySettings />
-        <BuySettingsMobile />
+        <BuySettings settings={settings} />
+        <BuySettingsMobile settings={settings} />
       </Stack>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        action={async (formData) => {
+          const result = await onBuyAction(formData, pair as string);
+          if (result?.message === "success") {
+            toast({
+              title: "Purchase Successful!",
+              variant: "default",
+              description: (
+                <Link
+                  className="underline text-yellow-600"
+                  target="_blank"
+                  href={`https://etherscan.io/tx/${result.txHash}`}
+                >
+                  Click to view your Transaction Status
+                </Link>
+              ),
+            });
+          } else if (result?.message === "error") {
+            toast({
+              title: "Error",
+              variant: "destructive",
+              description: (
+                <p className="underline text-red-600">{result?.message}</p>
+              ),
+            });
+          }
+        }}
+      >
         <Stack
           justifyContent="center"
           width="w-full"
@@ -221,6 +208,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         >
           <Input
             type="number"
+            name="amount"
             inputMode="numeric"
             placeholder="Amount"
             value={checkScientificNotation(inputB)}
@@ -240,11 +228,6 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         >
           <HiArrowLongDown className="text-center w-7" size={30} />
         </Stack>
-        {/* <Stack width="w-full" justifyContent="between" margin="mb-2">
-          <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
-            Receive
-          </Typography>
-        </Stack> */}
         <Stack
           justifyContent="center"
           width="w-full"
@@ -252,6 +235,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
         >
           <Input
             type="text"
+            name="tokenAddress"
             placeholder="Token Address"
             aria-controls=""
             required
@@ -264,57 +248,72 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance }) => {
             {laden && "...."}
           </div>
         </Stack>
-        <Button
-          disabled={
-            isSubmitting ||
-            buyPower2.toString() === "0" ||
-            ethbalance < inputB ||
-            Number(inputB) === 0
-          }
-          className={` w-full mt-4 ${
-            !isNaN(parseFloat(inputB)) && ethbalance < inputB
-              ? "bg-red-600"
-              : transactionPossibility
-              ? "bg-yellow-400"
-              : "bg-green-400"
-          } hover:bg-blue-900 hover:border-none`}
-        >
-          {!transactionPossibility &&
-            (!isNaN(parseFloat(inputB)) && ethbalance < inputB
-              ? "Insufficient Funds"
-              : "Auto Buy")}
-          {transactionPossibility && "Buy Anyways"}
-        </Button>
+        <BuyButton
+          getButtonColorClass={getButtonColorClass}
+          getButtonText={getButtonText}
+          isButtonDisabled={isButtonDisabled}
+        />
         <Typography color="#EF4444" className="text-xs text-center my-1">
           {transactionPossibility &&
             "Insufficient funds for Gas Fee, transaction might fail"}
         </Typography>
+        <Stack alignItems="center" gap={2} margin="mt-2">
+          <LucideShieldCheck
+            color="#FFC107"
+            className="text-[14px]"
+            size={15}
+          />
+          <div className=" text-[#FFC107] text-base font-normal font-['Instrument Sans'] underline leading-tight">
+            Failsafe Protection
+          </div>
+          <div className="px-2.5 py-0.5 bg-[#06C270] rounded-full text-emerald-700 text-xs font-bold border border-emerald-700 justify-center items-center ">
+          On
+          </div>
+        </Stack>
+
         <Stack
-          justifyContent="between"
-          alignItems="center"
+          width={inputB !== "" || !isNaN(parseFloat(inputB)) ?   "w-full flex" : "hidden"}
+          flexDirection="col"
+          gap={2}
+          margin="mt-2"
           sx={isRefetching || loading ? "opacity-30 animate-pulse" : ""}
         >
-          <Typography className="text-xs">
-            {tokenName}:
-            <span className="ml-1">
-              {!isNaN(parseFloat(inputA)) ? Number(inputA).toFixed(1) : "0"}
-            </span>
-          </Typography>
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+              ETH:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              $
+              {isNaN(parseFloat(inputB))
+                ? "0.00"
+                : (Number(inputB) * priseUsdEth).toFixed(1)}
+            </Typography>
+          </Stack>
 
-          <Typography className="text-xs">
-            ETH: $
-            {isNaN(parseFloat(inputB))
-              ? "0.00"
-              : (Number(inputB) * priseUsdEth).toFixed(1)}
-          </Typography>
-          <Stack
-            margin=" mr-1"
-            alignItems="center"
-            gap={1}
-            justifyContent="end"
-          >
-            <FaGasPump className="text-xs text-center" /> :{" "}
-            <Typography className="text-xs">
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+              {tokenName}:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              {!isNaN(parseFloat(inputA)) ? inputA : "0"} {tokenName}
+            </Typography>
+          </Stack>
+
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+              {" "}
+              Slippage:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              {settings.slippage}%
+            </Typography>
+          </Stack>
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+              {" "}
+              Gass Fee <FaGasPump className="text-xs text-center" /> :
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
               $ {gasFee?.feeUsd.toFixed(2)}
             </Typography>
           </Stack>

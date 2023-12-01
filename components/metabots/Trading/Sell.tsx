@@ -7,15 +7,15 @@ import { HiArrowLongDown } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "@/components/ui/use-toast";
-import { FieldValues, useForm } from "react-hook-form";
 import {
   ClientDefaultSession,
   TokenPairDetails,
+  UserSetting,
   feeFetch,
 } from "@/utils/types";
 import { useSession } from "next-auth/react";
 import BuySettings from "./BuySettings";
-import { key, metabotURL, shortenWord } from "@/utils/indexServer";
+import { shortenWord } from "@/utils/indexServer";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
 import { useParams } from "next/navigation";
 import { fetchFee } from "@/utils/dataPool";
@@ -24,12 +24,17 @@ import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
 import { getTokenBalance } from "@/utils/scripts/getTokenBalance";
 import { FaGasPump } from "react-icons/fa";
 import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
+import BuySettingsMobile from "./BuySettingsMobile";
+import { onSellAction } from "@/utils/formAction/buyAction";
+import SellButton from "./SellButton";
+import { LucideShieldCheck } from "lucide-react";
 
 interface Props {
   tokenData: TokenPairDetails;
   priseUsdEth: number;
   ethBalance: string;
   userBalanc: string | undefined;
+  settings: UserSetting;
 }
 
 type Inputs = {
@@ -42,6 +47,7 @@ const Sell: FC<Props> = ({
   priseUsdEth,
   ethBalance,
   userBalanc,
+  settings,
 }) => {
   const [activeTab, setActiveTab] = useState(25);
 
@@ -49,20 +55,7 @@ const Sell: FC<Props> = ({
 
   const user: ClientDefaultSession = data as ClientDefaultSession;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<Inputs>();
-
   const pairDetail = tokenData;
-
-  const metabotApiKey = `${key}:${user?.botUser?.data?.token}`;
-
-  const headers = new Headers({
-    Authorization: metabotApiKey,
-    "Content-Type": "application/json",
-  });
 
   const [inputA, setInputA] = useState<string>("");
   const [inputB, setInputB] = useState<string>("");
@@ -134,7 +127,7 @@ const Sell: FC<Props> = ({
   ) => {
     const value = event.target.value;
     setInputB(value);
-    setInputA(rateConversion1t0(parseFloat(value)).toString());
+    setInputA(rateConversion0to1(parseFloat(value)).toString());
 
     if (typingTimeout) {
       clearTimeout(typingTimeout);
@@ -158,52 +151,6 @@ const Sell: FC<Props> = ({
     }, 30000);
   };
 
-  async function onSubmit(data: FieldValues) {
-    const requestBody = JSON.stringify({
-      token: tokenAddress,
-      amount: Number(inputB).toFixed(6).toString(),
-      action: "sell",
-      walletIndex: 0,
-      // paymentToken: pairDetail?.token0Address,
-    });
-
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers,
-      body: requestBody,
-    };
-
-    try {
-      const response = await fetch(`${metabotURL}trade/`, requestOptions);
-      const result = await response.json();
-      if (response.status !== 200) {
-        return toast({
-          title: "Error",
-          variant: "destructive",
-          description: (
-            <p className="underline text-red-600">{result?.message}</p>
-          ),
-        });
-      }
-      toast({
-        title: "AutoSell Successful!",
-        variant: "default",
-        description: (
-          <Link
-            className="underline text-yellow-600"
-            target="_blank"
-            href={`https://goerli.etherscan.io/tx/${result.data.txnHash}`}
-          >
-            Click to view your Transaction Status
-          </Link>
-        ),
-      });
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  }
-
-  // Define the percentages for 25%, 50%, and 75%
   const twentyFivePercent = (25 / 100) * parseFloat(token0balance);
   const fiftyPercent = (50 / 100) * parseFloat(token0balance);
   const seventyFivePercent = (75 / 100) * parseFloat(token0balance);
@@ -239,7 +186,6 @@ const Sell: FC<Props> = ({
   }, [feeRecall, setGasFee, shouldFecth]);
 
   const isButtonDisabled =
-    isSubmitting ||
     token0balance === "0.0" ||
     ethBalance === "0" ||
     Number(token0balance) < Number(inputB) ||
@@ -256,7 +202,7 @@ const Sell: FC<Props> = ({
         return "bg-green-400";
       }
     } else {
-      return ""; // Adjust this based on your default style
+      return "";
     }
   };
 
@@ -268,16 +214,11 @@ const Sell: FC<Props> = ({
     ) {
       return "Insufficient Funds";
     }
-
-    if (isSubmitting) {
-      return "....";
-    }
-
     if (token0balance !== "0" && gasPass) {
       return "Sell Anyways";
     }
 
-    return "Auto Sell"; // Default text
+    return "Auto Sell";
   };
 
   return (
@@ -303,9 +244,37 @@ const Sell: FC<Props> = ({
           </Typography>
           Sell
         </Typography>
-        <BuySettings />
+        <BuySettings settings={settings} />
+        <BuySettingsMobile settings={settings} />
       </Stack>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        action={async (formData) => {
+          const result = await onSellAction(formData, pair as string);
+          if (result?.message === "success") {
+            toast({
+              title: "Sell Successful!",
+              variant: "default",
+              description: (
+                <Link
+                  className="underline text-yellow-600"
+                  target="_blank"
+                  href={`https://etherscan.io/tx/${result.txHash}`}
+                >
+                  Click to view your Transaction Status
+                </Link>
+              ),
+            });
+          } else if (result?.message === "error") {
+            toast({
+              title: "Error",
+              variant: "destructive",
+              description: (
+                <p className="underline text-red-600">{result?.error}</p>
+              ),
+            });
+          }
+        }}
+      >
         <Stack
           justifyContent="center"
           width="w-full"
@@ -313,6 +282,7 @@ const Sell: FC<Props> = ({
         >
           <Input
             type="text"
+            name="tokenAddress"
             placeholder="Token Address"
             aria-controls=""
             required
@@ -377,6 +347,7 @@ const Sell: FC<Props> = ({
         >
           <Input
             type="number"
+            name="amount"
             inputMode="numeric"
             placeholder="Amount"
             value={inputB}
@@ -388,40 +359,78 @@ const Sell: FC<Props> = ({
             AMOUNT
           </div>
         </Stack>
-        <Button
-          disabled={isButtonDisabled}
-          className={`w-full mt-4 ${getButtonColorClass()}`}
-        >
-          {getButtonText()}
-        </Button>
+        <SellButton
+          getButtonColorClass={getButtonColorClass}
+          getButtonText={getButtonText}
+          isButtonDisabled={isButtonDisabled}
+        />
         <Typography color="#EF4444" className="text-xs text-center my-1">
           {inputB !== "0" &&
             gasPass &&
             "Insufficient funds for Gas Fee, transaction might fail"}
         </Typography>
+
+        <Stack alignItems="center" gap={2} margin="mt-2">
+          <LucideShieldCheck
+            color="#FFC107"
+            className="text-[14px]"
+            size={15}
+          />
+          <div className=" text-[#FFC107] text-base font-normal font-['Instrument Sans'] underline leading-tight">
+            Failsafe Protection
+          </div>
+          <div className="px-2.5 py-0.5 bg-[#06C270] rounded-full text-emerald-700 text-xs font-bold border border-emerald-700 justify-center items-center ">
+            On
+          </div>
+        </Stack>
+
         <Stack
-          justifyContent="between"
-          alignItems="center"
+          width={
+            inputB !== "" || !isNaN(parseFloat(inputB))
+              ? "w-full flex"
+              : "hidden"
+          }
+          flexDirection="col"
+          gap={2}
+          margin="mt-2"
           sx={isRefetching || loading ? "opacity-30 animate-pulse" : ""}
         >
-          <Typography className="text-xs">
-            {tokenName}: ${(Number(inputB) * tokenPrice).toFixed(1)}
-          </Typography>
+          {/* <Stack width="full" justifyContent="between">
+            <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+              ETH:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              $
+              {isNaN(parseFloat(inputB))
+                ? "0.00"
+                : (Number(inputB) * priseUsdEth).toFixed(1)}
+            </Typography>
+          </Stack> */}
 
-          <Typography className="text-xs">
-            ETH: $
-            {isNaN(parseFloat(inputB))
-              ? "0.00"
-              : (Number(inputA) * priseUsdEth).toFixed(1)}
-          </Typography>
-          <Stack
-            margin=" mr-1"
-            alignItems="center"
-            gap={1}
-            justifyContent="end"
-          >
-            <FaGasPump className="text-xs text-center" /> :{" "}
-            <Typography className="text-xs">
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-center text-white text-sm font-semibold font-['Instrument Sans'] leading-tight">
+              {tokenName}:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              ${(Number(inputB) * tokenPrice).toFixed(1)}
+            </Typography>
+          </Stack>
+
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+              {" "}
+              Slippage:
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
+              {settings.slippage}%
+            </Typography>
+          </Stack>
+          <Stack width="full" justifyContent="between">
+            <Typography className="text-sm font-semibold font-['Instrument Sans'] leading-tight flex flex-row gap-1 text-center items-center">
+              {" "}
+              Gass Fee <FaGasPump className="text-xs text-center" /> :
+            </Typography>
+            <Typography className="text-center text-white text-sm font-normal font-['Instrument Sans'] leading-tight">
               $ {gasFee?.feeUsd.toFixed(2)}
             </Typography>
           </Stack>

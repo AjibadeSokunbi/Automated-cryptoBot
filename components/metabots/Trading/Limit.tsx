@@ -8,14 +8,16 @@ import {
 } from "@/components/ui/tabs2";
 import LiBuy from "./LiBuy";
 import BuySettings from "./BuySettings";
-import {  TokenPairDetails } from "@/utils/types";
+import { TokenPairDetails, UserSetting } from "@/utils/types";
 import LiSell from "./LiSell";
+import BuySettingsMobile from "./BuySettingsMobile";
 
 interface Props {
   tokenData: TokenPairDetails;
   priseUsdEth: number;
   ethBalance: string;
   userBalanc: string | undefined;
+  settings: UserSetting;
 }
 
 const Limit: FC<Props> = ({
@@ -23,6 +25,7 @@ const Limit: FC<Props> = ({
   priseUsdEth,
   ethBalance,
   userBalanc,
+  settings,
 }) => {
   return (
     <Stack flexDirection="col" padding="px-2 mt-4">
@@ -43,7 +46,8 @@ const Limit: FC<Props> = ({
         </TabsList>
         <TabsContent value="buy" className="w-full ">
           <Stack alignItems="end" justifyContent="end" sx="text-end">
-            <BuySettings />
+            <BuySettings settings={settings} />
+            <BuySettingsMobile settings={settings} />
           </Stack>
 
           <LiBuy
@@ -51,12 +55,14 @@ const Limit: FC<Props> = ({
             tokenData={tokenData as TokenPairDetails}
             priseUsdEth={priseUsdEth}
             userBalanc={userBalanc}
+            settings={settings}
           />
         </TabsContent>
 
         <TabsContent value="sell">
           <Stack alignItems="end" justifyContent="end" sx="text-end">
-            <BuySettings />
+            <BuySettings settings={settings} />
+            <BuySettingsMobile settings={settings} />
           </Stack>
           {/* <HiArrowsUpDown className="text-center w-7" size={30} /> */}
           <LiSell
@@ -64,6 +70,7 @@ const Limit: FC<Props> = ({
             tokenData={tokenData as TokenPairDetails}
             priseUsdEth={priseUsdEth}
             userBalanc={userBalanc}
+            settings={settings}
           />
         </TabsContent>
       </Tabs>

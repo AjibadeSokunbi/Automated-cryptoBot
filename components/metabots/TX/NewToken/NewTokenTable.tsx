@@ -20,7 +20,7 @@ interface Props {
 }
 
 const NewTokenTable: FC<Props> = ({ NewData }) => {
-  const { isConnected } = useNewStore();
+  const  isConnected  = true;
   return (
     <Stack flexDirection="col" sx="w-full overflow-x-auto md:overflow-hidden lg:overflow-x-hidden" height="h-56" padding="mt-2">
     <Table className="w-full hide-scrollbar overflow-y-auto overflow-x-auto md:overflow-hidden lg:overflow-x-hidden">

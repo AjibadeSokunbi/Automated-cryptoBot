@@ -5,6 +5,22 @@ import { TokenBalance } from "./types";
 export let typingTimeout: NodeJS.Timeout | null = null;
 export let fetchingTimeout: NodeJS.Timeout | null = null;
 
+
+export const makeWalletAddress = (_str: string | null, start = 20, end = 4) => {
+  if (_str && _str.length > 0) {
+    const str_address =
+      _str.substring(0, start) +
+      "..." +
+      _str.substring(_str.length - end, _str.length);
+    return str_address;
+  } else {
+    return " "; // Return a default value or a message when the input is null or empty
+  }
+};
+
+
+
+
 export function timeAgo(unixTimestamp: number): string {
   const currentTime = Math.floor(Date.now() / 1000);
   const timeDifference = currentTime - unixTimestamp;

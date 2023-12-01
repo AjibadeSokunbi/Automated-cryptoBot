@@ -21,7 +21,7 @@ export const metabotAPI = axios.create({
 const requestOptions: RequestInit = {
   method: "GET",
   credentials: "include",
-  next: { revalidate: 50 },
+  next: { revalidate: 50, tags: ["sign"] },
 };
 
 export const authOptions: NextAuthOptions = {

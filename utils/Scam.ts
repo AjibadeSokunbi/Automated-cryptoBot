@@ -171,7 +171,7 @@ import { AddressSecurity, TokenSecurity } from "./types";
         this.tokenSecurity[address]?.is_proxy === "1" &&
         score > 20
       ) {
-        this.riskScore = score - 20;
+        this.riskScore = score - 10;
         return;
       } else if (
         this.tokenSecurity &&
@@ -191,7 +191,7 @@ import { AddressSecurity, TokenSecurity } from "./types";
         this.tokenSecurity[address]?.is_mintable === "1" &&
         score > 20
       ) {
-        this.riskScore = score - 20;
+        this.riskScore = score - 5;
         return;
       } else if (this.tokenSecurity && this.tokenSecurity[address]?.is_mintable === "1" && score < 20) {
         score = 0;

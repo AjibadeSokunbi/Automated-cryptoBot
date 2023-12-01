@@ -10,6 +10,7 @@ import Link from "next/link";
 import Typography from "@/components/custom/Typography";
 import { Button } from "@/components/ui/button";
 import { FaTelegram } from "react-icons/fa";
+import Search from "./Search";
 
 interface Props {}
 
@@ -78,9 +79,9 @@ const Headers = () => {
                 />
               </>
 
-              {/* {(pathname === "/dex" || pathname === `/dex/${address}`) && (
-                // <Search />
-              )} */}
+              {(pathname === `/metabots/${address}`) && (
+                 <Search />
+              )}
 
               <div className="flex gap-6 text-align items-center md:mr-8 lg:mr-8 text-2xl">
                 <UserAccountNav />
