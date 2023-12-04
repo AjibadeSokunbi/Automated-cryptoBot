@@ -24,13 +24,6 @@ interface pageProps {
 export default async function page({ params, searchParams }: pageProps) {
   const smm = (searchParams.smm || "0") as string ;
 
-  if(smm !== "0" && smm !== "1") {
-    redirect(`${params.address}?smm=0`)
-  }
-
-  if(!searchParams.smm) {
-    redirect(`${params.address}?smm=0`)
-  }
 
 
   return (
