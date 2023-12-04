@@ -12,6 +12,7 @@ import {
 import { fixNum, timeAgo, toFixedNum } from "@/utils/indexServer";
 import { TokenPairDetails, TradeData } from "@/utils/types";
 import { usePriceStore } from "@/utils/zustanStore/priceUsd";
+import { useSmm } from "@/utils/zustanStore/smm";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { FC, useEffect } from "react";
@@ -45,7 +46,7 @@ export const fetchFeeData = async (pair: string) => {
 
 const LatestTrade: FC<Props> = ({ historyData, pairDetails }) => {
   const pairDetail = pairDetails;
-  const { setPrice, price } = usePriceStore();
+  const { setPrice } = usePriceStore();
   const params = useParams();
   const address = params.address;
   const { data,isSuccess, isFetched } = useQuery<TradeData[]>({
@@ -66,10 +67,11 @@ const LatestTrade: FC<Props> = ({ historyData, pairDetails }) => {
       setPrice(data[0]?.priceUSD);
    }
   }, [data, isSuccess, setPrice])
+  const {smm} = useSmm()
   return (
     <Stack
       flexDirection="col"
-      sx="w-full"
+      sx={`w-full ${smm ? "hidden" : "flex"}`}
       height="h-[240px] md:h-[210px] lg::h-[210px]"
       padding="mt-2"
     >

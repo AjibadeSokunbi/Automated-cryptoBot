@@ -7,7 +7,7 @@ import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import PoolTab from "./Pool/PoolTab";
 import LiveTrades from "./LiveTrades";
-
+import SmmProvider from "./SmmProvider";
 
 interface Props {
   params: {
@@ -53,15 +53,13 @@ const LatestFetch: FC<Props> = async ({ params, smm }) => {
     <>
       <TabsContent value="Transactions" className="w-full ">
         {" "}
-        {smm === "0" && (
-          <LatestTrade
-            historyData={historyData}
-            pairDetails={pairDetails}
-            params={params}
-          />
-        )}
-        {smm === "1" && (
-          <Stack margin="my-3" flexDirection="col" sx="hidden md:flex lg:flex">
+        <LatestTrade
+          historyData={historyData}
+          pairDetails={pairDetails}
+          params={params}
+        />
+        <SmmProvider>
+          <Stack margin="my-3" flexDirection="col" sx="hidden md:flex lg:flex w-full">
             <Stack justifyContent="between" gap={7}>
               <Stack
                 flexDirection="col"
@@ -77,7 +75,7 @@ const LatestFetch: FC<Props> = async ({ params, smm }) => {
               </Stack>
             </Stack>
           </Stack>
-        )}
+        </SmmProvider>
       </TabsContent>
 
       <TabsContent value="watchlist" className="w-full ">

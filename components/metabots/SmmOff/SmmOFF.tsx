@@ -5,6 +5,7 @@ import LatestFetch from "./LatestFetch";
 import { ImSpinner2 } from "react-icons/im";
 import SmmControl from "./SmmControl";
 
+
 interface Props {
 
   // sub: "FREE" | "PAID"
@@ -33,7 +34,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
               Price Alerts
             </TabsTrigger>
           </TabsList>
-           <SmmControl params={props.params} smm={props.smm}/>
+           <SmmControl/>
         </Stack>
         <Suspense
           fallback={
