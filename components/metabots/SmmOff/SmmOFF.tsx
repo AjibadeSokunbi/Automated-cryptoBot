@@ -11,6 +11,7 @@ interface Props {
   params: {
     address: string;
   };
+  smm: string
 }
 
 const SmmOFF: FC<Props> = ({ ...props }) => {
@@ -32,7 +33,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
               Price Alerts
             </TabsTrigger>
           </TabsList>
-           <SmmControl params={props.params}/>
+           <SmmControl params={props.params} smm={props.smm}/>
         </Stack>
         <Suspense
           fallback={
@@ -46,7 +47,7 @@ const SmmOFF: FC<Props> = ({ ...props }) => {
             </Stack>
           }
         >
-          <LatestFetch params={props.params} />
+          <LatestFetch params={props.params} smm={props.smm}/>
           
         </Suspense>
       </Tabs>

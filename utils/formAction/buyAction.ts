@@ -2,10 +2,10 @@
 
 import { getCurrentUser } from "@/lib/session";
 import { ServerDefaultSession } from "../types";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
-const metabotURL = process.env.NEXT_PUBLIC_METABOT_URL as string;
+const metabotURL = "https://api.metadapp.com/" as string;
 
 export async function onBuyAction(FormData: FormData, pair: string) {
   const user: ServerDefaultSession =
@@ -34,29 +34,24 @@ export async function onBuyAction(FormData: FormData, pair: string) {
   try {
     const response = await fetch(`${metabotURL}trade/`, requestOptions);
     const result = await response.json();
-    console.log(result);
+    const error = JSON.parse(result.error.body);
+    const eMessage = error.error.message;
     if (response.status === 200) {
-   
       revalidatePath(`/metabots/${pair}`);
       return {
-
         txHash: result.data.txnHash,
         message: "success",
       };
     } else {
-      console.log("Transaction failed:", result.data.reason);
       return {
-        
         message: "error",
-        reason: result.data.reason
+        reason: eMessage,
       };
     }
   } catch (error) {
     console.error("An error occurred:", error);
   }
 }
-
-
 
 export async function onSellAction(FormData: FormData, pair: string) {
   const user: ServerDefaultSession =
@@ -68,7 +63,6 @@ export async function onSellAction(FormData: FormData, pair: string) {
     "Content-Type": "application/json",
   });
   const amount = FormData.get("amount");
-console.log(FormData)
   const requestBody = JSON.stringify({
     token: FormData.get("tokenAddress"),
     amount: Number(amount).toFixed(0).toString(),
@@ -86,20 +80,18 @@ console.log(FormData)
     const response = await fetch(`${metabotURL}trade/`, requestOptions);
 
     const result = await response.json();
-    console.log(result);
+    const error = JSON.parse(result.error.body);
+    const eMessage = error.error.message;
     if (response.status === 200) {
-   
       revalidatePath(`/metabots/${pair}`);
       return {
-
         txHash: result.data.txnHash,
         message: "success",
       };
     } else {
-      console.log("Transaction failed:", result.message);
       return {
         message: "error",
-        error: "Something Went Wrong please try again"
+        error: eMessage,
       };
     }
   } catch (error) {
@@ -107,9 +99,11 @@ console.log(FormData)
   }
 }
 
-
-export async function onBuyLimitAction(FormData: FormData, pair: string, isGreaterThan: boolean) {
-
+export async function onBuyLimitAction(
+  FormData: FormData,
+  pair: string,
+  isGreaterThan: boolean
+) {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
   const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
@@ -129,7 +123,7 @@ export async function onBuyLimitAction(FormData: FormData, pair: string, isGreat
     protocolIdentifier: "uniswap:eth",
     tradePrice: FormData.get("price"),
   });
-  console.log(requestBody)
+
   const requestOptions: RequestInit = {
     method: "POST",
     headers,
@@ -137,22 +131,20 @@ export async function onBuyLimitAction(FormData: FormData, pair: string, isGreat
   };
 
   try {
-    const response = await fetch(`${metabotURL}trade/`, requestOptions);
+    const response = await fetch(`${metabotURL}limitTrade/`, requestOptions);
     const result = await response.json();
-    console.log(result);
+    const error = JSON.parse(result.error.body);
+    const eMessage = error.error.message;
     if (response.status === 200) {
-   
       revalidatePath(`/metabots/${pair}`);
       return {
-
         txHash: result.data.txnHash,
         message: "success",
       };
     } else {
-      console.log("Transaction failed:", result.message);
       return {
         message: "error",
-        error: "Something Went Wrong please try again"
+        error: eMessage,
       };
     }
   } catch (error) {
@@ -160,10 +152,11 @@ export async function onBuyLimitAction(FormData: FormData, pair: string, isGreat
   }
 }
 
-
-
-export async function onSellLimitAction(FormData: FormData, pair: string, isGreaterThan: boolean) {
-
+export async function onSellLimitAction(
+  FormData: FormData,
+  pair: string,
+  isGreaterThan: boolean
+) {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
   const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
@@ -191,29 +184,23 @@ export async function onSellLimitAction(FormData: FormData, pair: string, isGrea
   };
 
   try {
-    const response = await fetch(`${metabotURL}trade/`, requestOptions);
+    const response = await fetch(`${metabotURL}limitTrade`, requestOptions);
     const result = await response.json();
-    console.log(result);
+    const error = JSON.parse(result.error.body);
+    const eMessage = error.error.message;
     if (response.status === 200) {
-   
       revalidatePath(`/metabots/${pair}`);
       return {
-
         txHash: result.data.txnHash,
         message: "success",
       };
     } else {
-      console.log("Transaction failed:", result.data.reason);
       return {
-        
         message: "error",
-        reason: result.data.reason
+        reason: eMessage,
       };
     }
   } catch (error) {
     console.error("An error occurred:", error);
   }
 }
-
-
-

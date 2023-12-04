@@ -1,73 +1,37 @@
 import { Label } from "@/components/ui/label";
 import React, { FC } from "react";
-import { handleUserSettings } from "@/utils/formAction/tradeAction";
-import { getCurrentUser } from "@/lib/session";
-import { ServerDefaultSession } from "@/utils/types";
-import SmmSwitch from "./SmmSwitch";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { Switch2 } from "@/components/ui/switch";
+import Link from "next/link";
+
+
 interface Props {
   params: {
     address: string;
   };
+  smm: string;
 }
 
-const SmmControl: FC<Props> = async ({ params }) => {
-  const user: ServerDefaultSession =
-    (await getCurrentUser()) as ServerDefaultSession;
-
-  const smm = user.botdata.data.settings.autogas;
+const SmmControl: FC<Props> = ({ smm, params }) => {
   const pair = params.address;
 
-  const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
-  const metabotURL = process.env.NEXT_PUBLIC_METABOT_URL as string;
-  const handleUserSettings = async (FormData: FormData) => {
-    "use server";
-    const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
-
-    const headers = new Headers({
-      Authorization: metabotApiKey,
-      "Content-Type": "application/json",
-    });
-
-    const requestBody = JSON.stringify({
-      params: {
-        autogas: FormData.get("autoGas") === "on" ? true : false,
-      },
-    });
-
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers,
-      body: requestBody,
-    };
-
-    try {
-      const response = await fetch(
-        `${metabotURL}user/editSettings`,
-        requestOptions
-      );
-      const res = await response.json();
-      console.log(res);
-      revalidateTag("user");
-      revalidateTag("sign");
-      revalidatePath(`/metabots/${pair}`);
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  };
-
   return (
-    <div className="flex items-center space-x-6">
-      <Label
-        htmlFor="smm"
-        className="text-white text-[10.621px] font-bold font-['Instrument Sans'] leading-3"
-      >
-        Smart Money Mode
-      </Label>
-      <form action={handleUserSettings}>
-        <SmmSwitch smm={smm} />
-      </form>
-    </div>
+    <Link href={`${pair}?smm=${smm === "1" ? "0" : "1"}`}>
+      <div className="flex items-center space-x-6">
+        <Label
+          htmlFor="smm"
+          className="text-white text-[10.621px] font-bold font-['Instrument Sans'] leading-3"
+        >
+          Smart Money Mode
+        </Label>
+
+        <Switch2
+          name="autoGas"
+          defaultChecked={smm === "1" ? true : false}
+          id="smm"
+          className="bg-zinc-600 data-[state=checked]:bg-green-700"
+        />
+      </div>
+    </Link>
   );
 };
 

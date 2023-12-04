@@ -81,17 +81,7 @@ const All = async () => {
                   {row?.action}
                 </TableCell2>
                 <TableCell2 className="w-full text-center border-none text-neutral-200 text-xs font-normal">
-                  {/* <Suspense
-                  fallback={
-                      <Stack justifyContent="center" alignItems="center" >
-                        <ImSpinner2 className="text-[#18283f] animate-spin " />
-                      </Stack>
-                  
-                  }
-                >
-                  <FetchToken tokens={row?.token} />
-                </Suspense>  */}{" "}
-                  ---
+                {row.symbol ? row.symbol : "---"}
                 </TableCell2>
                 <TableCell2 className="w-full text-center border-none text-neutral-200 text-xs font-normal">
                   {fixNum(Number(row?.amount), 5)}

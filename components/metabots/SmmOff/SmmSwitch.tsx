@@ -13,17 +13,17 @@ const SmmSwitch: FC<Props> = ({ smm }) => {
   const { pending } = useFormStatus();
   return (
     <Stack flexDirection="row" gap={2} alignItems="center">
-     <Switch2
-     type="submit"
-      aria-disabled={pending}
-      name="autoGas"
-      defaultChecked={smm}
-      id="smm"
-      className="bg-zinc-600 data-[state=checked]:bg-green-700"
-    />
-    { pending &&       <ImSpinner2 className="text-[#18283f] animate-spin " />}
+      <Switch2
+        type="submit"
+        aria-disabled={pending}
+        disabled={pending}
+        name="autoGas"
+        defaultChecked={smm}
+        id="smm"
+        className="bg-zinc-600 data-[state=checked]:bg-green-700"
+      />
+      {pending && <ImSpinner2 className="text-[#18283f] animate-spin " />}
     </Stack>
-   
   );
 };
 

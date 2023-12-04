@@ -50,8 +50,8 @@ const WalletPerformanceMobile = () => {
             <TabsContent value="profitableTrades" className="pt-5">
                 <Stack flexDirection='col' sx='w-full h-auto' gap={5}>
                     {TradeProfit?.map((data, index) => ( 
-                        <Stack flexDirection='col' sx='w-full'>
-                            <Stack key={index} alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openProfit ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
+                        <Stack key={index}  flexDirection='col' sx='w-full'>
+                            <Stack alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openProfit ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
                                 <Stack alignItems='center'>
                                     <Stack alignItems='center' sx='mr-10'>
                                     <Image src="" width={15} height={15} alt='tokenLogo' className='mr-2' />
@@ -135,8 +135,8 @@ const WalletPerformanceMobile = () => {
             <TabsContent value="biggestLosses" className="pt-5">
                 <Stack flexDirection='col' sx='w-full h-auto' gap={5}>
                     {TradeLoss?.map((data, index) => ( 
-                        <Stack flexDirection='col' sx='w-full'>
-                            <Stack key={index} alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openLoss ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
+                        <Stack  key={index} flexDirection='col' sx='w-full'>
+                            <Stack alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openLoss ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
                                 <Stack alignItems='center'>
                                     <Stack alignItems='center' sx='mr-10'>
                                     <Image src="" width={15} height={15} alt='tokenLogo' className='mr-2' />

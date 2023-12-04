@@ -13,6 +13,7 @@ interface Props {
   params: {
     address: string;
   };
+  smm: string
 }
 
 const SMM: FC<Props> = async ({ ...props }) => {
@@ -73,7 +74,7 @@ const SMM: FC<Props> = async ({ ...props }) => {
       }
       <Stack flexDirection="col" gap={2} sx="w-full px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
         <div className="hidden md:flex lg:flex w-full">
-          <SmmOFF params={props.params} />
+          <SmmOFF params={props.params} smm={props.smm} />
         </div>
 
         

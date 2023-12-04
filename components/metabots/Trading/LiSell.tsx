@@ -284,6 +284,7 @@ const LiSell: FC<Props> = ({
             type="text"
             placeholder="Token Address"
             aria-controls=""
+            name="tokenAddress"
             required
             value={tokenAddress}
             onChange={handleInputAChange}
@@ -303,15 +304,10 @@ const LiSell: FC<Props> = ({
             type="text"
             placeholder="Price USD"
             required
+            name="price"
             defaultValue={pairDetail.priceUsd.toFixed(1)}
             className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
-            {...register("tradePrice", {
-              required: "Please enter a Price",
-            })}
           />
-          {errors.tradePrice && (
-            <p className="text-red-500">{errors.tradePrice.message}</p>
-          )}
           <div className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
             USD
           </div>

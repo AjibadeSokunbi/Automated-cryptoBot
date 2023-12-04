@@ -251,6 +251,7 @@ const Sell: FC<Props> = ({
         action={async (formData) => {
           const result = await onSellAction(formData, pair as string);
           if (result?.message === "success") {
+
             toast({
               title: "Sell Successful!",
               variant: "default",
@@ -264,6 +265,11 @@ const Sell: FC<Props> = ({
                 </Link>
               ),
             });
+            const userBalanc = await getTokenBalance(
+              user?.botUser?.data?.wallet[0],
+              tokenAddress
+            );
+            setToken0balance(userBalanc as string);
           } else if (result?.message === "error") {
             toast({
               title: "Error",

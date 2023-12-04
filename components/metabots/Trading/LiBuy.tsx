@@ -149,55 +149,13 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
       setShouldFecth(true);
     }, 30000);
   };
-  async function onSubmit(data: FieldValues) {
-    const requestBody = JSON.stringify({
-      token: tokenAddress,
-      amount: Number(inputB).toFixed(6).toString(),
-      action: "buy",
-      walletIndex: 0,
-      // paymentToken: pairDetail.token1Address,
-      tradePrice: data.tradePrice.toString(),
-      isgreaterThan: isGreaterThan,
-      protocolIdentifier: "uniswap:eth",
-    });
-
-    const requestOptions: RequestInit = {
-      method: "POST",
-      headers,
-      body: requestBody,
-    };
-
-    try {
-      const response = await fetch(`${metabotURL}limittrade/`, requestOptions);
-      const result = await response.json();
-      if (response.status !== 200) {
-        return toast({
-          title: "Error",
-          variant: "destructive",
-          description: (
-            <p className="underline text-red-600">
-              {extractErrorMessage(result?.message)}
-            </p>
-          ),
-        });
-      }
-      toast({
-        title: "Purchase Successful!",
-        variant: "default",
-        description: <p>Track the status of your trade on your dashboard</p>,
-      });
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  }
-
-  const buyPower2 = Number(inputB) + gasFee.feeEth;
+  const buyPower2 = Number(inputB) + Number(gasFee.feeEth);
 
   const transactionPossibility =
     Number(inputB) !== 0 &&
     inputB !== "" &&
     inputB <= ethbalance &&
-    buyPower2 > ethbalance;
+    buyPower2 > Number(ethbalance);
 
   useEffect(() => {
     setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
@@ -255,7 +213,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
             title: "Error",
             variant: "destructive",
             description: (
-              <p className="underline text-red-600">{result?.message}</p>
+              <p className="underline text-red-600">{result?.error}</p>
             ),
           });
         }

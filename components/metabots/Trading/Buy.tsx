@@ -7,7 +7,6 @@ import { HiArrowLongDown } from "react-icons/hi2";
 import { toast } from "@/components/ui/use-toast";
 import { checkScientificNotation, shortenWord } from "@/utils/indexServer";
 import {
-  ServerDefaultSession,
   TokenPairDetails,
   UserSetting,
   feeFetch,
@@ -100,6 +99,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = event.target.value;
+    
     setInputB(value);
     setInputA(rateConversion1t0(Number(value)).toFixed(3).toString());
 
@@ -125,19 +125,19 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
     }, 30000);
   };
 
-  const buyPower2 = Number(inputB) + gasFee.feeEth;
+  const buyPower2 = Number(inputB) + Number(gasFee.feeEth);
 
   const transactionPossibility =
     Number(inputB) !== 0 &&
     inputB !== "" &&
     inputB <= ethbalance &&
-    buyPower2 > ethbalance;
+    buyPower2 > Number(ethbalance);
 
   useEffect(() => {
     if (feeRecall.feeUsd !== 0) {
       setGasFee(feeRecall.feeUsd ? feeRecall : { feeUsd: 0, feeEth: "0" });
     }
-  }, [feeRecall, setGasFee, shouldFecth]);
+  }, [feeRecall, setGasFee]);
 
   const isButtonDisabled =
     buyPower2.toString() === "0" || ethbalance < inputB || Number(inputB) === 0;
@@ -195,7 +195,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
               title: "Error",
               variant: "destructive",
               description: (
-                <p className="underline text-red-600">{result?.message}</p>
+                <p className="underline text-red-600">{result?.reason}</p>
               ),
             });
           }

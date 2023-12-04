@@ -504,6 +504,7 @@ export interface UserTrade {
   token: string;
   action: "buy" | "sell";
   amount: string;
+  symbol: string;
   usdPrice: number;
   chain: string;
   wallet: string;

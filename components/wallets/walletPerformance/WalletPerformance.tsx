@@ -42,8 +42,8 @@ const WalletPerformance = () => {
                 <Typography variant='bold' className='text-base mb-5'> Most Profitable Trades </Typography>
                 
                 {TradeProfit?.map((data, index) => ( 
-                <Stack flexDirection='col' sx='w-full'>
-                    <Stack key={index} alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openProfit ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
+                <Stack key={index} flexDirection='col' sx='w-full'>
+                    <Stack alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openProfit ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
                     <Stack alignItems='center'>
                         <Stack alignItems='center' sx='mr-10'>
                         <Image src="" width={15} height={15} alt='tokenLogo' className='mr-2' />
@@ -124,8 +124,8 @@ const WalletPerformance = () => {
             <Stack flexDirection='col' sx='w-1/2' gap={5}>
                 <Typography variant='bold' className='text-base mb-5'> Biggest Losses  </Typography>
                 {TradeLoss?.map((data, index) => ( 
-                <Stack flexDirection='col' sx='w-full'>
-                    <Stack key={index} alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openLoss ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
+                <Stack  key={index} flexDirection='col' sx='w-full'>
+                    <Stack alignItems='center' justifyContent='between' sx={`bg-[#161F2C] px-5 py-3 ${openLoss ? 'rounded-tl-md rounded-tr-md' : 'rounded-md'}`}>
                     <Stack alignItems='center'>
                         <Stack alignItems='center' sx='mr-10'>
                         <Image src="" width={15} height={15} alt='tokenLogo' className='mr-2' />

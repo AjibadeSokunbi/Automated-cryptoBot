@@ -10,11 +10,13 @@ import { getCurrentUser } from "@/lib/session";
 import { getUserBalance } from "@/utils/scripts/getBalaceEth";
 import { getTokenBalance } from "@/utils/scripts/getTokenBalance";
 
+
 interface Props {
   params: {
     address: string;
   };
 }
+
 export const dynamic = "force-dynamic";
 const BSC: FC<Props> = async ({ params }) => {
   const user: ServerDefaultSession =
@@ -54,10 +56,15 @@ const BSC: FC<Props> = async ({ params }) => {
     pairDetails?.baseAddress
   );
 
+
+
+
   return (
     <>
+  
       <TabsContent value="buy" className="w-full ">
         <Buy
+
           settings= {user.botdata.data.settings}
           ethBalance={userEth as string}
           tokenData={data as TokenPairDetails}

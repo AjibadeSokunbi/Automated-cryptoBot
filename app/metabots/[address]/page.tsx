@@ -5,20 +5,33 @@ import Graph from "@/components/metabots/Charts/Graph";
 import Wallet from "@/components/metabots/Wallet/Wallet";
 
 import TokenInfoFetch from "../../../components/metabots/TokenInfo/TokenInfoFetch";
-import SMMFetch from "../../../components/metabots/SmmOff/SMMFetch";
+
 import TNav from "@/components/metabots/Trading/TNav";
 import { Skeleton } from "@/components/ui/skeleton";
 import InnerTab2 from "@/components/metabots/TX/InnerTab2";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PriceAlerts from "@/components/metabots/SmmOff/PriceAlerts";
+import SMM from "@/components/metabots/SmmOff/SMM";
+import { redirect } from "next/navigation";
 
 interface pageProps {
   params: {
     address: string;
   };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function page({ params }: pageProps) {
+export default async function page({ params, searchParams }: pageProps) {
+  const smm = (searchParams.smm || "0") as string ;
+
+  if(smm !== "0" && smm !== "1") {
+    redirect(`${params.address}?smm=0`)
+  }
+
+  if(!searchParams.smm) {
+    redirect(`${params.address}?smm=0`)
+  }
+
 
   return (
     <>
@@ -73,7 +86,7 @@ export default async function page({ params }: pageProps) {
               </Stack>
             }
           >
-            <SMMFetch params={params} />
+            <SMM params={params} smm={smm} />
           </Suspense>
         </Stack>
         <Stack flexDirection="col" gap={10} width="lg:w-5/12 md:w-full">
@@ -84,8 +97,7 @@ export default async function page({ params }: pageProps) {
           >
             <Wallet />
           </Suspense>
-            <TNav params={params} />
-
+          <TNav params={params} />
         </Stack>
       </Stack>
 
@@ -147,11 +159,10 @@ export default async function page({ params }: pageProps) {
               fallback={
                 <Stack justifyContent="between" gap={7}>
                   <Skeleton className="w-full h-98 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800" />
-                  <Skeleton className="w-full h-96 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800" />
                 </Stack>
               }
             >
-              <SMMFetch params={params} />
+              <SMM params={params} smm={smm}  />
             </Suspense>
           </TabsContent>
           <TabsContent value="alerts" className="pt-5">

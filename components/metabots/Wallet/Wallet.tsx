@@ -25,7 +25,7 @@ const Wallet: FC<Props> = ({}) => {
   const [selectedWallet, setSelectedWallet] = useState<string>(
     Wallets ? Wallets[0] : ""
   );
-  console.log(selectedWallet)
+
   const balance = user?.balance;
 
   useEffect(() => {
