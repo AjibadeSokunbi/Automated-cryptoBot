@@ -102,7 +102,7 @@ const Wallet: FC<Props> = ({}) => {
                   color="#CED4DA"
                   className="text-gray-300 text-xs font-normal font-['Instrument Sans']"
                 >
-                  TX: 1000
+                  TX: {user.botUser.data.trades.length}
                 </Typography>
               </Stack>
             </Stack>

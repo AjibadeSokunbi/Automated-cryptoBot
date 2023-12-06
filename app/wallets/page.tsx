@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Wallets from '@/components/wallets/Wallets';
 import FullContainer from '@/components/custom/FullContainer';
 import Stack from '@/components/custom/Stack';
 import Typography from '@/components/custom/Typography';
 
-const page = () => {
+interface Props {
+
+}
+
+const page: FC<Props> = async () => {
   return (
     <FullContainer className="border-t border-b border-gray-900 mt-14 md:pl-6 lg:pl-6 bg-background1">
         <Stack flexDirection="col" sx="w-full md:w-4/12 lg:w-4/12 pl-3 md:pl-0 lg:pl-0">

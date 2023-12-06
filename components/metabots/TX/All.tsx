@@ -18,7 +18,7 @@ interface Props {}
 const All = async () => {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
-  const metabotURL = "https://metabots.metadapp.com/";
+  const metabotURL = "https://api.metadapp.com/";
 
   const headers = new Headers({
     "Content-Type": "application/json",

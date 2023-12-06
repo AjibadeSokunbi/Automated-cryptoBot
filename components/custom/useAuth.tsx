@@ -77,10 +77,13 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       : JSON.stringify({
           email: data.email.toLowerCase(),
         });
-
+    const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
     const requestOptions: RequestInit = {
       method: "POST",
-      headers,
+      headers: {
+        Authorization: key as string,
+        "Content-Type": "application/json",
+      },
       body: requestBody,
     };
 

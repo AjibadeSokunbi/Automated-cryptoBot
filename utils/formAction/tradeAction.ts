@@ -40,7 +40,7 @@ export const handleUserSettings = async (FormData: FormData, pair: string) => {
       requestOptions
     );
  const res =  await response.json();
-console.log(res);
+
     revalidatePath(`/metabots/${pair}`)
     revalidateTag("sign")
     revalidatePath("/api/auth/signin")
