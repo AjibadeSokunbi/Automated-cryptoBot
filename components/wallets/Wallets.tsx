@@ -48,7 +48,7 @@ const Wallets = async () => {
                 </Stack>
                 <Stack alignItems='center'>
                     {/* <Send /> */}
-                    <Settings />
+                    <Settings settings= {user.botdata.data.settings} />
                 </Stack>
             </Stack>
         </Stack>

@@ -7,11 +7,12 @@ export async function GET(req: Request) {
     "https://tradeviewer.metadapp.com/chart-api/new_pairs?size=10",
 
     {
+      cache: 'no-store',
       headers: {
         "x-api-key": process.env.TRADEVIEWER_API as string,
         "Content-Type": "application/json",
       },
-      next: { revalidate: 10 },
+      // next: { revalidate: 10 },
     }
   );
 

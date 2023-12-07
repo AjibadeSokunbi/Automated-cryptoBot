@@ -1,13 +1,12 @@
 "use server";
-
-import { getCurrentUser } from "@/lib/session";
-import { ServerDefaultSession } from "../types";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { ServerDefaultSession } from "../types";
+import { getCurrentUser } from "@/lib/session";
 
 const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
 const metabotURL = process.env.NEXT_PUBLIC_METABOT_URL as string;
-export const handleUserSettings = async (FormData: FormData, pair: string) => {
-
+export const setPasswordKey = async (FormData: FormData) => {
+  "use server";
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
   const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
@@ -18,13 +17,7 @@ export const handleUserSettings = async (FormData: FormData, pair: string) => {
   });
 
   const requestBody = JSON.stringify({
-    params: {
-      autogas: FormData.get("autoGas") === "on" ? true : false,
-      shouldSimulate: FormData.get("simulate") === "on" ? true : false,
-      isPrivate: FormData.get("private") === "on" ? true : false,
-      slippage: FormData.get("slippage"),
-      scamScore: FormData.get("scam"),
-    },
+    password: FormData.get("password")
   });
 
   const requestOptions: RequestInit = {
@@ -34,17 +27,13 @@ export const handleUserSettings = async (FormData: FormData, pair: string) => {
   };
 
   try {
-    const response = await fetch(
-      `${metabotURL}user/editSettings`,
-      requestOptions
-    );
- const res =  await response.json();
-
-    revalidatePath(`/metabots/${pair}`)
-    revalidateTag("sign")
+    const response = await fetch(`${metabotURL}user/password`, requestOptions);
+    const res = await response.json();
+    console.log(res);
+    revalidateTag("user");
     revalidatePath("/wallets")
   } catch (error) {
     console.error("An error occurred:", error);
-  };
-
+  }
 };
+

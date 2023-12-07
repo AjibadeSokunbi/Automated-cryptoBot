@@ -107,7 +107,7 @@ const Metabots = () => {
             <Stack flexDirection='col' justifyContent='center' sx="w-full px-5 md:px-0 lg:px-0 mb-10 md:mb-36 lg:mb-36">
                 <Typography variant='medium' className="text-base text-center mb-3"> <span className='text-[#0A53BE]'> Testimonials </span> </Typography>
                 <Typography variant='medium' className="text-[27px] md:text-4xl lg:text-4xl text-center mb-3"> What people think about us </Typography>
-                <Typography variant='normal' className="text-lg md:text-xl lg:text-xl text-center"> <span className='text-[#B4D2FE]'> Here's what people have to say about their experience with us. </span> </Typography>
+                <Typography variant='normal' className="text-lg md:text-xl lg:text-xl text-center"> <span className='text-[#B4D2FE]'> Heres what people have to say about their experience with us. </span> </Typography>
                 <div className='w-full md:w-[90%] lg:w-[90%] mx-auto mt-10 md:mt-20 lg:mt-20'>
                     <Image src='/review1.svg' alt='testimonials' width={1000} height={1000} className='hidden md:block lg:block'/>
                     <Image src='/review2.svg' alt='testimonials' width={1000} height={1000} className='block md:hidden lg:hidden'/>
