@@ -14,7 +14,6 @@ import {
 import BuySettings from "./BuySettings";
 import BuySettingsMobile from "./BuySettingsMobile";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { fetchFee } from "@/utils/dataPool";
 import { useQuery } from "@tanstack/react-query";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
@@ -31,9 +30,12 @@ interface Props {
   ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
+  params: {
+    address: string
+  }
 }
 
-const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
+const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params }) => {
   const pairDetail = tokenData;
   const { gasFee, setGasFee } = useGaStore();
   const [inputA, setInputA] = useState<string>("");
@@ -44,7 +46,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
 
   const ethbalance = ethBalance;
 
-  const params = useParams();
+
   const pair = params.address;
 
   const [tokenName, setTokenName] = useState<string>(pairDetail?.baseSymbol);
@@ -170,8 +172,8 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
         <Typography className="text-neutral-200 text-sm font-bold font-['Instrument Sans'] leading-tight">
           Pays
         </Typography>
-        <BuySettings settings={settings} />
-        <BuySettingsMobile settings={settings} />
+        <BuySettings settings={settings} params={params} />
+        <BuySettingsMobile settings={settings} params={params}  />
       </Stack>
       <form
         action={async (formData) => {

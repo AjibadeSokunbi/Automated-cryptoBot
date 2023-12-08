@@ -18,6 +18,9 @@ interface Props {
   ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
+  params: {
+    address: string
+  }
 }
 
 const Limit: FC<Props> = ({
@@ -26,6 +29,7 @@ const Limit: FC<Props> = ({
   ethBalance,
   userBalanc,
   settings,
+  params
 }) => {
   return (
     <Stack flexDirection="col" padding="px-2 mt-4">
@@ -46,8 +50,8 @@ const Limit: FC<Props> = ({
         </TabsList>
         <TabsContent value="buy" className="w-full ">
           <Stack alignItems="end" justifyContent="end" sx="text-end">
-            <BuySettings settings={settings} />
-            <BuySettingsMobile settings={settings} />
+            <BuySettings settings={settings} params={params} />
+            <BuySettingsMobile settings={settings} params={params} />
           </Stack>
 
           <LiBuy
@@ -56,13 +60,14 @@ const Limit: FC<Props> = ({
             priseUsdEth={priseUsdEth}
             userBalanc={userBalanc}
             settings={settings}
+            params={params}
           />
         </TabsContent>
 
         <TabsContent value="sell">
           <Stack alignItems="end" justifyContent="end" sx="text-end">
-            <BuySettings settings={settings} />
-            <BuySettingsMobile settings={settings} />
+            <BuySettings settings={settings} params={params} />
+            <BuySettingsMobile settings={settings} params={params} />
           </Stack>
           {/* <HiArrowsUpDown className="text-center w-7" size={30} /> */}
           <LiSell
@@ -71,6 +76,7 @@ const Limit: FC<Props> = ({
             priseUsdEth={priseUsdEth}
             userBalanc={userBalanc}
             settings={settings}
+            params={params}
           />
         </TabsContent>
       </Tabs>

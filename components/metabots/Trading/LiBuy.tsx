@@ -20,7 +20,7 @@ import {
   UserSetting,
   feeFetch,
 } from "@/utils/types";
-import { useParams } from "next/navigation";
+
 import { fetchFee } from "@/utils/dataPool";
 import { useQuery } from "@tanstack/react-query";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
@@ -43,8 +43,11 @@ interface Props {
   ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
+  params: {
+    address: string
+  }
 }
-const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
+const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params }) => {
   const [isGreaterThan, setIsGreaterThan] = useState<boolean>(false);
   const pairDetail = tokenData;
   const { gasFee, setGasFee } = useGaStore();
@@ -56,7 +59,6 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
 
   const ethbalance = ethBalance;
 
-  const params = useParams();
   const pair = params.address;
 
   const {

@@ -1,13 +1,14 @@
 import { FC } from "react";
 import NewTokenTable from "./NewTokenTable";
 import NewTokenHead from "./NewTokenHead";
-import { newTokensScam } from "@/utils/dataPool";
+import { NewPairScam } from "@/utils/dataPool";
+import { NewTokenType } from "@/utils/types";
 
 interface Props {}
 
 export const dynamic = "force-dynamic";
 const NewTokens: FC<Props> = async ({}) => {
-  const NewData = await newTokensScam();
+  const NewData = await NewPairScam() as NewTokenType[]
   return (
     <>
       {" "}

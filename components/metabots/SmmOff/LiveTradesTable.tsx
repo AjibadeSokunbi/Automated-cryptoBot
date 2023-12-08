@@ -11,10 +11,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Stack from "@/components/custom/Stack";
-import { useParams } from "next/navigation";
-import { fetchFeeData } from "./LatestTrade";
 import {  useQuery } from "@tanstack/react-query";
-import { fetchWalletTxn } from "@/utils/dataPool";
+import { fetchFeeData, fetchWalletTxn } from "@/utils/dataPool";
 
 interface Props {
   historyData: TradeData[];
@@ -81,8 +79,8 @@ const TxImgComponent = (props: any) => {
   return txImg(total_tx, total_usd);
 };
 
-const LiveTradesTable: FC<Props> = ({ historyData, walletData }) => {
-  const params = useParams();
+const LiveTradesTable: FC<Props> = ({ historyData, walletData, params }) => {
+
   const address = params.address;
   const { data, isRefetching } = useQuery<TradeData[]>({
     refetchIntervalInBackground: true,

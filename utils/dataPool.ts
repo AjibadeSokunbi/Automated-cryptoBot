@@ -1,6 +1,12 @@
 import { UserDecodedTransactions } from "./Queries";
+import ScamChecker from "./Scam";
 import FeeEstimator from "./scripts/feeEstimator";
-import { TokenPairDetails, feeFetch } from "./types";
+import {
+  NewTokenType,
+  SearchPairResponse,
+  TokenPairDetails,
+  feeFetch,
+} from "./types";
 
 export const fetchWalletTxn = async (addresses: string[]) => {
   try {
@@ -89,4 +95,77 @@ export async function fetchGraphQLData(address: string) {
   });
 
   return response.json();
+}
+
+export const searchData = async (searchTerm: string) => {
+  try {
+    const response = await fetch(
+      `https://tradeviewer.metadapp.com/chart-api/autocomplete_search?search_term=${searchTerm}`,
+      {
+        headers: {
+          "x-api-key": process.env.NEXT_PUBLIC_TRADEVIEWER_API as string,
+          "Content-Type": "application/json",
+        },
+        next: { revalidate: 5 },
+      }
+    );
+    const data: SearchPairResponse = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+export const fetchFeeData = async (pair: string) => {
+  const res4 = await fetch(
+    `https://tradeviewer.metadapp.com/chart-api/trade_history?pair=${pair}`,
+
+    {
+      headers: {
+        "x-api-key": process.env.NEXT_PUBLIC_TRADEVIEWER_API as string,
+        "Content-Type": "application/json",
+      },
+      next: { revalidate: 10 },
+    }
+  );
+
+  const history = await res4.json();
+
+  const historyData = history?.data;
+  return historyData;
+};
+
+export async function NewPairScam() {
+  const scamCheckers = new ScamChecker();
+
+  try {
+    const res3 = await fetch(
+      "https://tradeviewer.metadapp.com/chart-api/new_pairs?size=7",
+
+      {
+        headers: {
+          "x-api-key": process.env.TRADEVIEWER_API as string,
+          "Content-Type": "application/json",
+        },
+        next: { revalidate: 5 },
+      }
+    );
+
+    const NewData = await res3.json();
+
+    const newScore = async (address: string): Promise<number> => {
+      const score = await scamCheckers.assessRisk(address);
+      return score;
+    };
+
+    const newDataWithScores: NewTokenType[] = [];
+    for (const newD of NewData) {
+      const score = await newScore(newD.base_id);
+      newDataWithScores.push({ ...newD, score });
+    }
+    return newDataWithScores;
+  } catch (error) {
+    console.error("Error fetching token score:", error);
+
+  }
 }

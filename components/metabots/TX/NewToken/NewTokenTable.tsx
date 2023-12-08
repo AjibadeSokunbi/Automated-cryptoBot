@@ -7,9 +7,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { timeAgo } from "@/utils";
+import { NewPairScam } from "@/utils/dataPool";
 import { fixNum2, shortenWord } from "@/utils/indexServer";
 import { NewTokenType } from "@/utils/types";
-import { useNewStore } from "@/utils/zustanStore/newStore";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
 import { FC } from "react";
@@ -21,11 +22,22 @@ interface Props {
 
 const NewTokenTable: FC<Props> = ({ NewData }) => {
   const  isConnected  = true;
+  const { data } = useQuery<NewTokenType[] | undefined>({
+    refetchIntervalInBackground: true,
+    refetchInterval: 20 * 1000,
+    queryKey: ["newTokens"],
+    queryFn: () => NewPairScam(),
+    initialData: NewData,
+    staleTime: 20 * 1000,  
+    enabled: true
+  });
+console.log(data)
+
   return (
     <Stack flexDirection="col" sx="w-full overflow-x-auto md:overflow-hidden lg:overflow-x-hidden" height="h-56" padding="mt-2">
     <Table className="w-full hide-scrollbar overflow-y-auto overflow-x-auto md:overflow-hidden lg:overflow-x-hidden">
         <TableBody>
-          {NewData?.map && NewData?.map((row, index) => (
+          {data?.map && NewData?.map((row, index) => (
             <Link key={index} href={`/metabots/${row?.pair}`}>
               <TableRow className="border-none flex justify-between gap-x-6 px-2 ">
                 <TableCell2 className="w-[80%] md:w-full lg:w-full border-none text-neutral-200 text-xs font-normal">

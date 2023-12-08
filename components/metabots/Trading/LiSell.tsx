@@ -15,9 +15,8 @@ import {
   feeFetch,
 } from "@/utils/types";
 import { useSession } from "next-auth/react";
-import { key, metabotURL, shortenWord } from "@/utils/indexServer";
+import { key,  shortenWord } from "@/utils/indexServer";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
-import { useParams } from "next/navigation";
 import { fetchFee } from "@/utils/dataPool";
 import { useQuery } from "@tanstack/react-query";
 import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
@@ -38,14 +37,18 @@ interface Props {
   ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
+  params: {
+    address: string
+  }
 }
 
 const LiSell: FC<Props> = ({
   tokenData,
-  priseUsdEth,
+
   ethBalance,
   userBalanc,
   settings,
+  params
 }) => {
   const [isGreaterThan, setIsGreaterThan] = useState<boolean>(false);
 
@@ -82,7 +85,7 @@ const LiSell: FC<Props> = ({
   );
   const ethbalance = ethBalance;
 
-  const params = useParams();
+
   const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
   const pair = params.address;
 

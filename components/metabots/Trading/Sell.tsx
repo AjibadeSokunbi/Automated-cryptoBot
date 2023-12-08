@@ -17,7 +17,6 @@ import { useSession } from "next-auth/react";
 import BuySettings from "./BuySettings";
 import { shortenWord } from "@/utils/indexServer";
 import { useGaStore } from "@/utils/zustanStore/gasStore";
-import { useParams } from "next/navigation";
 import { fetchFee } from "@/utils/dataPool";
 import { useQuery } from "@tanstack/react-query";
 import { getTokenSymbol } from "@/utils/scripts/fetchSymbol";
@@ -35,6 +34,9 @@ interface Props {
   ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
+  params: {
+    address: string
+  }
 }
 
 type Inputs = {
@@ -48,6 +50,7 @@ const Sell: FC<Props> = ({
   ethBalance,
   userBalanc,
   settings,
+  params
 }) => {
   const [activeTab, setActiveTab] = useState(25);
 
@@ -71,7 +74,7 @@ const Sell: FC<Props> = ({
   );
   const ethbalance = ethBalance;
 
-  const params = useParams();
+
   const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
   const pair = params.address;
   const rateConversion0to1 = (number: number): number => {
@@ -244,8 +247,8 @@ const Sell: FC<Props> = ({
           </Typography>
           Sell
         </Typography>
-        <BuySettings settings={settings} />
-        <BuySettingsMobile settings={settings} />
+        <BuySettings settings={settings}           params={params}/>
+        <BuySettingsMobile settings={settings}           params={params} />
       </Stack>
       <form
         action={async (formData) => {

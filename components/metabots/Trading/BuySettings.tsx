@@ -11,17 +11,21 @@ import { handleUserSettings } from "@/utils/formAction/tradeAction";
 
 import { SubmitButton } from "./Buto";
 import { DialogClose } from "@radix-ui/react-dialog";
-import { useParams } from "next/navigation";
+
 
 interface Props {
   settings: UserSetting;
+  params : {
+    address: string
+  }
 }
 
-const BuySettings: FC<Props> = ({ settings }) => {
+const BuySettings: FC<Props> = ({ settings, params }) => {
   const slipValue = [settings?.slippage];
   const [slippage, setSlippage] = useState<number[]>(slipValue);
   const [scam, setScam] = useState<number>(settings?.scamScore);
-  const params = useParams();
+  
+
   const pair = params.address;
 
   return (

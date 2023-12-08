@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PriceAlerts from "@/components/metabots/SmmOff/PriceAlerts";
 import SMM from "@/components/metabots/SmmOff/SMM";
 import { redirect } from "next/navigation";
+import { searchData } from "@/utils/dataPool";
 
 interface pageProps {
   params: {
@@ -24,7 +25,11 @@ interface pageProps {
 export default async function page({ params, searchParams }: pageProps) {
   const smm = (searchParams.smm || "0") as string ;
 
+  const pair = await searchData(params.address)
 
+  const params2 = {
+    address: pair?.results[0].pairAddress as string
+  }
 
   return (
     <>
@@ -33,7 +38,7 @@ export default async function page({ params, searchParams }: pageProps) {
           <Skeleton className="h-20 w-8/12 my-4 bg-[#0C141F] rounded-lg shadow border border-slate-800" />
         }
       >
-        <TokenInfoFetch params={params} />
+        <TokenInfoFetch params={params2} />
       </Suspense>
 
       {/* ------------------------ */}
@@ -53,7 +58,7 @@ export default async function page({ params, searchParams }: pageProps) {
                 Multi-Chart
               </Typography>
               <Stack sx="w-full h-72 p-1 bg-[#0C141F]  rounded-2xl shadow border border-slate-800 ">
-                <Graph />
+                <Graph params={params2} />
               </Stack>
             </Stack>
 
@@ -79,7 +84,7 @@ export default async function page({ params, searchParams }: pageProps) {
               </Stack>
             }
           >
-            <SMM params={params} smm={smm} />
+            <SMM params={params2} smm={smm} />
           </Suspense>
         </Stack>
         <Stack flexDirection="col" gap={10} width="lg:w-5/12 md:w-full">
@@ -90,7 +95,7 @@ export default async function page({ params, searchParams }: pageProps) {
           >
             <Wallet />
           </Suspense>
-          <TNav params={params} />
+          <TNav params={params2} />
         </Stack>
       </Stack>
 
@@ -107,7 +112,7 @@ export default async function page({ params, searchParams }: pageProps) {
             <Skeleton className="w-full flex flex-col h-[300px] bg-[#0C141F] rounded-lg shadow border border-slate-800 pb-2" />
           }
         >
-          <TNav params={params} />
+          <TNav params={params2} />
         </Suspense>
         <Tabs
           defaultValue="transactions"
@@ -155,7 +160,7 @@ export default async function page({ params, searchParams }: pageProps) {
                 </Stack>
               }
             >
-              <SMM params={params} smm={smm}  />
+              <SMM params={params2} smm={smm}  />
             </Suspense>
           </TabsContent>
           <TabsContent value="alerts" className="pt-5">

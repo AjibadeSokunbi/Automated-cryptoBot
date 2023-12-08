@@ -566,5 +566,30 @@ interface UserDataAuth {
 export interface UserResponseAuthentication {
   success: boolean;
   data: UserDataAuth;
+};
+
+
+
+
+export interface SearchPairResult {
+  name: string;
+  pair: string;
+  address: string;
+  token0: string;
+  token1: string;
+  pairAddress: string;
+  volume: number;
+  liquidity: number;
+  trades: number;
+  price: number;
+  symbol: string;
+  exchange: string;
+  chain: string;
+  baseName: string;
+  quoteSymbol: string;
+}
+
+export interface SearchPairResponse {
+  results: SearchPairResult[];
 }
 

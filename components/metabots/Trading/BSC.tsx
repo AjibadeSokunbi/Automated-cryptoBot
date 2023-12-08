@@ -70,6 +70,7 @@ const BSC: FC<Props> = async ({ params }) => {
           tokenData={data as TokenPairDetails}
           priseUsdEth={ethDetails.priceUsd}
           userBalanc={userBalanc}
+          params={params}
         />
       </TabsContent>
       <TabsContent value="sell" className="w-full ">
@@ -79,6 +80,7 @@ const BSC: FC<Props> = async ({ params }) => {
           tokenData={data as TokenPairDetails}
           priseUsdEth={ethDetails.priceUsd}
           userBalanc={userBalanc}
+          params={params}
         />
       </TabsContent>
       <TabsContent value="limit" className="w-full ">
@@ -88,6 +90,7 @@ const BSC: FC<Props> = async ({ params }) => {
           tokenData={data as TokenPairDetails}
           priseUsdEth={ethDetails.priceUsd}
           userBalanc={userBalanc}
+          params={params}
         />
       </TabsContent>
       <TabsContent value="copy" className="w-full ">

@@ -1,7 +1,5 @@
-"use client";
 import React from "react";
 import Stack from "../../../custom/Stack";
-import { useNewStore } from "@/utils/zustanStore/newStore";
 interface Props {}
 
 const NewTokenHead = () => {

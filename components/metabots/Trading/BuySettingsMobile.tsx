@@ -14,15 +14,18 @@ import { UserSetting } from "@/utils/types";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { SubmitButton } from "./Buto";
 import { handleUserSettings } from "@/utils/formAction/tradeAction";
-import { useParams } from "next/navigation";
+
 interface Props {
   settings: UserSetting;
+  params: {
+    address: string
+  }
 }
 
-const BuySettingsMobile: FC<Props> = ({ settings }) => {
+const BuySettingsMobile: FC<Props> = ({ settings, params }) => {
   const slipValue = [settings?.slippage];
   const [slippage, setSlippage] = useState<number[]>(slipValue);
-  const params = useParams()
+
   const pair = params.address
   return (
     <div className="flex md:hidden lg:hidden">

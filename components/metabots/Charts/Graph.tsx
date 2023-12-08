@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Script from "next/script";
 import {
   ChartingLibraryWidgetOptions,
@@ -36,8 +36,15 @@ const TVChartContainer = dynamic(
       (mod) => mod.TVChartContainer
     ),
   { ssr: false }
+  
 );
-const Graph = () => {
+
+interface Props {
+  params: {
+    address: string
+  }
+}
+const Graph: FC<Props> = ({params}) => {
 
   const [isScriptReady, setIsScriptReady] = useState(false);
   return (
@@ -49,7 +56,7 @@ const Graph = () => {
           setIsScriptReady(true);
         }}
       />
-      { isScriptReady && <TVChartContainer {...defaultWidgetProps} />}
+      { isScriptReady && <TVChartContainer params={params} {...defaultWidgetProps} />}
     </>
   );
 };

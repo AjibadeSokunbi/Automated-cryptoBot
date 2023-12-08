@@ -9,12 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { fetchFeeData } from "@/utils/dataPool";
 import { fixNum, timeAgo, toFixedNum } from "@/utils/indexServer";
 import { TokenPairDetails, TradeData } from "@/utils/types";
 import { usePriceStore } from "@/utils/zustanStore/priceUsd";
 import { useSmm } from "@/utils/zustanStore/smm";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 import { FC, useEffect } from "react";
 
 interface Props {
@@ -25,29 +25,12 @@ interface Props {
   };
 }
 
-export const fetchFeeData = async (pair: string) => {
-  const res4 = await fetch(
-    `https://tradeviewer.metadapp.com/chart-api/trade_history?pair=${pair}`,
 
-    {
-      headers: {
-        "x-api-key": process.env.NEXT_PUBLIC_TRADEVIEWER_API as string,
-        "Content-Type": "application/json",
-      },
-      next: { revalidate: 10 },
-    }
-  );
 
-  const history = await res4.json();
-
-  const historyData = history?.data;
-  return historyData;
-};
-
-const LatestTrade: FC<Props> = ({ historyData, pairDetails }) => {
+const LatestTrade: FC<Props> = ({ historyData, pairDetails, params }) => {
   const pairDetail = pairDetails;
   const { setPrice } = usePriceStore();
-  const params = useParams();
+
   const address = params.address;
   const { data,isSuccess, isFetched } = useQuery<TradeData[]>({
     

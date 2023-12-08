@@ -1,17 +1,23 @@
-import { useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import {
   ChartingLibraryWidgetOptions,
   LanguageCode,
   ResolutionString,
   widget,
 } from "@/public/static/charting_library";
-import { useParams } from "next/navigation";
 
-export const TVChartContainer = (
-  props: Partial<ChartingLibraryWidgetOptions>
+
+interface Props extends Partial<ChartingLibraryWidgetOptions> {
+  params : {
+    address: string
+  }
+}
+
+export const TVChartContainer: FC<Props> = (
+  props
 ) => {
-  const params = useParams();
-  const pairId = params.address;
+
+  const pairId = props.params.address;
 
   const chartContainerRef =
     useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;

@@ -10,7 +10,7 @@ interface Props {}
 const Tabs: FC<Props> = ({}) => {
   const pathname = usePathname();
   const params = useParams();
-  const address = "0x11b815efb8f581194ae79006d24e0d814b7697f6";
+  const address = "0xdac17f958d2ee523a2206206994597c13d831ec7";
   const [paths, setPaths] = useState(params.address ? params.address : address);
   const [paths2, setPaths2] = useState("");
 
