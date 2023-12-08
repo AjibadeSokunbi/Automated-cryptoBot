@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Stack from '@/components/custom/Stack';
 import Typography from '@/components/custom/Typography';
 import { limitsTable } from '@/utils/MockData';
 import { IoMdWallet } from "react-icons/io";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { UserLimiTrade, UserTrade } from '@/utils/types';
 
-const LimitsTable = () => {
+
+interface Props {
+
+    tradeData2: UserLimiTrade[]
+  }
+
+const LimitsTable:  FC<Props> = ({tradeData2}) => {
   return (
     <Stack sx="w-full overflow-x-hidden">
         <table className="w-full text-left">
@@ -44,30 +51,30 @@ const LimitsTable = () => {
                 </tr>
             </thead>
             <tbody className='w-full'>
-                {limitsTable?.map((row, index) => (
+                {tradeData2?.map((row, index) => (
                     <tr key={index} className={
                         index % 2 === 0
                             ? "w-full" : "w-full bg-[#17212F] border-y border-[#212E40]"}>
                         <div className='py-3 px-2 md:px-10 lg:px-10 w-full flex items-center justify-between'>
                             <td className="w-[30px] md:w-1/6 lg:w-1/6">
-                            <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] uppercase'> {row.wallet} </Typography>
+                            <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] uppercase'> W1 </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] capitalize'> {row.type} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] capitalize'> {row.action} </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row.token} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row?.symbol} </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row.quantity} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row.amount} </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-right lg:text-right'> $ {row.price} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-right lg:text-right'> $ {row.tradePrice} </Typography>
                             </td>
                             <td className="w-1/6">
                                 <Stack alignItems='center' sx='md:justify-end lg:justify-end'>
-                                    <Typography variant='normal' className="text-[9px] md:text-sm lg:text-sm capitalize"> <span className={`${row.status === 'pending' ? 'text-[#FFC107]' : 'text-[#06C270]'}`}> {row.status} </span> </Typography>
-                                    {row.status === 'pending' ? (<MdOutlineDeleteOutline className="text-[#FF3B3B] text-base ml-2"/>) : ''}
+                                    <Typography variant='normal' className="text-[9px] md:text-sm lg:text-sm capitalize"> <span className={`${row.executed === false ? 'text-[#FFC107]' : 'text-[#06C270]'}`}>   {row?.executed ? "Confirmed" : "Pending"} </span> </Typography>
+                                    {row.executed === false ? (<MdOutlineDeleteOutline className="text-[#FF3B3B] text-base ml-2"/>) : ''}
                                 </Stack>
                             </td>
                         </div>

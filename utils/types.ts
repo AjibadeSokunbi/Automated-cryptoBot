@@ -514,4 +514,57 @@ export interface UserTrade {
   updatedAt: string;
   __v: number;
   executed: boolean;
+};
+
+
+
+export interface UserLimiTrade {
+  _id: string;
+  user: string;
+  chain: string;
+  token: string;
+  action: 'buy' | 'sell';
+  isgreaterThan: boolean;
+  amount: string;
+  pairAddress: string;
+  paymentToken: string;
+  tradePrice: number;
+  executed: boolean;
+  expiration: string;
+  protocolIdentifier: string;
+  symbol: string
+  walletIndex: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
+
+export interface UserTradeArray {
+  trades: UserLimiTrade[];
+};
+
+
+
+
+interface UserDataAuth {
+  _id: string;
+  email: string;
+  referred: any[]; 
+  referralId: string;
+  wallet: string[];
+  subscriptions: any[]; 
+  tier: string;
+  trades: string[];
+  points: number;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  token: string;
+  password: boolean;
+}
+
+export interface UserResponseAuthentication {
+  success: boolean;
+  data: UserDataAuth;
+}
+

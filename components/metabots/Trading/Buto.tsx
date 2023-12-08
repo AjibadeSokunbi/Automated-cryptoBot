@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useFormStatus } from "react-dom";
+import { BiLoaderAlt } from "react-icons/bi";
 
 export function SubmitButton() {
   const { pending } = useFormStatus();
@@ -11,7 +12,6 @@ export function SubmitButton() {
       title: "Settings Saved!",
       variant: "default",
     });
-
   };
   return (
     <Button
@@ -21,7 +21,7 @@ export function SubmitButton() {
       className="w-full"
       size="sm"
     >
-      Save{pending && "...."}
+      Save {pending && <BiLoaderAlt className="mr-2 h-4 w-4 animate-spin" />}
     </Button>
   );
 }

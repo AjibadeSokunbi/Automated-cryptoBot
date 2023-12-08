@@ -34,12 +34,14 @@ export async function onBuyAction(FormData: FormData, pair: string) {
   try {
     const response = await fetch(`${metabotURL}trade/`, requestOptions);
     const result = await response.json();
-    const error = JSON.parse(result.error.body);
-    const eMessage = error.error.message;
-    if (response.status === 200) {
-      revalidatePath(`/metabots/${pair}`);
+
+    const error = result?.error?.code
+
+    const eMessage = error;
+
+    if (response.status !== 200) {
       return {
-        txHash: result.data.txnHash,
+        txHash: result?.data?.txnHash,
         message: "success",
       };
     } else {
@@ -80,12 +82,14 @@ export async function onSellAction(FormData: FormData, pair: string) {
     const response = await fetch(`${metabotURL}trade/`, requestOptions);
 
     const result = await response.json();
-    const error = JSON.parse(result.error.body);
-    const eMessage = error.error.message;
+
+    const error = result?.error?.code
+
+    const eMessage = error;
     if (response.status === 200) {
-      revalidatePath(`/metabots/${pair}`);
+
       return {
-        txHash: result.data.txnHash,
+        txHash: result?.data?.txnHash,
         message: "success",
       };
     } else {
@@ -133,12 +137,14 @@ export async function onBuyLimitAction(
   try {
     const response = await fetch(`${metabotURL}limitTrade/`, requestOptions);
     const result = await response.json();
-    const error = JSON.parse(result.error.body);
-    const eMessage = error.error.message;
+
+    const error = result?.error?.code
+
+    const eMessage = error;
     if (response.status === 200) {
       revalidatePath(`/metabots/${pair}`);
       return {
-        txHash: result.data.txnHash,
+        txHash: result?.data?.txnHash,
         message: "success",
       };
     } else {
@@ -186,12 +192,14 @@ export async function onSellLimitAction(
   try {
     const response = await fetch(`${metabotURL}limitTrade`, requestOptions);
     const result = await response.json();
-    const error = JSON.parse(result.error.body);
-    const eMessage = error.error.message;
+
+    const error = result?.error?.code
+
+    const eMessage = error;
     if (response.status === 200) {
       revalidatePath(`/metabots/${pair}`);
       return {
-        txHash: result.data.txnHash,
+        txHash: result?.data?.txnHash,
         message: "success",
       };
     } else {

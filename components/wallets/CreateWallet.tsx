@@ -67,7 +67,7 @@ const CreateWallet: React.FC<Wallet> = ({ wallets, token }) => {
                     justifyContent="between"
                     sx="w-full px-10"
                   >
-                    <DeleteWallet wallet={wallet} />
+                    <DeleteWallet wallet={index} />
                   </Stack>
                 </Stack>
               </DialogContent3>

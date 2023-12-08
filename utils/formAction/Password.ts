@@ -17,7 +17,7 @@ export const setPasswordKey = async (FormData: FormData) => {
   });
 
   const requestBody = JSON.stringify({
-    password: FormData.get("password")
+    password: FormData.get("password"),
   });
 
   const requestOptions: RequestInit = {
@@ -31,9 +31,59 @@ export const setPasswordKey = async (FormData: FormData) => {
     const res = await response.json();
     console.log(res);
     revalidateTag("user");
-    revalidatePath("/wallets")
+    revalidatePath("/wallets");
   } catch (error) {
     console.error("An error occurred:", error);
   }
 };
 
+export const retrievePrivateKey = async (
+  FormData: FormData,
+  walletIndex: number
+) => {
+  "use server";
+  const user: ServerDefaultSession =
+    (await getCurrentUser()) as ServerDefaultSession;
+  const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
+
+  const headers = new Headers({
+    Authorization: metabotApiKey,
+    "Content-Type": "application/json",
+  });
+
+  const requestBody = JSON.stringify({
+    password: FormData.get("password"),
+  });
+
+  const requestOptions: RequestInit = {
+    method: "POST",
+    headers,
+    body: requestBody,
+  };
+
+  try {
+    const response = await fetch(
+      `${metabotURL}wallet/decrypt/${walletIndex}`,
+      requestOptions
+    );
+
+
+
+    const res = await response.json();
+
+    revalidateTag("user");
+    revalidatePath("/wallets");
+    if (res.status === true) {
+      return {
+        data: res,
+      };
+    } else {
+      return {
+        data: res.message,
+      };
+    }
+
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+};

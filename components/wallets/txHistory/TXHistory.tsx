@@ -1,13 +1,19 @@
 "use client";
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import Stack from '@/components/custom/Stack'
 import Typography from '@/components/custom/Typography'
 import AllTable from '@/components/wallets/txHistory/all/AllTable';
-import CopiedTradesTable from '@/components/wallets/txHistory/copiedTrades/CopiedTradesTable';
 import LimitsTable from '@/components/wallets/txHistory/limits/LimitsTable';
 import TransfersTable from '@/components/wallets/txHistory/transfers/TransfersTable';
+import { Transfer, UserLimiTrade, UserTrade } from '@/utils/types';
 
-const TXHistory = () => {
+interface Props {
+  tradeData: UserTrade[]
+  tradeData2: UserLimiTrade[]
+  TransferData:  Transfer[];
+}
+
+const TXHistory: FC<Props> = ({tradeData, tradeData2, TransferData}) => {
 
     const [activeTab, setActiveTab] = useState(0);
   const handleTabClick = (index: number) => {
@@ -35,12 +41,12 @@ const TXHistory = () => {
                 >
                     <Typography variant='medium' className='text-sm'> <span className={`${activeTab === 1 ? 'text-[#FFC107] underline underline-offset-3' : 'text-[#6C757D]'}`}> Limits </span> </Typography>
                 </div>
-                <div
+                {/* <div
                 className="tab w-fit cursor-pointer"
                 onClick={() => handleTabClick(2)}
                 >
                     <Typography variant='medium' className='text-sm'> <span className={`${activeTab === 2 ? 'text-[#FFC107] underline underline-offset-3' : 'text-[#6C757D]'}`}> Copied Trades </span> </Typography>   
-                </div>
+                </div> */}
                 <div
                 className="tab w-fit cursor-pointer"
                 onClick={() => handleTabClick(3)}
@@ -52,25 +58,25 @@ const TXHistory = () => {
 
         {activeTab === 0 && (
           <>
-            <AllTable />
+            <AllTable tradeData={tradeData}   />
           </>
         )}
 
         {activeTab === 1 && (
           <>
-            <LimitsTable />
+            <LimitsTable tradeData2={tradeData2} />
           </>
         )}
-
+{/* 
         {activeTab === 2 && (
           <>
             <CopiedTradesTable />
           </>
-        )}
+        )} */}
 
         {activeTab === 3 && (
           <>
-            <TransfersTable />
+            <TransfersTable TransferData={TransferData} />
           </>
         )}
         

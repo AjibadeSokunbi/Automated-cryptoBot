@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Stack from '@/components/custom/Stack';
 import Typography from '@/components/custom/Typography';
 import Image from 'next/image';
-import { walletTokenTable } from '@/utils/MockData';
+import { TokenBalance } from '@/utils/types';
 
-const Table = () => {
+
+interface Props {
+  balances: TokenBalance[]
+}
+
+const Table: FC<Props> = ({balances}) => {
   return (
     <Stack sx="w-full">
         <Stack sx="w-full overflow-x-hidden">
@@ -34,7 +39,7 @@ const Table = () => {
                     </tr>
                 </thead>
                 <tbody className='w-full'>
-                    {walletTokenTable?.map((row, index) => (
+                    {balances?.map((row, index) => (
                         <tr key={index} className={
                             index % 2 === 0
                               ? "w-full" : "w-full bg-[#17212F] border-y border-[#212E40]"}>
@@ -43,21 +48,21 @@ const Table = () => {
                                     <Stack alignItems='center' justifyContent='between' sx='w-[90%] md:w-[80%] lg:w-[80%]'>
                                         <Stack alignItems='center'>
                                             <Image src={row.logo} width={20} height={20} alt='' className='mr-2' />
-                                            <Typography variant='normal' className='text-[9px] md:text-base lg:text-base uppercase hidden md:inline lg:inline'> {row.token && row.token.length > 13 ? `${row.token.slice(0, 13)}...` : row.token} </Typography>
-                                            <Typography variant='normal' className='text-[9px] md:text-base lg:text-base uppercase inline md:hidden lg:hidden'> {row.token && row.token.length > 5 ? `${row.token.slice(0, 5)}...` : row.token} </Typography>
+                                            <Typography variant='normal' className='text-[9px] md:text-base lg:text-base uppercase hidden md:inline lg:inline'> {row.name} </Typography>
+                                            <Typography variant='normal' className='text-[9px] md:text-base lg:text-base uppercase inline md:hidden lg:hidden'> {row.name}</Typography>
                                         </Stack>
 
-                                        <span className='bg-[#017B46] px-2 py-1 text-[9px] md:text-[10px] lg:text-[10px] text-[#E7E7E7] capitalize text-center font-semibold rounded-md'> {row.type} </span>
+                                        {/* <span className='bg-[#017B46] px-2 py-1 text-[9px] md:text-[10px] lg:text-[10px] text-[#E7E7E7] capitalize text-center font-semibold rounded-md'> {row.type} </span> */}
                                     </Stack>
                                 </td>
                                 <td className="w-1/4">
-                                    <Typography variant='normal' className='text-[9px] md:text-base lg:text-base'> $ {row.price} </Typography>
+                                    <Typography variant='normal' className='text-[9px] md:text-base lg:text-base'> $ {row.usdPrice.toFixed(2)} </Typography>
                                 </td>
                                 <td className="w-1/4">
-                                    <Typography variant='normal' className='text-[9px] md:text-base lg:text-base'> {row.balance} </Typography>
+                                    <Typography variant='normal' className='text-[9px] md:text-base lg:text-base'> {Number(row.balance).toFixed(2)} </Typography>
                                 </td>
                                 <td className="w-1/4">
-                                    <Typography variant='normal' className='text-[9px] md:text-base lg:text-base'> $ {row.total} </Typography>
+                                    <Typography variant='normal' className='text-[9px] md:text-base lg:text-base'> $ {row.Networth.toFixed(2)} </Typography>
                                 </td>
                             </div>
                         </tr>

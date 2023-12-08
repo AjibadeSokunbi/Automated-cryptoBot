@@ -34,7 +34,8 @@ export const createWallet = async () => {
 
 const metabotURL2 = "https://api.metadapp.com/"
 
-export const deleteWallet = async (walletId: string) => {
+export const deleteWallet = async (walletId: number) => {
+  console.log(walletId)
     "use server";
     const user: ServerDefaultSession =
       (await getCurrentUser()) as ServerDefaultSession;

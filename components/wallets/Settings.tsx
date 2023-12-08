@@ -9,9 +9,11 @@ import { UserSetting } from "@/utils/types";
 
 interface Props {
     settings: UserSetting;
+    wallets: string[];
+    hasSetPassword: boolean
   }
 
-const Settings: FC<Props> = ({settings}) => {
+const Settings: FC<Props> = ({settings, wallets, hasSetPassword}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -46,7 +48,7 @@ const Settings: FC<Props> = ({settings}) => {
             <TradeSettings settings={settings} />
           </TabsContent>
 
-          <Security />
+          <Security wallets={wallets} hasSetPassword={hasSetPassword} />
         </Tabs>
       </DialogContent>
     </Dialog>

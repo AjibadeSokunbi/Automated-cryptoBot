@@ -184,7 +184,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings }) => {
                 <Link
                   className="underline text-yellow-600"
                   target="_blank"
-                  href={`https://etherscan.io/tx/${result.txHash}`}
+                  href={`https://etherscan.io/tx/${result?.txHash}`}
                 >
                   Click to view your Transaction Status
                 </Link>

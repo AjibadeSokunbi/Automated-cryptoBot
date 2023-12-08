@@ -30,13 +30,13 @@ const All = async () => {
   };
 
   const response = await fetch(
-    `${metabotURL}trade/user/${user?.botdata?.data?._id}`,
+    `${metabotURL}trade/user/${user.botdata.data._id}`,
     requestOptions
   );
 
   const responseData = await response?.json();
 
-  const tradeData: UserTrade[] = responseData?.message;
+  const tradeData: UserTrade[] = responseData?.data;
 
   return (
     <Stack flexDirection="col" sx="w-full" height="h-[210px]" padding="mt-2">
@@ -68,7 +68,7 @@ const All = async () => {
         </TableHeader>
 
         <TableBody>
-          {tradeData.map &&
+          {
             tradeData?.map((row, index) => (
               <TableRow
                 className="border-none flex justify-between gap-x-6"

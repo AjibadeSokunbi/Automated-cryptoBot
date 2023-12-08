@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { FC, useState } from "react";
 import Typography from "@/components/custom/Typography";
 import Stack from "@/components/custom/Stack";
 import { TabsContent } from "@/components/ui/tabs";
@@ -8,16 +7,23 @@ import { TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { MdOutlineContentCopy } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
-import { securityData } from "@/utils/MockData";
-import { setPasswordKey } from "@/utils/formAction/Password";
+import {
+  retrievePrivateKey,
+  setPasswordKey,
+} from "@/utils/formAction/Password";
 import PassButton from "./PassButton";
+import { toast } from "../ui/use-toast";
+import PrivateKeyButton from "./PrivateKeyButton";
 
-interface Props {}
+interface Props {
+  wallets: string[];
+  hasSetPassword: boolean
+}
 
-const Security = () => {
+const Security: FC<Props> = ({ wallets, hasSetPassword }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [enterPassword, setEnterPassword] = useState("");
+  const [keySuccess, setKeySuccess] = useState(false);
 
   const [conditions, setConditions] = useState<string[]>([]);
 
@@ -57,69 +63,66 @@ const Security = () => {
     const { value } = event.target;
     setConfirmPassword(value);
   };
-  const showKeys = false;
-  const openKeys = false;
-  const handleOpenKeys = true;
+
+
+  const [activeTab, setActiveTab] = useState(hasSetPassword ? 1 : 0);
+  const handleTabClick = (index: number) => {
+    setActiveTab(index);
+  };
+  const [privateKey, setPrivateKey] = useState("");
+  const securityData = [
+    {
+      title: `wallet address 1`,
+      address: wallets[0],
+      key: privateKey,
+    },
+  ];
+  const canClick = password !== confirmPassword
   return (
     <TabsContent value="security">
       <Stack flexDirection="col" sx="w-full px-5">
-        <form
-          action={async (formData) => {
-            await setPasswordKey(formData);
-          }}
-        >
-          <Stack
-            flexDirection="col"
-            sx={`w-full ${showKeys === (true as boolean) ? "hidden" : "flex"}`}
+        {!hasSetPassword && activeTab === 0 && (
+          <form
+            action={async (formData) => {
+              await setPasswordKey(formData);
+            }}
           >
-            <Stack flexDirection="col" sx="w-full mb-5">
-              <Typography variant="medium" className="text-sm mb-3">
-                {" "}
-                <span className="text-[#B5B6B6]"> Set Password </span>{" "}
-              </Typography>
-              <Input
-                placeholder="Password"
-                required
-                name="password"
-                type="password"
-                value={password}
-                onChange={handleChangePassword}
-                className="w-full text-[#989898] px-2 py-1 rounded-md border border-[#212E40] bg-transparent active:outline-none active:border-none pr-6"
-              />
-            </Stack>
-            <Stack flexDirection="col" sx="w-full mb-5">
-              <Typography variant="medium" className="text-sm mb-3">
-                {" "}
-                <span className="text-[#B5B6B6]"> Confirm Password </span>{" "}
-              </Typography>
-              <Input
-                name="cpassword"
-                placeholder="Casperbigbig2345"
-                required
-                type="password"
-                value={confirmPassword}
-                onChange={handleChangeConfirmPassword}
-                className="w-full text-[#989898] px-2 py-1 rounded-md border border-[#212E40] bg-transparent active:outline-none active:border-none pr-6"
-              />
-            </Stack>
-
-            {conditions.length > 0 && (
-              <Stack
-                alignItems="center"
-                justifyContent="center"
-                sx="w-full bg-red-400 rounded-md mb-5"
-              >
-                <Typography variant="normal" className="text-base text-white">
+            <Stack flexDirection="col" sx={`w-full`}>
+              <Stack flexDirection="col" sx="w-full mb-5">
+                <Typography variant="medium" className="text-sm mb-3">
                   {" "}
-                  {conditions[0]}
+                  <span className="text-[#B5B6B6]"> Set Password </span>{" "}
                 </Typography>
+                <Input
+                  placeholder="Password"
+                  required
+                  name="password"
+                  type="password"
+                  value={password}
+                  onChange={handleChangePassword}
+                  className="w-full text-[#989898] px-2 py-1 rounded-md border border-[#212E40] bg-transparent active:outline-none active:border-none pr-6"
+                />
               </Stack>
-            )}
+              <Stack flexDirection="col" sx="w-full mb-5">
+                <Typography variant="medium" className="text-sm mb-3">
+                  {" "}
+                  <span className="text-[#B5B6B6]">
+                    {" "}
+                    Confirm Password{" "}
+                  </span>{" "}
+                </Typography>
+                <Input
+                  name="cpassword"
+                  placeholder="Casperbigbig2345"
+                  required
+                  type="password"
+                  value={confirmPassword}
+                  onChange={handleChangeConfirmPassword}
+                  className="w-full text-[#989898] px-2 py-1 rounded-md border border-[#212E40] bg-transparent active:outline-none active:border-none pr-6"
+                />
+              </Stack>
 
-            {conditions.length === 0 &&
-              password !== "" &&
-              confirmPassword !== "" &&
-              password !== confirmPassword && (
+              {conditions.length > 0 && (
                 <Stack
                   alignItems="center"
                   justifyContent="center"
@@ -127,62 +130,91 @@ const Security = () => {
                 >
                   <Typography variant="normal" className="text-base text-white">
                     {" "}
-                    <p>Passwords do not match.</p>
+                    {conditions[0]}
                   </Typography>
                 </Stack>
               )}
 
-            {conditions.length === 0 &&
-              password !== "" &&
-              confirmPassword !== "" &&
-              password === confirmPassword && (
-                <Stack
-                  alignItems="center"
-                  justifyContent="center"
-                  sx="w-full bg-green-400 rounded-md mb-5"
-                >
-                  <Typography variant="normal" className="text-base text-white">
-                    {" "}
-                    <p>Password is strong. You can proceed.</p>
-                  </Typography>
-                </Stack>
-              )}
+              {conditions.length === 0 &&
+                password !== "" &&
+                confirmPassword !== "" &&
+                password !== confirmPassword && (
+                  <Stack
+                    alignItems="center"
+                    justifyContent="center"
+                    sx="w-full bg-red-400 rounded-md mb-5"
+                  >
+                    <Typography
+                      variant="normal"
+                      className="text-base text-white"
+                    >
+                      {" "}
+                      <p>Passwords do not match.</p>
+                    </Typography>
+                  </Stack>
+                )}
 
-            <PassButton/>
-          </Stack>
-        </form>{" "}
-        {showKeys && (
-          <Stack
-            alignItems="center"
-            flexDirection="col"
-            sx={`${openKeys === (true as boolean) ? "hidden" : "block"}`}
-          >
-            <Stack flexDirection="col" sx="w-full mb-5">
-              <Typography variant="medium" className="text-sm mb-3">
-                {" "}
-                <span className="text-[#B5B6B6]"> Enter Password </span>{" "}
-              </Typography>
-              <Input
-                type="text"
-                placeholder="Casperbigbig2345"
-                required
-                value={enterPassword}
-                onChange={(e) => setEnterPassword(e.target.value)}
-                className="w-full text-[#989898] px-2 py-1 rounded-md border border-[#212E40] bg-transparent active:outline-none active:border-none pr-6"
-              />
+              {conditions.length === 0 &&
+                password !== "" &&
+                confirmPassword !== "" &&
+                password === confirmPassword && (
+                  <Stack
+                    alignItems="center"
+                    justifyContent="center"
+                    sx="w-full bg-green-400 rounded-md mb-5"
+                  >
+                    <Typography
+                      variant="normal"
+                      className="text-base text-white"
+                    >
+                      {" "}
+                      <p>Password is strong. You can proceed.</p>
+                    </Typography>
+                  </Stack>
+                )}
+
+              <PassButton canClick={canClick} />
             </Stack>
+          </form>
+        )}{" "}
+        {!keySuccess && hasSetPassword && (
+          <form
+            action={async (formData) => {
+              const result = await retrievePrivateKey(formData, 0);
+              if (result?.data.status === true) {
+                setPrivateKey(result.data.data);
+                setKeySuccess(true);
+              } else {
+                toast({
+                  title: "Error",
+                  variant: "destructive",
+                  description: (
+                    <p>Incorrect Password, Password are case Sensitive</p>
+                  ),
+                });
+              }
+            }}
+          >
+            <Stack alignItems="center" flexDirection="col">
+              <Stack flexDirection="col" sx="w-full mb-5">
+                <Typography variant="medium" className="text-sm mb-3">
+                  {" "}
+                  <span className="text-[#B5B6B6]"> Enter Password </span>{" "}
+                </Typography>
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  required
+                  name="password"
+                  className="w-full text-[#989898] px-2 py-1 rounded-md border border-[#212E40] bg-transparent active:outline-none active:border-none pr-6"
+                />
+              </Stack>
 
-            <Button
-              variant="default"
-              size="default"
-              className="w-full text-base font-semibold"
-            >
-              {" "}
-              View Private Keys{" "}
-            </Button>
-          </Stack>
+              <PrivateKeyButton handleTabClick={handleTabClick} />
+            </Stack>
+          </form>
         )}
-        {openKeys && (
+        {keySuccess && privateKey !== "" && (
           <Stack
             flexDirection="col"
             alignItems="center"

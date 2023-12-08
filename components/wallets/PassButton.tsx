@@ -1,18 +1,20 @@
-import React from "react";
+import React, { FC } from "react";
 import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import { ImSpinner2 } from "react-icons/im";
 
-interface Props {}
+interface Props {
+  canClick: boolean;
+}
 
-const PassButton = () => {
+const PassButton: FC<Props> = ({canClick}) => {
   const { pending } = useFormStatus();
   return (
     <Button
       variant="default"
       size="default"
       className="w-full text-base font-semibold"
-      disabled={pending}
+      disabled={pending || canClick === false}
       aria-disabled={pending}
     >
       {" "}

@@ -6,7 +6,7 @@ import DeleteButton from "./DeleteButton";
 import { DialogClose } from "@radix-ui/react-dialog";
 
 interface Props {
-  wallet: string;
+  wallet: number;
 }
 
 const DeleteWallet: FC<Props> = ({ wallet }) => {
