@@ -197,7 +197,7 @@ export async function onSellLimitAction(
 
     const eMessage = error;
     if (response.status === 200) {
-      revalidatePath(`/metabots/${pair}`);
+
       return {
         txHash: result?.data?.txnHash,
         message: "success",

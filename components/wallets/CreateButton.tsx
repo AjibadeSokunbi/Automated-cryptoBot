@@ -1,12 +1,14 @@
 "use client"
-import React from "react";
+import React, { FC } from "react";
 import { Button } from "../ui/button";
 import { useFormStatus } from "react-dom";
 import { ImSpinner2 } from "react-icons/im";
 
-interface Props {}
+interface Props {
+  canCreateNewWallet: boolean
+}
 
-const CreateButton = () => {
+const CreateButton: FC<Props> = ({canCreateNewWallet}) => {
   const { pending } = useFormStatus();
   return (
     <Button
@@ -14,7 +16,7 @@ const CreateButton = () => {
       size="default"
       className="text-xs md:text-sm lg:text-sm font-bold"
       type="submit"
-      disabled={pending}
+      disabled={pending || canCreateNewWallet}
       aria-disabled={pending}
     >
       {" "}

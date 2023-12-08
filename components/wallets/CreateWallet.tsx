@@ -18,7 +18,7 @@ interface Wallet {
 }
 
 const CreateWallet: React.FC<Wallet> = ({ wallets, token }) => {
-
+const canCreateNewWallet = wallets.length >= 3
   return (
     <Stack alignItems="center" justifyContent="between" sx="w-full mb-5 gap-3">
       <Stack alignItems="center" sx="w-auto gap-4">
@@ -76,7 +76,7 @@ const CreateWallet: React.FC<Wallet> = ({ wallets, token }) => {
         ))}
       </Stack>
       <form action={createWallet}>
-        <CreateButton />
+        <CreateButton canCreateNewWallet={canCreateNewWallet} />
       </form>
     </Stack>
   );
