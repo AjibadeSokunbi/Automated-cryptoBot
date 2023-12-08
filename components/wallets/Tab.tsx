@@ -2,16 +2,21 @@ import React, { FC } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Table from "@/components/wallets/tokenHoldings/Table";
 import TXHistory from "@/components/wallets/txHistory/TXHistory";
-import { ServerDefaultSession, TokenBalance, UserLimiTrade, UserTrade } from "@/utils/types";
+import {
+  ServerDefaultSession,
+  TokenBalance,
+  UserLimiTrade,
+  UserTrade,
+} from "@/utils/types";
 import { getCurrentUser } from "@/lib/session";
 import { fetchGraphQLData } from "@/utils/dataPool";
 //import WalletPerformance from '@/components/wallets/walletPerformance/WalletPerformance';
 
 interface Props {
   balances: TokenBalance[];
+  walletIndex: number;
 }
-
-const Tab: FC<Props> = async ({ balances }) => {
+const Tab: FC<Props> = async ({ balances, walletIndex }) => {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
   const metabotURL = "https://api.metadapp.com/";
@@ -34,7 +39,6 @@ const Tab: FC<Props> = async ({ balances }) => {
 
   const tradeData: UserTrade[] = responseData?.data;
 
-
   const response2 = await fetch(
     `${metabotURL}limitTrade/user/${user?.botdata?.data?._id}`,
     requestOptions
@@ -42,7 +46,9 @@ const Tab: FC<Props> = async ({ balances }) => {
 
   const responseData2 = await response2?.json();
   const tradeData2: UserLimiTrade[] = responseData2?.data;
-const TransferData = await fetchGraphQLData(user.botdata.data.wallet[0])
+  const TransferData = await fetchGraphQLData(
+    user.botdata.data.wallet[walletIndex]
+  );
 
   return (
     <Tabs defaultValue="tokenHoldings" className="w-full">
@@ -70,7 +76,11 @@ const TransferData = await fetchGraphQLData(user.botdata.data.wallet[0])
         <WalletPerformance />
   </TabsContent> */}
       <TabsContent value="txHistory">
-        <TXHistory tradeData={tradeData}  tradeData2={tradeData2} TransferData={TransferData?.data?.userDecodedTransactions?.transfers} />
+        <TXHistory
+          tradeData={tradeData}
+          tradeData2={tradeData2}
+          TransferData={TransferData?.data?.userDecodedTransactions?.transfers}
+        />
       </TabsContent>
     </Tabs>
   );

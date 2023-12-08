@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import Tab from "@/components/wallets/Tab";
@@ -11,10 +11,14 @@ import { getCurrentUser } from "@/lib/session";
 import { makeWalletAddress } from "@/utils/indexServer";
 import CopyAddress from "../metabots/Wallet/Copy";
 
-const Wallets = async () => {
+interface Props {
+walletIndex: number
+}
+
+const Wallets: FC<Props> = async ({walletIndex}) => {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
-  const wallet = user?.botdata?.data?.wallet[0];
+  const wallet = user?.botdata?.data?.wallet[walletIndex];
 
   const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
   const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
@@ -59,6 +63,7 @@ const Wallets = async () => {
         <CreateWallet
           wallets={walletIds.data.wallet}
           token={user.botdata.data.token as string}
+          walletIndex={walletIndex}
         />
         <Stack alignItems="center" sx="mb-2 md:mb-5 lg:mb-5">
           <Typography
@@ -104,11 +109,12 @@ const Wallets = async () => {
               settings={user.botdata.data.settings}
               wallets={user.botdata.data.wallet}
               hasSetPassword={walletIds.data.password}
+              walletIndex={walletIndex}
             />
           </Stack>
         </Stack>
       </Stack>
-      <Tab balances={balances} />
+      <Tab balances={balances}   walletIndex={walletIndex} />
     </Stack>
   );
 };

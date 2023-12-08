@@ -48,45 +48,45 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
             variant="normal"
             className="text-[9px] md:text-sm lg:text-sm"
           >
-            {convertUnixToHuman(Number(item.timestamp))}
+            {convertUnixToHuman(Number(item?.timestamp))}
           </Typography>
         </Stack>
       </th>
 
       <td
         className={
-          item.event === "Swap" || item.event === "AddLiquidity"
+          item?.event === "Swap" || item?.event === "AddLiquidity"
             ? "px-5 md:px-10 lg:px-10 py-1 md:py-2 lg:py-2"
             : "px-5 md:px-10 lg:px-10 py-2 md:py-4 lg:py-4"
         }
       >
         <Stack
-          flexDirection={item.event === "AddLiquidity" ? "col" : "row"}
-          alignItems={item.event === "AddLiquidity" ? "" : "center"}
+          flexDirection={item?.event === "AddLiquidity" ? "col" : "row"}
+          alignItems={item?.event === "AddLiquidity" ? "" : "center"}
           gap={1}
         >
           <Typography
             variant="normal"
-            color={item.event === "Swap" ? "#5ADBF5" : "white"}
+            color={item?.event === "Swap" ? "#5ADBF5" : "white"}
             className={
-              item.event === "Swap"
+              item?.event === "Swap"
                 ? "text-[8px] md:text-base lg:text-base font-normal leading-7"
                 : "text-[8px] md:text-base lg:text-base font-normal leading-7"
             }
           >
-            {item.event.toLocaleUpperCase()}
+            {item?.event.toLocaleUpperCase()}
           </Typography>
           <Typography
             variant="normal"
             className="text-[8px] md:text-base lg:text-base"
           >
-            {item.event === "AddLiquidity" ? (
+            {item?.event === "AddLiquidity" ? (
               " "
-            ) : item.event === "Swap" ? (
+            ) : item?.event === "Swap" ? (
               <Avatar className="h-4 md:h-5 lg:h-5 w-4 md:w-5 lg:w-5">
                 <AvatarImage src="/swapIcon.svg" alt="@shadcn" />
               </Avatar>
-            ) : item.event === "sent" ? (
+            ) : item?.event === "sent" ? (
               <BsArrowUpRight color="red" />
             ) : (
               <BsArrowDownLeft color="green" />
@@ -97,38 +97,38 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
       <td>
         <div
           className={
-            item.event === "Swap" || item.event === "AddLiquidity"
+            item?.event === "Swap" || item?.event === "AddLiquidity"
               ? "py-2 md:py-4 lg:py-4 items-center w-[120px] md:w-auto lg:w-auto"
               : "py-2 md:py-4 lg:py-4 items-center w-[120px] md:w-auto lg:w-auto"
           }
         >
-          {item.event === "sent" && (
+          {item?.event === "sent" && (
             <Typography
               variant="normal"
               className="text-[8px] md:text-xs lg:text-xs"
             >
-              {getAddressName(item.to)}
+              {getAddressName(item?.to)}
             </Typography>
           )}
-          {item.event === "received" && (
+          {item?.event === "received" && (
             <Typography
               variant="normal"
               className="text-[8px] md:text-xs lg:text-xs"
             >
-              {getAddressName(item.from)}
+              {getAddressName(item?.from)}
             </Typography>
           )}
           <div
             className="cursor-pointer"
             onClick={() =>
-              handleCopy(item.event === "sent" ? item.to : item.from)
+              handleCopy(item?.event === "sent" ? item?.to : item?.from)
             }
           >
-            {item.event === "Swap"
+            {item?.event === "Swap"
               ? " "
-              : item.event === "sent"
-              ? makeWalletAddress(item.to, 5, 3)
-              : makeWalletAddress(item.from, 5, 3)}
+              : item?.event === "sent"
+              ? makeWalletAddress(item?.to, 5, 3)
+              : makeWalletAddress(item?.from, 5, 3)}
           </div>
         </div>
       </td>
@@ -136,34 +136,34 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
       <td>
         <div
           className={
-            item.event === "Swap" || item.event === "AddLiquidity"
+            item?.event === "Swap" || item?.event === "AddLiquidity"
             ? "md:px-5 lg:px-5 py-2 md:py-4 lg:py-4 flex flex-col items-start w-[170px] md:w-auto lg:w-auto"
             : "md:px-5 lg:px-5 py-2 md:py-4 lg:py-4 flex flex-col items-start w-[170px] md:w-auto lg:w-auto"
           }
         >
           <Stack
             sx={
-              item.event === "received"
+              item?.event === "received"
                 ? "text-green-600 text-sm font-normal leading-normal ml-1"
-                : item.event === "sent"
+                : item?.event === "sent"
                 ? "text-red-800 text-sm font-normal leading-normal ml-1"
-                : item.event === "Swap"
+                : item?.event === "Swap"
                 ? "text-red-800 text-sm font-normal leading-normal ml-1"
                 : "text-white text-sm font-normal leading-normal ml-1"
             }
           >
-            {item.event === "sent" && (
+            {item?.event === "sent" && (
               <Image
-                src={item.tokensOut[0].logo}
+                src={item?.tokensOut[0]?.logo}
                 width={20}
                 height={20}
                 className="rounded-full"
                 alt="S"
               />
             )}
-            {item.event !== "sent" && (
+            {item?.event !== "sent" && (
               <Image
-                src={item.tokensIn[0].logo}
+                src={item?.tokensIn[0]?.logo}
                 width={20}
                 height={20}
                 className="rounded-full"
@@ -175,44 +175,44 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
                 variant="normal"
                 className="text-[8px] md:text-sm lg:text-sm"
               >
-                {item.event === "sent" &&
-                  fixNum(item.tokensOut[0].value, 6, true)}
-                {item.event !== "sent" &&
-                  fixNum(item.tokensIn[0].value, 6, true)}
+                {item?.event === "sent" &&
+                  fixNum(item?.tokensOut[0]?.value, 6, true)}
+                {item?.event !== "sent" &&
+                  fixNum(item?.tokensIn[0]?.value, 6, true)}
                 <span>
                   {" "}
-                  {item.event === "sent" && item.tokensOut[0].asset}
-                  {item.event !== "sent" && item.tokensIn[0].asset}
+                  {item?.event === "sent" && item?.tokensOut[0]?.asset}
+                  {item?.event !== "sent" && item?.tokensIn[0]?.asset}
                 </span>
                 <span>
                   ( ${" "}
-                  {item.event === "sent" &&
-                    siNumber(toFixedNum(item.tokensOut[0].usdAmount))}
-                  {item.event !== "sent" &&
-                    siNumber(toFixedNum(item.tokensIn[0].usdAmount))}
+                  {item?.event === "sent" &&
+                    siNumber(toFixedNum(item?.tokensOut[0]?.usdAmount))}
+                  {item?.event !== "sent" &&
+                    siNumber(toFixedNum(item?.tokensIn[0]?.usdAmount))}
                   )
                 </span>
               </Typography>
             </Stack>
           </Stack>
 
-          {item.event === "AddLiquidity" && (
+          {item?.event === "AddLiquidity" && (
             <Stack margin="mt-1">
               <Avatar className="h-4 md:h-5 lg:h-5 w-4 md:w-5 lg:w-5">
-                <AvatarImage src={item.tokensOut[0].logo} alt="@shadcn" />
+                <AvatarImage src={item?.tokensOut[0]?.logo} alt="@shadcn" />
               </Avatar>
               <Stack margin="ml-2">
                 <Typography
                   variant="normal"
                   className="text-[5px] md:text-sm lg:text-sm"
                 >
-                  {item.tokensOut[0].value &&
-                    item.tokensOut[0].value.toFixed(2)}{" "}
+                  {item?.tokensOut[0]?.value &&
+                    item?.tokensOut[0]?.value?.toFixed(2)}{" "}
                   <span className="px-1" />
                   <span className="">
-                    {item.tokensOut[0].asset} ($
-                    {item.tokensOut[0].usdAmount &&
-                      siNumber(toFixedNum(item.tokensOut[0].usdAmount))}
+                    {item?.tokensOut[0]?.asset} ($
+                    {item?.tokensOut[0]?.usdAmount &&
+                      siNumber(toFixedNum(item?.tokensOut[0]?.usdAmount))}
                     )
                   </span>
                 </Typography>
@@ -224,17 +224,17 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
               variant="normal"
               className="text-[5px] md:text-sm lg:text-sm text-center"
             >
-              {item.event === "Swap" && "for"}
+              {item?.event === "Swap" && "for"}
             </Typography>
           </Stack>
 
-          {item.event === "Swap" && (
+          {item?.event === "Swap" && (
             <Stack
               margin="mt-1"
               sx="text-green-600 text-sm font-normal leading-normal ml-1"
             >
               <Image
-                src={item.tokensOut[0].logo}
+                src={item?.tokensOut[0]?.logo}
                 width={20}
                 height={20}
                 className="rounded-full"
@@ -245,13 +245,13 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
                   variant="normal"
                   className="text-[8px] md:text-sm lg:text-sm"
                 >
-                  {item.tokensOut[0].value &&
-                    fixNum(item.tokensOut[0].value, 6, true)}{" "}
+                  {item?.tokensOut[0]?.value &&
+                    fixNum(item?.tokensOut[0]?.value, 6, true)}{" "}
                   <span className="px-1" />
                   <span className="">
-                    {item.tokensOut[0].asset} ($
-                    {item.tokensOut[0].usdAmount &&
-                      siNumber(toFixedNum(item.tokensOut[0].usdAmount))}
+                    {item?.tokensOut[0]?.asset} ($
+                    {item?.tokensOut[0]?.usdAmount &&
+                      siNumber(toFixedNum(item?.tokensOut[0]?.usdAmount))}
                     )
                   </span>
                 </Typography>
@@ -275,7 +275,7 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
           >
             Gas Fee:
             <span className="ml-1 text-white">
-              {fixNum(Number(item.gas), 6, true)} Gwei
+              {fixNum(Number(item?.gas), 6, true)} Gwei
             </span>
           </Typography>
         </div>

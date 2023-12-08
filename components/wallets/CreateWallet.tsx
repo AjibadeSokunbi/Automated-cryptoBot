@@ -11,31 +11,37 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import DeleteWallet from "./Delete";
+import Link from "next/link";
 
 interface Wallet {
   wallets: string[];
   token: string;
+  walletIndex: number;
 }
 
-const CreateWallet: React.FC<Wallet> = ({ wallets, token }) => {
+const CreateWallet: React.FC<Wallet> = ({ wallets, token,  walletIndex}) => {
 const canCreateNewWallet = wallets.length >= 3
   return (
     <Stack alignItems="center" justifyContent="between" sx="w-full mb-5 gap-3">
       <Stack alignItems="center" sx="w-auto gap-4">
         {wallets.map((wallet, index) => (
+          
           <Stack
             alignItems="center"
             justifyContent="between"
-            sx={`w-auto px-2 md:px-3 lg:px-3 py-1 bg-[#063172] rounded-2xl`}
+            sx={`w-auto px-2 md:px-3 lg:px-3 py-1 ${index === walletIndex ? "bg-[#0a1f41]" : "bg-[#063172]"} rounded-2xl`}
             key={index}
           >
-            <Typography
+            <Link href={`/wallets/${index}`}>
+              <Typography
               variant="semibold"
               className="text-[#DBE9FF] text-[10px] md:text-sm lg:text-sm mr-2 md:mr-3 lg:mr-3"
             >
               {" "}
-              Wallet{index + 1}{" "}
+              Wallet {index + 1}{" "}
             </Typography>
+            </Link>
+          
 
             <Dialog>
               <DialogTrigger asChild>

@@ -5,7 +5,6 @@ import Stack from "@/components/custom/Stack";
 import { TabsContent } from "@/components/ui/tabs";
 
 import { Input } from "@/components/ui/input";
-import { MdOutlineContentCopy } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import {
   retrievePrivateKey,
@@ -14,6 +13,8 @@ import {
 import PassButton from "./PassButton";
 import { toast } from "../ui/use-toast";
 import PrivateKeyButton from "./PrivateKeyButton";
+import CopyAddress from "../metabots/Wallet/Copy";
+import { useParams } from "next/navigation";
 
 interface Props {
   wallets: string[];
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const Security: FC<Props> = ({ wallets, hasSetPassword }) => {
+  const params = useParams()
+  const walletIndex = params.walletindex as string
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [keySuccess, setKeySuccess] = useState(false);
@@ -72,8 +75,8 @@ const Security: FC<Props> = ({ wallets, hasSetPassword }) => {
   const [privateKey, setPrivateKey] = useState("");
   const securityData = [
     {
-      title: `wallet address 1`,
-      address: wallets[0],
+      title: `wallet address ${Number(walletIndex) + 1}`,
+      address: wallets[Number(walletIndex)],
       key: privateKey,
     },
   ];
@@ -113,7 +116,7 @@ const Security: FC<Props> = ({ wallets, hasSetPassword }) => {
                 </Typography>
                 <Input
                   name="cpassword"
-                  placeholder="Casperbigbig2345"
+                  placeholder="Password"
                   required
                   type="password"
                   value={confirmPassword}
@@ -180,7 +183,7 @@ const Security: FC<Props> = ({ wallets, hasSetPassword }) => {
         {!keySuccess && hasSetPassword && (
           <form
             action={async (formData) => {
-              const result = await retrievePrivateKey(formData, 0);
+              const result = await retrievePrivateKey(formData, Number(walletIndex));
               if (result?.data.status === true) {
                 setPrivateKey(result.data.data);
                 setKeySuccess(true);
@@ -258,14 +261,14 @@ const Security: FC<Props> = ({ wallets, hasSetPassword }) => {
                       {" "}
                       {`${row.address.slice(0, 30)}...`}{" "}
                     </Typography>
-                    <MdOutlineContentCopy className="text-[#E7E7E7] text-base ml-2 cursor-pointer" />
+                    <CopyAddress address={row.address}/>
                   </Stack>
                   <Stack alignItems="center" sx="mb-3 w-full px-2">
                     <Typography variant="semibold" className="text-[10px]">
                       {" "}
                       {`${row.key.slice(0, 30)}...`}{" "}
                     </Typography>
-                    <MdOutlineContentCopy className="text-[#E7E7E7] text-base ml-2 cursor-pointer" />
+                   <CopyAddress address={row.key}/>
                   </Stack>
                 </Stack>
               </Stack>

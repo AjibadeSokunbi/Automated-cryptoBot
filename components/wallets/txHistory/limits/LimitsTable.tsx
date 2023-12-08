@@ -60,21 +60,21 @@ const LimitsTable:  FC<Props> = ({tradeData2}) => {
                             <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] uppercase'> W1 </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] capitalize'> {row.action} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] capitalize'> {row?.action} </Typography>
                             </td>
                             <td className="w-1/6">
                                 <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row?.symbol} </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row.amount} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-center lg:text-center'> {row?.amount} </Typography>
                             </td>
                             <td className="w-1/6">
-                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-right lg:text-right'> $ {row.tradePrice} </Typography>
+                                <Typography variant='normal' className='text-[9px] md:text-sm lg:text-sm text-[#E0E0E0] md:text-right lg:text-right'> $ {row?.tradePrice} </Typography>
                             </td>
                             <td className="w-1/6">
                                 <Stack alignItems='center' sx='md:justify-end lg:justify-end'>
                                     <Typography variant='normal' className="text-[9px] md:text-sm lg:text-sm capitalize"> <span className={`${row.executed === false ? 'text-[#FFC107]' : 'text-[#06C270]'}`}>   {row?.executed ? "Confirmed" : "Pending"} </span> </Typography>
-                                    {row.executed === false ? (<MdOutlineDeleteOutline className="text-[#FF3B3B] text-base ml-2"/>) : ''}
+                                    {row?.executed === false ? (<MdOutlineDeleteOutline className="text-[#FF3B3B] text-base ml-2"/>) : ''}
                                 </Stack>
                             </td>
                         </div>
