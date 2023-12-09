@@ -42,7 +42,7 @@ export const ScamBox: React.FC<Props> = ({scamAnalysis}) => {
                     <Typography
                       variant="normal"
                       className=" text-[11px] leading-normal"
-                      key={index}
+                      // key={index}
                     >
                       {check}
                     </Typography>

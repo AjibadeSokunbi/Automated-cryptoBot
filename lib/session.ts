@@ -19,12 +19,10 @@ export async function getCurrentUser() {
     `${metabotURL}user/${session?.user?.email}`,
     requestOptions
   );
-  const resD: UserBotData = await response2.json();
+  const resD: UserBotData = await response2?.json();
 
-  const userWallets = resD.data.wallet;
-  const allWalletBalance: string[] = (await Promise.all(
-    userWallets.map(getUserBalance)
-  )) as string[];
+  const userWallets = resD?.data?.wallet;
+  const allWalletBalance: string[] = session?.user?.email ? (await Promise.all(userWallets?.map(getUserBalance))) as string[] : [];
 
   return { ...session?.user, botdata: resD, allWalletBalance };
 }

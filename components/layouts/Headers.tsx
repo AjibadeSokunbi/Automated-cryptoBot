@@ -11,6 +11,7 @@ import Typography from "@/components/custom/Typography";
 import { Button } from "@/components/ui/button";
 import { FaTelegram } from "react-icons/fa";
 import Search from "./Search";
+import SignUp from "../custom/SignUp";
 
 interface Props {}
 
@@ -83,32 +84,14 @@ const Headers = () => {
                  <Search />
               )}
 
-              <div className="flex gap-6 text-align items-center md:mr-8 lg:mr-8 text-2xl">
-                <UserAccountNav />
-                {/*<AiOutlineBell className="hidden md:inline lg:inline" /> */}
+<div className="flex gap-6 text-align items-center md:mr-8 lg:mr-8 text-2xl">
+                {/*<UserAccountNav /> */}
+                <AiOutlineBell className="hidden md:inline lg:inline" />
+                {/* <Unmount /> */}
 
-                <Link href="">
-                  <Button
-                    variant="default" 
-                    size="sm"
-                    className="border-none bg-[#0D6EFD] hover:bg-[#0D6EFD] rounded-lg text-sm font-semibold px-5"
-                  >
-                    {" "} Join Our Community {" "}
-                    <FaTelegram className="text-lg text-white ml-2" />{" "}
-                  </Button>
-                </Link>
+                <SignUp /> 
                 
-                {/*<div className="items-center w-auto h-auto gap-3 hidden md:flex lg:flex">
-                    {!user && (
-                      <Link href="/login">
-                        <Button variant="outline" value="Log In" className="w-28 py-1"> Log In </Button>
-                      </Link>
-                    )}
-                    
-                    <Button variant="default" value="Sign Up" className="w-28 py-1"> Sign Up </Button>
-                </div> */}
-                
-                {/*<div className="block md:hidden lg:hidden relative">
+                <div className="block md:hidden lg:hidden relative">
                   <HiMenuAlt3 size={35} onClick={toggleMenu} />
                   {menuVisible && (
                     <div className="absolute right-0 top-12 bg-[#17212F] z-50 w-44 h-auto px-3 py-4">
@@ -126,7 +109,7 @@ const Headers = () => {
                       ))}
                     </div>
                   )}
-                </div> */}
+                </div>
               </div>
             </div>
           </div>

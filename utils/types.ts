@@ -40,6 +40,7 @@ export interface User {
   subscriptions: any[]; // You can specify the actual type for "subscriptions" if needed.
   tier: "FREE" | "PAID";
   trades: any[]; // You can specify the actual type for "trades" if needed.
+  points: number,
   createdAt: string;
   updatedAt: string;
   __v: number;

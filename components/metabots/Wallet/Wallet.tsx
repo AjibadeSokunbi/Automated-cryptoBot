@@ -115,7 +115,7 @@ const Wallet: FC<Props> = ({}) => {
                   color="#CED4DA"
                   className="text-gray-300 text-xs font-normal font-['Instrument Sans']"
                 >
-                  TX: {user.botUser.data.trades.length}
+                  TX: {user?.botUser?.data?.trades?.length}
                 </Typography>
               </Stack>
             </Stack>
@@ -154,7 +154,7 @@ const Wallet: FC<Props> = ({}) => {
                         color="#CED4DA"
                         className="text-gray-300 text-xs font-normal font-['Instrument Sans']"
                       >
-                        {Number(user.allWalletBalance[index]).toFixed(5)} ETH
+                        {Number(user?.allWalletBalance[index]).toFixed(5)} ETH
                       </Typography>
                     </Stack>
                   </Stack>

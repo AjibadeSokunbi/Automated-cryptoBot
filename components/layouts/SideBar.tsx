@@ -2,12 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { RiSettings4Line } from "react-icons/ri";
-import {
-  BsTwitter,
-  BsLinkedin,
-  BsDiscord,
-  BsTelegram,
-} from "react-icons/bs";
+import { FaTwitter } from "react-icons/fa";
+import { FaTelegramPlane } from "react-icons/fa";
 //import step from "@/components/icons/step";
 import dex from "@/components/icons/dex";
 import txflow from "@/components/icons/txflow";
@@ -25,9 +21,11 @@ import {RiShieldLine} from "react-icons/ri";
 import {PiBriefcaseMetalBold} from "react-icons/pi";
 import {MdOutlineCelebration} from "react-icons/md";
 import {HiMiniChevronUp} from "react-icons/hi2";
+import { MdAccountBalanceWallet } from "react-icons/md";
+import { FaMoneyBills } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import Stack from "../custom/Stack";
+import Stack from "@/components/custom/Stack";
 
 interface Props {}
 
@@ -36,9 +34,10 @@ const SideBar = () => {
 
   const menus = [
     { name: "Home", link: "/", icon: AiOutlineHome },
+    { name: "Metabots", link: "/metabots", icon: FaRobot },
     {
-      name: "Transaction Flow",
-      link: "/txflow",
+      name: "Smart Wallet Tracking",
+      link: "/smartWalletTracking",
       icon: txflow,
     },
     { name: "Dex Explorer", link: "/dex", icon: dex },
@@ -48,6 +47,8 @@ const SideBar = () => {
       icon: PiBriefcaseMetalBold,
     },
     { name: "Due Diligence", link: "/duediligence", icon: RiShieldLine },
+    { name: "My Wallet", link: "/wallets/0", icon: MdAccountBalanceWallet },
+    { name: "Pricing", link: "/pricing", icon: FaMoneyBills },
     {
       name: "Referrals and Rewards",
       link: "/referrals",
@@ -55,7 +56,7 @@ const SideBar = () => {
       margin: true,
     },
     { name: "Settings", link: "/settings", icon: RiSettings4Line },
-    { name: "Metabots", link: "/metabots", icon: FaRobot },
+    
   ];
 
   const [open, setOpen] = useState<boolean>(false);
@@ -87,7 +88,7 @@ const SideBar = () => {
         <div className="py-3 ">
           {!open && (
             <Image
-              src="/logo.png"
+              src="/logo-mobile.svg"
               alt="logo"
               width={30}
               height={30}
@@ -95,7 +96,7 @@ const SideBar = () => {
           )}
 
           {open && (
-            <Image src="/metadapp.png" alt="logo" width={100} height={100} />
+            <Image src="/logo-desktop.svg" alt="logo" width={150} height={150} />
           )}
         </div>
         <div className="mt-5 flex flex-col gap-4 relative">
@@ -148,7 +149,7 @@ const SideBar = () => {
               )}
             </>
 
-            <>
+            {/* <>
             {!open && <FaChevronDown className="text-[20px]"/>}
             {open && (
               <Accordion type="single" collapsible className="w-full no-underline">  
@@ -157,7 +158,7 @@ const SideBar = () => {
                     <Typography variant="normal" className="text-sm"> Analytics </Typography>
                   </AccordionTrigger>
                   <AccordionContent>
-                    {menus?.filter(menu => menu.name !== "Home" && menu.name !== "Referrals and Rewards" && menu.name !== "Settings" && menu.name !== "Metabots")?.map((menu, i) => (
+                    {menus?.filter(menu => menu.name !== "Home" && menu.name !== "Referrals and Rewards" && menu.name !== "Settings" && menu.name !== "Metabots" && menu.name !== "My Wallet" && menu.name !== "Pricing")?.map((menu, i) => (
                       <Link
                         href={menu.link}
                         key={i}
@@ -178,15 +179,15 @@ const SideBar = () => {
                 </AccordionItem>
               </Accordion>
               )}
-            </>
+            </> */}
           </div>
           
           <>
-            {menus?.filter(menu => menu.name === "Referrals and Rewards" || menu.name === "Settings")?.map((menu, i) => ( 
+            {menus?.filter(menu => menu.name === "My Wallet" || menu.name === "Pricing" || menu.name === "Referrals and Rewards" || menu.name === "Settings")?.map((menu, i) => ( 
               <Link
                 href={menu.link}
                 key={i}
-                className={`group flex items-center text-sm  gap-3 font-medium p-2 hover:bg-gray-800 rounded-md ${
+                className={`group flex items-center text-sm gap-3 font-medium p-2 hover:bg-gray-800 rounded-md ${
                   activeMenu === menu.name ? " bg-gray-800" : ""
                 } ${activeMenu === menu.name && !open ? "pr-7" : ""}`}
                 onClick={() => handleMenuClick(menu.name)}
@@ -202,22 +203,18 @@ const SideBar = () => {
 
           <>
             {!open && (
-              <div className="flex flex-col w-full items-center justify-center gap-5 absolute left-0 bottom-[-90%]">
-                <BsTwitter />
-                <BsDiscord />
-                <BsTelegram />
-                <BsLinkedin />
+              <div className="flex flex-col w-full items-center justify-center gap-5 absolute left-0 bottom-[-45%]">
+                <> <FaTwitter /> </>
+                <> <FaTelegramPlane /> </>
               </div>
             )}
             {open && (
-              <h6 className={`text-center mt-36 whitespace-pre duration-1000 ${!open && "opacity-0  overflow-hidden"}`}
+              <h6 className={`text-center mt-14 whitespace-pre duration-1000 ${!open && "opacity-0  overflow-hidden"}`}
               >
                 Join Our Community
                 <div className="flex flex-row gap-5 justify-center mt-3">
-                  <> <BsTwitter /> </>
-                  <> <BsDiscord /> </>
-                  <> <BsTelegram /> </>
-                  <> <BsLinkedin /> </>  
+                  <> <FaTwitter /> </>
+                  <> <FaTelegramPlane /> </>
                 </div>
               </h6>
             )}
