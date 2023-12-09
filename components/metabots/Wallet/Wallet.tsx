@@ -31,7 +31,7 @@ const Wallet: FC<Props> = ({}) => {
     setWalletIndeX,
     walletIndex: walletIndex2,
   } = useAddressManager();
-  const balance = user.allWalletBalance[walletIndex2];
+  const balance = user?.allWalletBalance[walletIndex2];
 
   useEffect(() => {
     if (selectedWallet === "") {

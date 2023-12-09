@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tab3";
 import All from "../TX/All";
 import Limit from "../TX/Limit";
-import CopyTrades from "../TX/CopyTrades";
+// import CopyTrades from "../TX/CopyTrades";
 import { ImSpinner2 } from "react-icons/im";
 import Stack from "../../custom/Stack";
 interface Props {}
