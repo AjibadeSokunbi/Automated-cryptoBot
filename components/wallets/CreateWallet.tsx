@@ -29,23 +29,26 @@ const canCreateNewWallet = wallets.length >= 3
           <Stack
             alignItems="center"
             justifyContent="between"
-            sx={`w-auto px-2 md:px-3 lg:px-3 py-1 ${index === walletIndex ? "bg-[#0a1f41]" : "bg-[#063172]"} rounded-2xl`}
+            sx={`w-auto px-2 md:px-3 lg:px-3 py-1 ${index === walletIndex ? "bg-[#063172]" : "bg-[#B4D2FE]"} rounded-2xl`}
             key={index}
           >
             <Link href={`/wallets/${index}`}>
               <Typography
               variant="semibold"
-              className="text-[#DBE9FF] text-[10px] md:text-sm lg:text-sm mr-2 md:mr-3 lg:mr-3"
+              className="text-[10px] md:text-sm lg:text-sm mr-2 md:mr-3 lg:mr-3"
             >
-              {" "}
-              Wallet {index + 1}{" "}
+              <span className={`${index === walletIndex ? "text-[#DBE9FF]" : "text-[#0C63E4]"}`}>
+                {" "}
+                  Wallet {index + 1}
+                {" "}
+              </span>
             </Typography>
             </Link>
           
 
             <Dialog>
               <DialogTrigger asChild>
-                <IoIosClose className="text-[#B4D2FE] text-base cursor-pointer" />
+                <IoIosClose className={`${index === walletIndex ? "text-[#DBE9FF]" : "text-[#0C63E4]"} text-base cursor-pointer`} />
               </DialogTrigger>
               <DialogContent3 className="p-0 max-w-fit bg-[#0C141F] border border-slate-800 ">
                 <Stack

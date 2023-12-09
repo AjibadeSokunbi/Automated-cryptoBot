@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/hover-card";
 import { AiOutlineCheck } from "react-icons/ai";
 import {RxCross1} from "react-icons/rx";
-import ScamBoxMobile from "./ScamBoxMobile";
+import ScamBoxMobile from "@/components/metabots/TokenInfo/scamCheck/ScamBoxMobile";
 import { SecurityAnalysis } from "@/utils/types";
 
 interface Props {
@@ -75,6 +75,8 @@ export const ScamBox: React.FC<Props> = ({scamAnalysis}) => {
           </>
         ))}
       </Stack>
+
+      <ScamBoxMobile scamAnalysis={scamAnalysis} />
     </>
   );
 };

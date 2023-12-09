@@ -14,13 +14,13 @@ import {
   TokenSecurity,
 } from "@/utils/types";
 
-import { Dialog, DialogContent2, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import ScamBot from "./ScamBot";
-import CopyAddress from "./Copy";
-import { Watch } from "../WatchList/Watch";
-import TokenInfoMobile from "./Mobile/TokenInfoMobile";
-import Price from "./Price";
+import CopyAddress from "@/components/metabots/TokenInfo/Copy";
+import { Watch } from "@/components/metabots/WatchList/Watch";
+import TokenInfoMobile from "@/components/metabots/TokenInfo/Mobile/TokenInfoMobile";
+import Price from "@/components/metabots/TokenInfo/Price";
+import ScamCheck from "@/components/metabots/TokenInfo/scamCheck/ScamCheck";
 
 interface Props {
   data: TokenPairDetails;
@@ -198,14 +198,14 @@ const TokenInfo: FC<Props> = ({
                     Click to view:
                   </Typography>
                 </DialogTrigger>
-                <DialogContent2 className="top-[47%] left-[85%] max-w-[256px] bg-[#0C141F] border border-slate-800 p-1">
-                  <ScamBot
+                <DialogContent className="top-[50%] left-[50%] max-w-[90vw] max-h-[90vh] h-[90vh] bg-[#0C141F] border border-slate-800 p-1 overflow-y-auto">
+                  <ScamCheck
                     address={data?.baseAddress}
-                    score={score}
-                    aToken={aToken}
-                    aSecurity={aSecurity}
+                    value={score}
+                    tokenSecurity={aToken}
+                    addressSecurity={aSecurity}
                   />
-                </DialogContent2>
+                </DialogContent>
               </Dialog>
             </Stack>
             <Stack alignItems="center">

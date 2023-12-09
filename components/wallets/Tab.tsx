@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Table from "@/components/wallets/tokenHoldings/Table";
+import TokenHoldingsTable from "@/components/wallets/tokenHoldings/TokenHoldingsTable";
 import TXHistory from "@/components/wallets/txHistory/TXHistory";
 import {
   ServerDefaultSession,
@@ -70,7 +70,7 @@ const Tab: FC<Props> = async ({ balances, walletIndex }) => {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="tokenHoldings">
-        <Table balances={balances} />
+        <TokenHoldingsTable balances={balances} />
       </TabsContent>
       {/*<TabsContent value="walletPerformance">
         <WalletPerformance />

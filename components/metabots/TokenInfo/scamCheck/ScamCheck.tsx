@@ -1,12 +1,10 @@
-import Stack from "@/components/custom/Stack";
-
 import React, { FC } from "react";
-
-import ScamBox from "./ScamBox";
-
-import ScamGuage from "./ScamGuage";
-import TokenHolders from "./TokenHolders";
+import Stack from "@/components/custom/Stack";
+import ScamBox from "@/components/metabots/TokenInfo/scamCheck/ScamBox";
+import ScamGuage from "@/components/metabots/TokenInfo/scamCheck/ScamGuage";
+import TokenHolders from "@/components/metabots/TokenInfo/scamCheck/TokenHolders";
 import { fixNum, makeWalletAddress } from "@/utils/indexServer";
+import ScamDataBaseMobile from "@/components/metabots/TokenInfo/scamCheck/ScamDataBaseMobile";
 
 interface Props {
   tokenSecurity: any;
@@ -277,12 +275,13 @@ const ScamCheck: FC<Props> = ({
 
   return (
     <>
-      <Stack sx="w-full rounded-tl rounded-tr flex-row">
+      <Stack sx="w-full bg-none md:bg-[#0C141F] lg:bg-[#0C141F] rounded-tl rounded-tr mt-5 md:p-6 lg:p-6 mb-4 flex-col md:flex-row lg:flex-row overflow-y-auto">
         <Stack sx="flex-col-reverse md:flex-row lg:flex-row w-full md:w-2/3 lg:w-2/3">
           <ScamBox scamAnalysis={scamAnalysis} />
           <ScamGuage scamDatabase={scamDatabase} value={value} />
         </Stack>
-        <Stack sx="flex-col md:flex-row lg:flex-row w-full md:w-1/3 lg:w-1/3">
+        <Stack sx="flex-col md:flex-row lg:flex-row w-full md:w-1/3 lg:w-1/3 h-full">
+          <ScamDataBaseMobile scamDatabase={scamDatabase} value={value} />
           <TokenHolders
             scamResult={scamResult}
             holders={tokenSecurity && tokenSecurity[address]?.holders}

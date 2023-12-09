@@ -22,7 +22,7 @@ const TokenHolders: React.FC<Props> = ({scamResult, holders}) => {
   return (
     <>
       <>
-        <Stack sx="w-full bg-slate-950 rounded-lg border border-slate-800 hidden md:flex lg:flex">
+        <Stack sx="w-full h-full bg-slate-950 rounded-lg border border-slate-800 hidden md:flex lg:flex">
           <Stack flexDirection="col" sx="w-full">
             {tokenHolders.map((scam, index) => (
               <>

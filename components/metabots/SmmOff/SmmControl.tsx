@@ -23,7 +23,7 @@ const Example: FC<Props> = ({}) => {
         Smart Money Mode
       </Label>
 
-      <Switch2
+      <Switch2 
         name="autoGas"
         defaultChecked={smm}
         onChange={handleChange}

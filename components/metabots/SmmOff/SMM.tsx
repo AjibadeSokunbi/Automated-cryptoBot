@@ -29,6 +29,9 @@ const SMM: FC<Props> = async ({ ...props }) => {
           margin="mb-2"
           sx="w-full h-72 px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 block md:hidden lg:hidden"
         >
+          <Stack alignItems="center" justifyContent="end" sx="w-full">
+            <SmmControl />
+          </Stack>
           <Tabs
             defaultValue="liveTrade"
             className="w-full mt-5 overflow-x-hidden"
@@ -38,7 +41,7 @@ const SMM: FC<Props> = async ({ ...props }) => {
                 value="liveTrade"
                 className={`ring-offset-[#084298] focus-visible:bg-[#084298] data-[state=active]:bg-[#084298] w-full text-xs px-3 py-2 text-center font-black text-white data-[state=active]:text-white`}
               >
-                Live Trades
+                Live Trade
               </TabsTrigger>
               <TabsTrigger
                 value="poolActivity"
@@ -72,7 +75,7 @@ const SMM: FC<Props> = async ({ ...props }) => {
           </Tabs>
         </Stack>
       }
-      <Stack flexDirection="col" gap={2} sx="w-full px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800 ">
+      <Stack flexDirection="col" gap={2} sx="w-full px-2 py-3 bg-[#0C141F] rounded-lg shadow border border-slate-800">
         <div className="hidden md:flex lg:flex w-full">
           <SmmOFF params={props.params} smm={props.smm} />
         </div>
@@ -91,7 +94,6 @@ const SMM: FC<Props> = async ({ ...props }) => {
               </Stack>
             }
           >
-            {/* {<SmmControl />} */}
             <LatestFetchMobile params={props.params} />
           </Suspense>
         </div>

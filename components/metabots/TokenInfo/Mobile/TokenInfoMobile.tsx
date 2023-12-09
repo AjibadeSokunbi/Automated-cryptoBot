@@ -16,11 +16,11 @@ import {
   TokenSecurity,
 } from "@/utils/types";
 
-import { Dialog, DialogContent2, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import ScamBot from "../ScamBot";
-import { Watch } from "../../WatchList/Watch";
-import Price from "../Price";
+import { Watch } from "@/components/metabots/WatchList/Watch";
+import Price from "@/components/metabots/TokenInfo/Price";
+import ScamCheck from "@/components/metabots/TokenInfo/scamCheck/ScamCheck";
 
 interface Props {
     data: TokenPairDetails;
@@ -143,14 +143,14 @@ const TokenInfoMobile: FC<Props> = ({
                                         <span className="text-[#FFC107]"> Click to view: </span>
                                     </Typography>
                                 </DialogTrigger>
-                                <DialogContent2 className="top-[50%] md:top-[47%] lg:top-[47%] left-[50%] md:left-[85%] lg:left-[85%] max-w-[80%] md:max-w-[256px] lg:max-w-[256px] bg-[#0C141F] border border-slate-800 p-1">
-                                    <ScamBot
-                                        address={data?.baseAddress}
-                                        score={score}
-                                        aToken={aToken}
-                                        aSecurity={aSecurity}
-                                    />
-                                </DialogContent2>
+                                <DialogContent className="top-[50%] left-[50%] max-w-[90%] max-h-[90vh] h-[90vh] bg-[#0C141F] border border-slate-800 p-1 overflow-y-auto">
+                                <ScamCheck
+                                    address={data?.baseAddress}
+                                    value={score}
+                                    tokenSecurity={aToken}
+                                    addressSecurity={aSecurity}
+                                />
+                                </DialogContent>
                             </Dialog>
                         </Stack>
                     </Stack>
@@ -222,14 +222,14 @@ const TokenInfoMobile: FC<Props> = ({
                                                 <span className="text-[#FFC107]"> Click to view: </span>
                                             </Typography>
                                         </DialogTrigger>
-                                        <DialogContent2 className="top-[50%] md:top-[47%] lg:top-[47%] left-[50%] md:left-[85%] lg:left-[85%] max-w-[80%] md:max-w-[256px] lg:max-w-[256px] bg-[#0C141F] border border-slate-800 p-1">
-                                            <ScamBot
-                                                address={data?.baseAddress}
-                                                score={score}
-                                                aToken={aToken}
-                                                aSecurity={aSecurity}
-                                            />
-                                        </DialogContent2>
+                                        <DialogContent className="top-[50%] left-[50%] max-w-[90%] max-h-[90vh] h-[90vh] bg-[#0C141F] border border-slate-800 p-1 overflow-y-auto">
+                                        <ScamCheck
+                                            address={data?.baseAddress}
+                                            value={score}
+                                            tokenSecurity={aToken}
+                                            addressSecurity={aSecurity}
+                                        />
+                                        </DialogContent>
                                     </Dialog>
                                 </Stack>
                             </Stack>

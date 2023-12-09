@@ -36,7 +36,7 @@ const Tabs: FC<Props> = ({}) => {
             }`}
             href="/metabots"
           >
-            About
+            About Metabots
           </Link>{" "}
         </Typography>
         <Typography className="text-xs md:text-sm lg:text-xs font-semibold cursor-pointer">

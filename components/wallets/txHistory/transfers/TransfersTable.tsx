@@ -1,8 +1,9 @@
 import React, { FC, useState } from "react";
-import Stack from "@/components/custom/Stack";
-import Typography from "@/components/custom/Typography";
-import Image from "next/image";
-import TransfersTableMobile from "./TransfersTableMobile";
+import Stack from '@/components/custom/Stack';
+import Typography from '@/components/custom/Typography';
+import { transfersTable } from '@/utils/MockData';
+import Image from 'next/image';
+import {Table, TableHeader, TableBody, TableHead, TableRow, TableCell} from '@/components/ui/table';
 import { Transfer } from "@/utils/types";
 import { convertUnixToHuman, fixNum, getAddressName, makeWalletAddress, siNumber, toFixedNum } from "@/utils";
 import { AvatarImage } from "@/components/ui/avatar";
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const TransfersTable: FC<Props> = ({ TransferData }) => {
+
   const { toast } = useToast();
   const [isCopied, setIsCopied] = useState(false);
 
@@ -28,14 +30,12 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
     });
   };
 
+
   const tableRows = TransferData?.map((item, index) => (
-    <tr
-      key={index}
-      className={
-        index % 2 === 0 ? "bg-[#212E40] border-t border-b border-slate-800" : ""
-      }
-    >
-      <th
+    <TableRow key={index} className={
+      index % 2 === 0
+        ? "w-full flex items-center justify-between border-none bg-[#17212F] px-2 md:px-8 lg:px-8" : "w-full flex items-center justify-between border-none px-2 md:px-8 lg:px-8"}>
+      <TableCell
         scope="row"
         className={
           index % 2 === 0
@@ -51,9 +51,9 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
             {convertUnixToHuman(Number(item?.timestamp))}
           </Typography>
         </Stack>
-      </th>
+      </TableCell>
 
-      <td
+      <TableCell
         className={
           item?.event === "Swap" || item?.event === "AddLiquidity"
             ? "px-5 md:px-10 lg:px-10 py-1 md:py-2 lg:py-2"
@@ -93,8 +93,9 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
             )}
           </Typography>
         </Stack>
-      </td>
-      <td>
+      </TableCell>
+
+      <TableCell>
         <div
           className={
             item?.event === "Swap" || item?.event === "AddLiquidity"
@@ -131,9 +132,9 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
               : makeWalletAddress(item?.from, 5, 3)}
           </div>
         </div>
-      </td>
+      </TableCell>
 
-      <td>
+      <TableCell>
         <div
           className={
             item?.event === "Swap" || item?.event === "AddLiquidity"
@@ -259,8 +260,9 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
             </Stack>
           )}
         </div>
-      </td>
-      <td>
+      </TableCell>
+
+      <TableCell>
         <div
           className={`${
             index % 2 === 0
@@ -279,56 +281,35 @@ const TransfersTable: FC<Props> = ({ TransferData }) => {
             </span>
           </Typography>
         </div>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   ));
+
+
   return (
     <>
-      <Stack sx="w-full overflow-x-hidden hidden md:flex lg:flex">
-        <table className="w-full text-left">
-          <thead className="bg-[#0A1019] font-bold leading-tight w-full">
-            <tr className="flex items-center justify-between py-3 px-2 md:px-10 lg:px-10 w-full">
-              <th className="w-1/5">
-                <div>
-                  <Typography
-                    variant="black"
-                    className="text-[10px] text-[#E0E0E0] md:text-xs lg:text-xs"
-                  >
-                    {" "}
-                    Time{" "}
-                  </Typography>
-                </div>
-              </th>
-              <th className="w-1/5">
-                <div>
-                  <Typography
-                    variant="black"
-                    className="text-[10px] text-[#E0E0E0] md:text-xs lg:text-xs"
-                  >
-                    {" "}
-                    Action{" "}
-                  </Typography>
-                </div>
-              </th>
-              <th className="w-1/5">
-                <div></div>
-              </th>
-              <th className="w-1/5">
-                <div></div>
-              </th>
-              <th className="w-1/5">
-                <div></div>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="w-full">
+    <Stack sx="w-full overflow-x-hidden">
+      <Table className="w-full text-left">
+        <TableHeader className="bg-[#0A1019] font-bold leading-tight w-full">
+          <TableRow className="flex items-center justify-between w-full border-none px-2 md:px-8 lg:px-8 pt-2 md:pt-5 lg:pt-5">
+            <TableHead className="w-[100px] md:w-1/5 lg:w-1/5">
+              <Typography variant="black" className="text-[10px] text-[#E0E0E0] md:text-xs lg:text-xs"> Time </Typography>
+            </TableHead>
+            <TableHead className="w-[100px] md:w-1/5 lg:w-1/5">
+              <Typography variant="black" className="text-[10px] text-[#E0E0E0] md:text-xs lg:text-xs"> Action </Typography>
+            </TableHead>
+            <TableHead className="w-[130px] md:w-1/5 lg:w-1/5"></TableHead>
+            <TableHead className="w-[150px] md:w-1/5 lg:w-1/5"></TableHead>
+            <TableHead className="w-[150px] md:w-1/5 lg:w-1/5"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody className='w-full'>
           {tableRows}
-          </tbody>
-        </table>
-      </Stack>
-      <TransfersTableMobile />
+        </TableBody>
+      </Table>
+    </Stack>
     </>
-  );
-};
+  )
+}
 
-export default TransfersTable;
+export default TransfersTable

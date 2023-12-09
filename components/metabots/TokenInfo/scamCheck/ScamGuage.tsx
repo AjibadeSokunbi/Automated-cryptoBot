@@ -1,11 +1,8 @@
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import React from "react";
-import GaugeChart from "react-gauge-chart";
-
-
+//import GaugeChart from "react-gauge-chart";
 import { HiInformationCircle } from "react-icons/hi";
-
 import {
   HoverCard,
   HoverCardContent,
@@ -36,7 +33,7 @@ const ScamGuage: React.FC<Props> = ({value, scamDatabase}) => {
           Risky
         </Typography>
         <Stack justifyContent="center" alignItems="center" width="w-[90%]" sx="mb-5">
-          <GaugeChart
+          {/*<GaugeChart
             id="gauge-chart1"
             percent={Number(value) / 100}
             className="w-full h-24 flex justify-items-center  self-center  "
@@ -45,7 +42,7 @@ const ScamGuage: React.FC<Props> = ({value, scamDatabase}) => {
             textColor={
               value >= 70 ? "#5BE12C" : value < 50 ? "#EA4228" : "#F5CD19"
             }
-          />
+          /> */}
         </Stack>
         <Stack justifyContent="between" sx="mt-14 mx-2">
           <Typography variant="normal" color="#EA4228" className="text-[10px] ">Likely a scam</Typography>
