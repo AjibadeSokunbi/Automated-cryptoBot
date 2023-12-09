@@ -6,12 +6,9 @@ import { Input } from "@/components/ui/input";
 import { HiArrowLongDown } from "react-icons/hi2";
 import { toast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { type FieldValues, useForm } from "react-hook-form";
 import {
   checkScientificNotation,
-  extractErrorMessage,
   key,
-  metabotURL,
   shortenWord,
 } from "@/utils/indexServer";
 import {
@@ -32,22 +29,19 @@ import { LucideShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { onBuyLimitAction } from "@/utils/formAction/buyAction";
 import BuyButton from "./BuyButton";
-
-type Inputs = {
-  tradePrice: string;
-};
+import { useAddressManager } from "@/utils/zustanStore/selectedAddress";
 
 interface Props {
   tokenData: TokenPairDetails;
   priseUsdEth: number;
-  ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
   params: {
     address: string
   }
+  balanceArray: string[]
 }
-const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params }) => {
+const LiBuy: FC<Props> = ({ tokenData, priseUsdEth,  settings, params, balanceArray }) => {
   const [isGreaterThan, setIsGreaterThan] = useState<boolean>(false);
   const pairDetail = tokenData;
   const { gasFee, setGasFee } = useGaStore();
@@ -57,15 +51,10 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params
   const [loading, setLoading] = useState<boolean>(false);
   const [shouldFecth, setShouldFecth] = useState<boolean>(false);
 
-  const ethbalance = ethBalance;
-
+  const {walletIndex} =  useAddressManager()
+  const ethbalance = balanceArray[walletIndex];
   const pair = params.address;
 
-  const {
-    handleSubmit,
-    register,
-    formState: { isSubmitting, errors },
-  } = useForm<Inputs>();
   const { data } = useSession();
 
   const user: ClientDefaultSession = data as ClientDefaultSession;
@@ -194,7 +183,8 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params
         const result = await onBuyLimitAction(
           formData,
           pair as string,
-          isGreaterThan
+          isGreaterThan,
+          walletIndex
         );
         if (result?.message === "success") {
           toast({
@@ -268,9 +258,7 @@ const LiBuy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params
             defaultValue={pairDetail?.priceUsd?.toFixed(1)}
             className="rounded-none  bg-[#0C141F] rounded-l-lg  border-slate-800 focus:outline-none"
           />
-          {errors.tradePrice && (
-            <p className="text-red-500">{errors.tradePrice.message}</p>
-          )}
+
           <div className="text-gray-300 text-base font-bold rounded-r-lg py-2  px-4 bg-slate-800 transition ease-in-out delay-150 hover:scale-95 hover:bg-[#0B0F16] duration-300">
             USD
           </div>

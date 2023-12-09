@@ -144,7 +144,7 @@ export async function NewPairScam() {
 
       {
         headers: {
-          "x-api-key": process.env.TRADEVIEWER_API as string,
+          "x-api-key": process.env.NEXT_PUBLIC_TRADEVIEWER_API as string,
           "Content-Type": "application/json",
         },
         next: { revalidate: 5 },

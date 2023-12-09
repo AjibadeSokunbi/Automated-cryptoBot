@@ -23,19 +23,19 @@ import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
 import { onBuyAction } from "@/utils/formAction/buyAction";
 import BuyButton from "./BuyButton";
 import { LucideShieldCheck } from "lucide-react";
+import { useAddressManager } from "@/utils/zustanStore/selectedAddress";
 
 interface Props {
   tokenData: TokenPairDetails;
   priseUsdEth: number;
-  ethBalance: string;
-  userBalanc: string | undefined;
   settings: UserSetting;
   params: {
     address: string
   }
+  balanceArray: string[]
 }
 
-const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params }) => {
+const Buy: FC<Props> = ({ tokenData, priseUsdEth,  settings, params, balanceArray  }) => {
   const pairDetail = tokenData;
   const { gasFee, setGasFee } = useGaStore();
   const [inputA, setInputA] = useState<string>("");
@@ -43,8 +43,8 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params }
   const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
   const [loading, setLoading] = useState<boolean>(false);
   const [shouldFecth, setShouldFecth] = useState<boolean>(false);
-
-  const ethbalance = ethBalance;
+  const {walletIndex} =  useAddressManager()
+  const ethbalance = balanceArray[walletIndex];
 
 
   const pair = params.address;
@@ -177,7 +177,7 @@ const Buy: FC<Props> = ({ tokenData, priseUsdEth, ethBalance, settings, params }
       </Stack>
       <form
         action={async (formData) => {
-          const result = await onBuyAction(formData, pair as string);
+          const result = await onBuyAction(formData, pair as string, walletIndex);
           if (result?.message === "success") {
             toast({
               title: "Purchase Successful!",

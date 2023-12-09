@@ -21,6 +21,7 @@ interface Props {
   params: {
     address: string
   }
+  balanceArray: string[]
 }
 
 const Limit: FC<Props> = ({
@@ -29,7 +30,8 @@ const Limit: FC<Props> = ({
   ethBalance,
   userBalanc,
   settings,
-  params
+  params,
+  balanceArray
 }) => {
   return (
     <Stack flexDirection="col" padding="px-2 mt-4">
@@ -55,12 +57,12 @@ const Limit: FC<Props> = ({
           </Stack>
 
           <LiBuy
-            ethBalance={ethBalance as string}
             tokenData={tokenData as TokenPairDetails}
             priseUsdEth={priseUsdEth}
             userBalanc={userBalanc}
             settings={settings}
             params={params}
+            balanceArray={balanceArray}
           />
         </TabsContent>
 
@@ -69,9 +71,7 @@ const Limit: FC<Props> = ({
             <BuySettings settings={settings} params={params} />
             <BuySettingsMobile settings={settings} params={params} />
           </Stack>
-          {/* <HiArrowsUpDown className="text-center w-7" size={30} /> */}
           <LiSell
-            ethBalance={ethBalance as string}
             tokenData={tokenData as TokenPairDetails}
             priseUsdEth={priseUsdEth}
             userBalanc={userBalanc}

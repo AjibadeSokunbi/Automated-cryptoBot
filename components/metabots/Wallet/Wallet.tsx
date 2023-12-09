@@ -12,6 +12,7 @@ import { makeWalletAddress } from "@/utils";
 import { ClientDefaultSession } from "@/utils/types";
 import CopyAddress from "./Copy";
 import Link from "next/link";
+import { useAddressManager } from "@/utils/zustanStore/selectedAddress";
 
 interface Props {}
 
@@ -25,8 +26,12 @@ const Wallet: FC<Props> = ({}) => {
   const [selectedWallet, setSelectedWallet] = useState<string>(
     Wallets ? Wallets[0] : ""
   );
-
-  const balance = user?.balance;
+  const {
+    setWalletAddress,
+    setWalletIndeX,
+    walletIndex: walletIndex2,
+  } = useAddressManager();
+  const balance = user.allWalletBalance[walletIndex2];
 
   useEffect(() => {
     if (selectedWallet === "") {
@@ -36,6 +41,8 @@ const Wallet: FC<Props> = ({}) => {
 
   const selectWallet = (index: number): void => {
     setSelectedWallet(Wallets[index]);
+    setWalletIndeX(index);
+    setWalletAddress(Wallets[index]);
     setWalletIndex(index + 1);
     setHideWallets(false);
   };
@@ -45,7 +52,7 @@ const Wallet: FC<Props> = ({}) => {
       setHideWallets(!hideWallets ? true : false);
     }
   };
-  
+  console.log();
   return (
     <Stack
       flexDirection="col"
@@ -53,9 +60,12 @@ const Wallet: FC<Props> = ({}) => {
       sx="w-full px-1.5 py-2 bg-[#0C141F] rounded-lg shadow border border-slate-800 "
     >
       <Stack justifyContent="between" width="w-full" alignItems="center">
-        <Typography className="text-white text-base font-bold font-['Instrument Sans'] leading-tight">
-          Your Wallets
-        </Typography>
+        <Link href={`/wallets/${walletIndex2}`}>
+          <Typography className="text-white text-base font-bold font-['Instrument Sans'] leading-tight hover:underline ">
+            Your Wallets
+          </Typography>
+        </Link>
+
         <MdArrowForwardIos
           onClick={show}
           className={`cursor-pointer  transform ${
@@ -94,7 +104,10 @@ const Wallet: FC<Props> = ({}) => {
               <Stack flexDirection="col" gap={2} alignItems="end">
                 <Stack>
                   <CopyAddress address={selectedWallet} />
-                  <Link href={`https://etherscan.io/address/${selectedWallet}`} target="_blank">
+                  <Link
+                    href={`https://etherscan.io/address/${selectedWallet}`}
+                    target="_blank"
+                  >
                     <TbWorld />
                   </Link>
                 </Stack>
@@ -141,22 +154,27 @@ const Wallet: FC<Props> = ({}) => {
                         color="#CED4DA"
                         className="text-gray-300 text-xs font-normal font-['Instrument Sans']"
                       >
-                        0.000 ETH
+                        {Number(user.allWalletBalance[index]).toFixed(5)} ETH
                       </Typography>
                     </Stack>
                   </Stack>
 
                   <Stack flexDirection="col" gap={2} alignItems="end">
                     <Stack>
-                      <PiCopySimpleBold />
-                      <TbWorld />
+                      <CopyAddress address={wallet} />
+                      <Link
+                        href={`https://etherscan.io/address/${wallet}`}
+                        target="_blank"
+                      >
+                        <TbWorld />
+                      </Link>
                     </Stack>
-                    <Typography
+                    {/* <Typography
                       color="#CED4DA"
                       className="text-gray-300 text-xs font-normal font-['Instrument Sans']"
                     >
                       TX: 1000
-                    </Typography>
+                    </Typography> */}
                   </Stack>
                 </Stack>
               </Stack>

@@ -23,12 +23,12 @@ const TxTab = () => {
       >
         Limits
       </TabsTrigger>
-      <TabsTrigger
+      {/* <TabsTrigger
         value="copy"
         className="text-xs md:text-sm lg:text-sm font-medium font-['Instrument Sans'] leading-tight cursor-pointer   text-[#6C757D]  data-[state=active]:border-b-2 data-[state=active]:border-y-yellow-500  data-[state=active]:text-[#FFC107]"
       >
         Copy Trades
-      </TabsTrigger>
+      </TabsTrigger> */}
     </TabsList>
 
       <TabsContent value="bs" className="w-full ">
@@ -50,9 +50,9 @@ const TxTab = () => {
       <TabsContent value="limits" className="w-full ">
         <Limit />
       </TabsContent>
-      <TabsContent value="copy" className="w-full ">
+      {/* <TabsContent value="copy" className="w-full ">
         <CopyTrades />
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   );
 };

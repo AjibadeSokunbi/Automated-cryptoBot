@@ -7,7 +7,11 @@ import { revalidatePath } from "next/cache";
 const key = process.env.NEXT_PUBLIC_METABOT_API_KEY;
 const metabotURL = "https://api.metadapp.com/" as string;
 
-export async function onBuyAction(FormData: FormData, pair: string) {
+export async function onBuyAction(
+  FormData: FormData,
+  pair: string,
+  walletIndex: number
+) {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
   const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
@@ -22,7 +26,7 @@ export async function onBuyAction(FormData: FormData, pair: string) {
     token: FormData.get("tokenAddress"),
     amount: Number(amount).toFixed(6).toString(),
     action: "buy",
-    walletIndex: 0,
+    walletIndex,
   });
 
   const requestOptions: RequestInit = {
@@ -35,7 +39,7 @@ export async function onBuyAction(FormData: FormData, pair: string) {
     const response = await fetch(`${metabotURL}trade/`, requestOptions);
     const result = await response.json();
 
-    const error = result?.error?.code
+    const error = result?.error?.code;
 
     const eMessage = error;
 
@@ -55,7 +59,11 @@ export async function onBuyAction(FormData: FormData, pair: string) {
   }
 }
 
-export async function onSellAction(FormData: FormData, pair: string) {
+export async function onSellAction(
+  FormData: FormData,
+  pair: string,
+  walletIndex: number
+) {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
   const metabotApiKey = `${key}:${user?.botdata?.data?.token}`;
@@ -69,7 +77,7 @@ export async function onSellAction(FormData: FormData, pair: string) {
     token: FormData.get("tokenAddress"),
     amount: Number(amount).toFixed(0).toString(),
     action: "sell",
-    walletIndex: 0,
+    walletIndex,
   });
 
   const requestOptions: RequestInit = {
@@ -83,11 +91,10 @@ export async function onSellAction(FormData: FormData, pair: string) {
 
     const result = await response.json();
 
-    const error = result?.error?.code
+    const error = result?.error?.code;
 
     const eMessage = error;
     if (response.status === 200) {
-
       return {
         txHash: result?.data?.txnHash,
         message: "success",
@@ -106,7 +113,8 @@ export async function onSellAction(FormData: FormData, pair: string) {
 export async function onBuyLimitAction(
   FormData: FormData,
   pair: string,
-  isGreaterThan: boolean
+  isGreaterThan: boolean,
+  walletIndex: number
 ) {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
@@ -122,7 +130,7 @@ export async function onBuyLimitAction(
     token: FormData.get("tokenAddress"),
     amount: Number(amount).toFixed(6).toString(),
     action: "buy",
-    walletIndex: 0,
+    walletIndex,
     isgreaterThan: isGreaterThan,
     protocolIdentifier: "uniswap:eth",
     tradePrice: FormData.get("price"),
@@ -138,7 +146,7 @@ export async function onBuyLimitAction(
     const response = await fetch(`${metabotURL}limitTrade/`, requestOptions);
     const result = await response.json();
 
-    const error = result?.error?.code
+    const error = result?.error?.code;
 
     const eMessage = error;
     if (response.status === 200) {
@@ -161,7 +169,8 @@ export async function onBuyLimitAction(
 export async function onSellLimitAction(
   FormData: FormData,
   pair: string,
-  isGreaterThan: boolean
+  isGreaterThan: boolean,
+  walletIndex: number
 ) {
   const user: ServerDefaultSession =
     (await getCurrentUser()) as ServerDefaultSession;
@@ -177,7 +186,7 @@ export async function onSellLimitAction(
     token: FormData.get("tokenAddress"),
     amount: Number(amount).toFixed(6).toString(),
     action: "sell",
-    walletIndex: 0,
+    walletIndex,
     isgreaterThan: isGreaterThan,
     protocolIdentifier: "uniswap:eth",
     tradePrice: FormData.get("price"),
@@ -193,11 +202,10 @@ export async function onSellLimitAction(
     const response = await fetch(`${metabotURL}limitTrade`, requestOptions);
     const result = await response.json();
 
-    const error = result?.error?.code
+    const error = result?.error?.code;
 
     const eMessage = error;
     if (response.status === 200) {
-
       return {
         txHash: result?.data?.txnHash,
         message: "success",

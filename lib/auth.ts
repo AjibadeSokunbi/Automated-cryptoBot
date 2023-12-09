@@ -85,8 +85,12 @@ export const authOptions: NextAuthOptions = {
         requestOptions
       );
       const resD: UserBotData = await response2?.json();
-      const userEth = await getUserBalance(resD?.data?.wallet[0]);
-      return { ...session, wallets: resD?.data?.wallet, botUser: resD, balance: userEth};
+      const userWallets = resD.data.wallet;
+      const allWalletBalance: string[] = (await Promise.all(
+        userWallets.map(getUserBalance)
+      )) as string[];
+
+      return { ...session, wallets: resD?.data?.wallet, botUser: resD, allWalletBalance};
     },
     async jwt({ token }) {
 

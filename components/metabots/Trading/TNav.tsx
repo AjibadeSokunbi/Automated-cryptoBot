@@ -35,12 +35,12 @@ const TNav: FC<Props> = async ({ params }) => {
         >
           Limits
         </TabsTrigger>
-        <TabsTrigger
+        {/* <TabsTrigger
           value="copy"
           className="cursor-pointer text-center h-full py-2 text-white w-full  border-slate-800 text-xs md:text-sm lg:text-[12px] font-bold font-['Instrument Sans'] leading-tight   data-[state=active]:border-l data-[state=active]:bg-gray-900 data-[state=active]:text-[#0D6EFD]"
         >
           Copy Trade
-        </TabsTrigger>
+        </TabsTrigger> */}
       </TabsList>
       <Suspense
         fallback={

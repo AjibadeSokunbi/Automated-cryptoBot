@@ -27,30 +27,26 @@ import BuySettingsMobile from "./BuySettingsMobile";
 import { onSellAction } from "@/utils/formAction/buyAction";
 import SellButton from "./SellButton";
 import { LucideShieldCheck } from "lucide-react";
+import { useAddressManager } from "@/utils/zustanStore/selectedAddress";
 
 interface Props {
   tokenData: TokenPairDetails;
-  priseUsdEth: number;
   ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
   params: {
     address: string
   }
+  balanceArray: string[]
 }
-
-type Inputs = {
-  amount1: string;
-  amount2: string;
-};
 
 const Sell: FC<Props> = ({
   tokenData,
-  priseUsdEth,
   ethBalance,
   userBalanc,
   settings,
-  params
+  params,
+  balanceArray
 }) => {
   const [activeTab, setActiveTab] = useState(25);
 
@@ -72,8 +68,9 @@ const Sell: FC<Props> = ({
   const [tokenAddress, setTokenAddress] = useState<string>(
     pairDetail?.baseAddress
   );
-  const ethbalance = ethBalance;
-
+  const {walletIndex} =  useAddressManager()
+  const ethbalance = balanceArray[walletIndex];
+  
 
   const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
   const pair = params.address;
@@ -83,11 +80,7 @@ const Sell: FC<Props> = ({
     return rate;
   };
   const oneTokenValue = 1 / pairDetail.oneEthValue;
-  const rateConversion1t0 = (number: number): number => {
-    const rate = number * oneTokenValue;
 
-    return rate;
-  };
   const { data: feeRecall, isRefetching } = useQuery<feeFetch>({
     refetchIntervalInBackground: true,
     refetchInterval: 30 * 1000,
@@ -119,7 +112,7 @@ const Sell: FC<Props> = ({
     setLaden(false);
     setTokenPrice(tokenPrices);
     const userBalanc = await getTokenBalance(
-      user?.botUser?.data?.wallet[0],
+      user?.botUser?.data?.wallet[walletIndex],
       value
     );
     setToken0balance(userBalanc as string);
@@ -247,12 +240,12 @@ const Sell: FC<Props> = ({
           </Typography>
           Sell
         </Typography>
-        <BuySettings settings={settings}           params={params}/>
-        <BuySettingsMobile settings={settings}           params={params} />
+        <BuySettings settings={settings} params={params}/>
+        <BuySettingsMobile settings={settings} params={params} />
       </Stack>
       <form
         action={async (formData) => {
-          const result = await onSellAction(formData, pair as string);
+          const result = await onSellAction(formData, pair as string, walletIndex);
           if (result?.message === "success") {
 
             toast({

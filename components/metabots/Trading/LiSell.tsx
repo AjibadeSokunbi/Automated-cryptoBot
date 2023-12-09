@@ -3,11 +3,10 @@ import React, { FC, useEffect, useState } from "react";
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import { Input } from "@/components/ui/input";
-import { HiArrowLongDown, HiArrowsUpDown } from "react-icons/hi2";
+import { HiArrowsUpDown } from "react-icons/hi2";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { toast } from "@/components/ui/use-toast";
-import { FieldValues, useForm } from "react-hook-form";
 import {
   ClientDefaultSession,
   TokenPairDetails,
@@ -26,15 +25,11 @@ import { getTokenPriceInUSD } from "@/utils/scripts/getPrice";
 import { LucideShieldCheck } from "lucide-react";
 import { onSellLimitAction } from "@/utils/formAction/buyAction";
 import SellButton from "./SellButton";
-
-type Inputs = {
-  tradePrice: string;
-};
+import { useAddressManager } from "@/utils/zustanStore/selectedAddress";
 
 interface Props {
   tokenData: TokenPairDetails;
   priseUsdEth: number;
-  ethBalance: string;
   userBalanc: string | undefined;
   settings: UserSetting;
   params: {
@@ -44,8 +39,6 @@ interface Props {
 
 const LiSell: FC<Props> = ({
   tokenData,
-
-  ethBalance,
   userBalanc,
   settings,
   params
@@ -56,22 +49,8 @@ const LiSell: FC<Props> = ({
 
   const user: ClientDefaultSession = data as ClientDefaultSession;
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting, errors },
-  } = useForm<Inputs>();
-
   const pairDetail = tokenData;
 
-  const metabotApiKey = `${key}:${user?.botUser?.data?.token}`;
-
-  const headers = new Headers({
-    Authorization: metabotApiKey,
-    "Content-Type": "application/json",
-  });
-
-  const [inputA, setInputA] = useState<string>("");
   const [inputB, setInputB] = useState<string>("");
   const [token0balance, setToken0balance] = useState<string>(
     userBalanc as string
@@ -83,18 +62,19 @@ const LiSell: FC<Props> = ({
   const [tokenAddress, setTokenAddress] = useState<string>(
     pairDetail?.baseAddress
   );
-  const ethbalance = ethBalance;
+  const {walletIndex} =  useAddressManager()
+  const ethbalance = user.allWalletBalance[walletIndex];
 
 
   const [tokenPrice, setTokenPrice] = useState(pairDetail?.priceUsd);
   const pair = params.address;
 
-  const oneTokenValue = 1 / pairDetail.oneEthValue;
-  const rateConversion1t0 = (number: number): number => {
-    const rate = number * oneTokenValue;
+  // const oneTokenValue = 1 / pairDetail.oneEthValue;
+  // const rateConversion1t0 = (number: number): number => {
+  //   const rate = number * oneTokenValue;
 
-    return rate;
-  };
+  //   return rate;
+  // };
   const { data: feeRecall, isRefetching } = useQuery<feeFetch>({
     refetchIntervalInBackground: true,
     refetchInterval: 30 * 1000,
@@ -126,7 +106,7 @@ const LiSell: FC<Props> = ({
     setLaden(false);
     setTokenPrice(tokenPrices);
     const userBalanc = await getTokenBalance(
-      user?.botUser?.data?.wallet[0],
+      user?.botUser?.data?.wallet[walletIndex],
       value
     );
     setToken0balance(userBalanc as string);
@@ -137,7 +117,7 @@ const LiSell: FC<Props> = ({
   ) => {
     const value = event.target.value;
     setInputB(value);
-    setInputA(rateConversion1t0(parseFloat(value)).toString());
+    // setInputA(rateConversion1t0(parseFloat(value)).toString());
 
     if (typingTimeout) {
       clearTimeout(typingTimeout);
@@ -172,9 +152,8 @@ const LiSell: FC<Props> = ({
   }, [feeRecall, setGasFee, shouldFecth]);
 
   const isButtonDisabled =
-    isSubmitting ||
     token0balance === "0.0" ||
-    ethBalance === "0" ||
+    ethbalance === "0" ||
     Number(token0balance) < Number(inputB) ||
     Number(inputB) === 0 ||
     inputB === "";
@@ -202,9 +181,6 @@ const LiSell: FC<Props> = ({
       return "Insufficient Funds";
     }
 
-    if (isSubmitting) {
-      return "....";
-    }
 
     if (token0balance !== "0" && gasPass) {
       return "Sell Anyways";
@@ -219,7 +195,8 @@ const LiSell: FC<Props> = ({
         const result = await onSellLimitAction(
           formData,
           pair as string,
-          isGreaterThan
+          isGreaterThan,
+          walletIndex
         );
         if (result?.message === "success") {
           toast({

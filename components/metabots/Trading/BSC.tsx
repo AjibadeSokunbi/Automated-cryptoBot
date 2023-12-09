@@ -10,7 +10,6 @@ import { getCurrentUser } from "@/lib/session";
 import { getUserBalance } from "@/utils/scripts/getBalaceEth";
 import { getTokenBalance } from "@/utils/scripts/getTokenBalance";
 
-
 interface Props {
   params: {
     address: string;
@@ -46,6 +45,9 @@ const BSC: FC<Props> = async ({ params }) => {
     getUserBalance(user?.botdata?.data?.wallet[0]),
   ]);
 
+
+
+
   const [data3, data2] = await Promise.all([res?.json(), res2?.json()]);
 
   const pairDetails: TokenPairDetails = data3?.data;
@@ -56,46 +58,41 @@ const BSC: FC<Props> = async ({ params }) => {
     pairDetails?.baseAddress
   );
 
-
-
-
   return (
     <>
-  
       <TabsContent value="buy" className="w-full ">
         <Buy
-
-          settings= {user.botdata.data.settings}
-          ethBalance={userEth as string}
+          settings={user.botdata.data.settings}
           tokenData={data as TokenPairDetails}
           priseUsdEth={ethDetails.priceUsd}
-          userBalanc={userBalanc}
           params={params}
+          balanceArray={user?.allWalletBalance}
         />
       </TabsContent>
       <TabsContent value="sell" className="w-full ">
         <Sell
-           settings= {user.botdata.data.settings}
+          settings={user.botdata.data.settings}
           ethBalance={userEth as string}
           tokenData={data as TokenPairDetails}
-          priseUsdEth={ethDetails.priceUsd}
           userBalanc={userBalanc}
           params={params}
+          balanceArray={user?.allWalletBalance}
         />
       </TabsContent>
       <TabsContent value="limit" className="w-full ">
         <Limit
-           settings= {user.botdata.data.settings}
+          settings={user.botdata.data.settings}
           ethBalance={userEth as string}
           tokenData={data as TokenPairDetails}
           priseUsdEth={ethDetails.priceUsd}
           userBalanc={userBalanc}
           params={params}
+          balanceArray={user?.allWalletBalance}
         />
       </TabsContent>
-      <TabsContent value="copy" className="w-full ">
+      {/* <TabsContent value="copy" className="w-full ">
         <CopyTX />
-      </TabsContent>
+      </TabsContent> */}
     </>
   );
 };

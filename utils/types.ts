@@ -88,6 +88,7 @@ export interface ServerDefaultSession {
   email?: string | null;
   wallets?: string[];
   botdata: UserBotData;
+  allWalletBalance: string[]
 }
 
 export interface ClientDefaultSession {
@@ -96,6 +97,7 @@ export interface ClientDefaultSession {
   expires?: string;
   wallets?: string[];
   balance: string;
+  allWalletBalance: string[]
 }
 
 export interface feeFetch {
