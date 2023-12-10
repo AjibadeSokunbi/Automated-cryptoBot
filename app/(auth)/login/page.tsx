@@ -17,9 +17,9 @@ export const metadata: Metadata = {
 export default async function LoginPage() {
   const user = await getCurrentUser();
   // console.log("user:",user);
-  // if(user) {
-  //   redirect("/")
-  // }
+  if(user?.email) {
+    redirect("/")
+  }
 
   return (
     <FullContainer className="">

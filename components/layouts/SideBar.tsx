@@ -48,14 +48,14 @@ const SideBar = () => {
     },
     { name: "Due Diligence", link: "/duediligence", icon: RiShieldLine },
     { name: "My Wallet", link: "/wallets/0", icon: MdAccountBalanceWallet },
-    { name: "Pricing", link: "/pricing", icon: FaMoneyBills },
+    // { name: "Pricing", link: "/pricing", icon: FaMoneyBills },
     {
       name: "Referrals and Rewards",
       link: "/referrals",
       icon: MdOutlineCelebration,
       margin: true,
     },
-    { name: "Settings", link: "/settings", icon: RiSettings4Line },
+    // { name: "Settings", link: "/settings", icon: RiSettings4Line },
     
   ];
 

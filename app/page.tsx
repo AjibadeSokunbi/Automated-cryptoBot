@@ -6,11 +6,11 @@ import Typography from "@/components/custom/Typography";
 import Link from "next/link";
 import Footer from "@/components/layouts/Footer";
 import Box from "@/components/custom/Box";
-import { getCurrentUser } from "@/lib/session";
+
 
 
 export default async function Home() {
-  const user = await getCurrentUser();
+
 
   return (
     <>

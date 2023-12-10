@@ -16,7 +16,6 @@ import SignUp from "../custom/SignUp";
 interface Props {}
 
 const Headers = () => {
-
   //const user = await getCurrentUser();
 
   const pathname = usePathname();
@@ -48,12 +47,12 @@ const Headers = () => {
     },
   ];
 
-  const hidden = pathname === "/login" || pathname === "/register";;
+  const hidden = pathname === "/login" || pathname === "/register";
   return (
     <>
       {!hidden && (
         <nav className="fixed z-40 w-full py-1 bg-[#0B0F16] border-b border-[#101720]  text-white-900 font-semibold flex justify-end mb-20">
-          <div className="w-full md:w-[93%] lg:w-[93%] px-3 md:px-0 lg:px-0"> 
+          <div className="w-full md:w-[93%] lg:w-[93%] px-3 md:px-0 lg:px-0">
             <div className="flex justify-between py-2 items-center">
               <>
                 <div
@@ -63,7 +62,17 @@ const Headers = () => {
                       : "hidden md:flex lg:flex flex-row gap-1"
                   }
                 >
-                  <Link href="/superuser" className="text-white text-[16px] font-normal"> <span className="hover:underline hover:underline-offset-4"> Super User </span> 🔥 </Link>
+                  <Link
+                    href="/superuser"
+                    className="text-white text-[16px] font-normal"
+                  >
+                    {" "}
+                    <span className="hover:underline hover:underline-offset-4">
+                      {" "}
+                      Super User{" "}
+                    </span>{" "}
+                    🔥{" "}
+                  </Link>
 
                   {/*<div className="hover:underline hover:underline-offset-4 text-[16px] font-normal">
                     {pathname === "/" && "Super User"}
@@ -80,17 +89,15 @@ const Headers = () => {
                 />
               </>
 
-              {(pathname === `/metabots/${address}`) && (
-                 <Search />
-              )}
+              {pathname === `/metabots/${address}` && <Search />}
 
-<div className="flex gap-6 text-align items-center md:mr-8 lg:mr-8 text-2xl">
+              <div className="flex gap-6 text-align items-center md:mr-8 lg:mr-8 text-2xl">
                 {/*<UserAccountNav /> */}
                 <AiOutlineBell className="hidden md:inline lg:inline" />
                 {/* <Unmount /> */}
 
-                <SignUp /> 
-                
+                <SignUp />
+
                 <div className="block md:hidden lg:hidden relative">
                   <HiMenuAlt3 size={35} onClick={toggleMenu} />
                   {menuVisible && (

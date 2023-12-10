@@ -44,9 +44,15 @@ export const authOptions: NextAuthOptions = {
       },
       from: process.env.EMAIL_FROM,
       sendVerificationRequest: async ({ identifier, url, provider }) => {
+        const response2 = await fetch(
+          `${metabotURL}user/${identifier}`,
+          requestOptions
+        );
+        const user: UserBotData = await response2?.json();
 
-
-        const templateId = process.env.POSTMARK_PRE_REG_TEMPLATE;
+        const templateId = user.data._id
+          ? process.env.POSTMARK_SIGN_IN_TEMPLATE
+          : process.env.POSTMARK_ACTIVATION_TEMPLATE;
         if (!templateId) {
           throw new Error("Missing template id");
         }
@@ -90,12 +96,15 @@ export const authOptions: NextAuthOptions = {
         userWallets.map(getUserBalance)
       )) as string[];
 
-      return { ...session, wallets: resD?.data?.wallet, botUser: resD, allWalletBalance};
+      return {
+        ...session,
+        wallets: resD?.data?.wallet,
+        botUser: resD,
+        allWalletBalance,
+      };
     },
     async jwt({ token }) {
-
-
-      return { ...token};
+      return { ...token };
     },
     async signIn({ email }) {
       if (email?.verificationRequest === true) {

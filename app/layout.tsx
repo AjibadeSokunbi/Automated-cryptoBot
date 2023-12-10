@@ -13,7 +13,7 @@ const instrument_Sans = Instrument_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: "Pre Launch Metadapp - A Smart trading & Analytics platform.",
+  title: "Metadapp - A Smart trading & Analytics platform.",
   description:
     "Metadapp is a platform that provides on- chain traders, serious investors & Degens with powerful tools to analyze and spot and trade non-obvious opportunities in the crypto markets with improved efficiency and accuracy.",
   keywords: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       `${siteConfig.url}/og.jpg`,
-      "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F1608410023180263424%2F52VMtT5X_400x400.jpg&tbnid=DomwJQ0qnDEutM&vet=12ahUKEwjDib-d7vyBAxUBrycCHbNtCwEQMygEegQIARBX..i&imgrefurl=https%3A%2F%2Ftwitter.com%2FMetadappHQ&docid=Jqoooejwz5ooYM&w=400&h=400&itg=1&q=metadapp&ved=2ahUKEwjDib-d7vyBAxUBrycCHbNtCwEQMygEegQIARBX",
+      "https://res.cloudinary.com/dfzlrctza/image/upload/v1699442709/R2-01_p91oji.jpg",
     ],
     creator: "@MetadappHQ",
   },
@@ -62,7 +62,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export default function RootLayout({

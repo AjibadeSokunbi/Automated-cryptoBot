@@ -53,7 +53,7 @@ const Tabs: FC<Props> = ({}) => {
             Smart Trading Terminal
           </Link>{" "}
         </Typography>
-        <Typography className="text-xs md:text-sm lg:text-xs font-semibold cursor-pointer">
+        {/* <Typography className="text-xs md:text-sm lg:text-xs font-semibold cursor-pointer">
           {" "}
           <Link
             className={`relative before:absolute before:left-0 before:bottom-[-30%] before:w-[100%] md:before:w-[100%] lg:before:w-[100%] before:h-[2px] ${
@@ -66,7 +66,7 @@ const Tabs: FC<Props> = ({}) => {
             {" "}
             Alpha Hunt
           </Link>{" "}
-        </Typography>
+        </Typography> */}
       </Stack>
     </>
   );

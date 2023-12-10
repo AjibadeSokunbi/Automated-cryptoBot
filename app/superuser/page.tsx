@@ -3,34 +3,25 @@ import FullContainer from "@/components/custom/FullContainer";
 import Stack from "@/components/custom/Stack";
 import Typography from "@/components/custom/Typography";
 import { HiInformationCircle } from "react-icons/hi";
-import Referrals from "@/components/referrals/Referrals";
+import Superuser from "@/components/superuser/Superuser";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getCurrentUser } from "@/lib/session";
-import { redirect } from "next/navigation";
 
-interface Props {}
-
-const page = async () => {
-  const user = await getCurrentUser();
-  // console.log("user:",user);
-  if(!user?.email) {
-    redirect("/login")
-  }
+const page = () => {
   return (
     <>
-      <FullContainer className=" border-t border-b border-gray-900 mt-14 pl-6 bg-background1">
+    <FullContainer className=" border-t border-b border-gray-900 mt-14 pl-6 bg-background1">
       <Stack flexDirection="col" sx="w-full md:w-4/12 lg:w-4/12">
         <Stack flexDirection="row" gap={1} alignItems="center">
           <Typography
             variant="bold"
             className="leading-[35.10px] my-6 text-base md:text-[27px] lg:text-[27px]"
           >
-            Referrals & Rewards
+            Superuser
           </Typography>
           <TooltipProvider>
             <Tooltip>
@@ -48,12 +39,11 @@ const page = async () => {
     </FullContainer>
     <FullContainer className="mt-4 md:px-6 lg:px-6">
       <Stack  width="w-full">
-        <Referrals />  
+        <Superuser />
       </Stack>
     </FullContainer>
     </>
+  )
+}
 
-  );
-};
-
-export default page;
+export default page
